@@ -10,6 +10,7 @@ let pair = "";
 let title = document.getElementById("pageTitle");
 let pricetxt = document.getElementById("price");
 let coinpair = document.getElementById("coin-pair");
+let tokens = document.getElementById("tokens");
 // buy/sell buttons
 let buyBtn = document.getElementById("buy");
 let sellBtn = document.getElementById("sell");
@@ -52,7 +53,7 @@ socket.on('data', function (data) {
     title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
     optionCoin.innerText = (coin).toUpperCase();
     optionPair.innerText = (pair).toUpperCase();
-
+    //tokens.innerText = data.tokens;
 
     // Grafikon rajzolasa a frissitett adatok alapjan
     chart();

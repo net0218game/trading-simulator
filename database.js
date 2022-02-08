@@ -8,8 +8,7 @@ var database = mysql.createConnection({
 });
 
 database.connect(function (err) {
-    if (err) throw err;
-    console.log("sikeres csatlakozás");
+    console.log(">   [DATABASE] sikeres csatlakozás");
 });
 
 module.exports = database;

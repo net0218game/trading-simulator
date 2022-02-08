@@ -1,7 +1,10 @@
 // SOCKET.IO NAK AZ IMPORTALASA (sry caps)
 var socket = require('socket.io');
 const WebSocket = require('ws')
-var mysql = require('mysql');
+
+let databaseFile = require("./database.js");
+let username = "david";
+
 
 //szerver oldali alkalmazasok felallitasa / konfiguracioja
 const express = require("express")
@@ -15,18 +18,6 @@ var io = require('socket.io')(server, {
 
 app.use(express.static('public'));
 
-var database = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "trading-simulator"
-});
-
-database.connect(function (err) {
-    if (err) throw err;
-    console.log("sikeres csatlakozás");
-});
-
 let price = 0;
 let values = []
 let lastsec = 0;
@@ -34,7 +25,7 @@ let lastsec = 0;
 let maxItems = 100;
 // tizedes jegyek az ar vegen
 let digits = 4;
-
+let tokens = 0;
 // crypto
 let coin = "eth";
 // coin pair
@@ -42,6 +33,7 @@ let pair = "busd"
 
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {
+    console.log(">   [Socket.io] sikeres csatlakozás")
     function getPrice() {
         //websocket cucc
         let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@trade');
@@ -50,9 +42,9 @@ io.on('connection', (socket) => {
         ws.onmessage = (event) => {
             let cryptodata = JSON.parse(event.data)
             price = parseFloat(cryptodata.p).toFixed(digits);
-
             before = price;
-
+            tokens = database();
+            console.log(tokens);
             const d = new Date();
             let sec = d.getSeconds();
 
@@ -69,9 +61,19 @@ io.on('connection', (socket) => {
                 price: price,
                 values: values,
                 coin: coin,
-                pair: pair
+                pair: pair,
             });
         }
     }
     getPrice();
 });
+
+function database() {
+    databaseFile.query("SELECT * FROM users WHERE username = " + "'" + username + "'", function (err, result) {
+        for (var i = 0; i < result.length; i++) {
+            var row = result[i];
+            return row.tokenValue;
+        }
+    });
+
+}
