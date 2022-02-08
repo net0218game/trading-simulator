@@ -1,6 +1,7 @@
 // SOCKET.IO NAK AZ IMPORTALASA (sry caps)
 var socket = require('socket.io');
 const WebSocket = require('ws')
+var mysql = require('mysql');
 
 //szerver oldali alkalmazasok felallitasa / konfiguracioja
 const express = require("express")
@@ -14,10 +15,24 @@ var io = require('socket.io')(server, {
 
 app.use(express.static('public'));
 
+var database = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "trading-simulator"
+});
+
+database.connect(function (err) {
+    if (err) throw err;
+    console.log("sikeres csatlakozás");
+});
+
 let price = 0;
 let values = []
 let lastsec = 0;
+// ennyi adatot fog abrazolni a diagramm
 let maxItems = 100;
+// tizedes jegyek az ar vegen
 let digits = 4;
 
 // crypto
@@ -31,29 +46,22 @@ io.on('connection', (socket) => {
         //websocket cucc
         let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@trade');
 
-        //coinpair.innerText = (coin + "-" + pair).toUpperCase();
         let before = 0;
         ws.onmessage = (event) => {
-
             let cryptodata = JSON.parse(event.data)
             price = parseFloat(cryptodata.p).toFixed(digits);
 
-            // html part
-            //pricetxt.innerText = price;
-            // change color
-            //pricetxt.style.color = !before || before === price ? "black" : price > before ? "green" : "red";
-            // price before for reference
             before = price;
 
             const d = new Date();
             let sec = d.getSeconds();
 
+            // belerakja egy listaba a datumot (elso hely), es az arat (masodik hely)
             if (sec !== lastsec) {
                 values.push([(d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()).toString(), parseInt(price)]);
-                //chart();
                 lastsec = sec;
-                //len.innerText = values.length;
             }
+            // diagramm max adatok ellenorzese
             if (values.length >= maxItems) {
                 values.shift();
             }
@@ -62,10 +70,8 @@ io.on('connection', (socket) => {
                 values: values,
                 coin: coin,
                 pair: pair
-
             });
         }
     }
-
     getPrice();
 });
