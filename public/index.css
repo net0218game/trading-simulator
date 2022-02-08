@@ -1,0 +1,11 @@
+#buy {
+    background-color: green;
+    border: none;
+    font-size: 20px;
+}
+
+#sell {
+    background-color: red;
+    border: none;
+    font-size: 20px;
+}
