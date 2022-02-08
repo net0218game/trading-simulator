@@ -1,8 +1,13 @@
 //Csatlakozas letrehozasa
 var socket = io.connect('http://localhost:4000');
+
 let values = []
 let coin = "";
+let pair = "";
+
+// ==================================================
 // html elements
+let title = document.getElementById("pageTitle");
 let pricetxt = document.getElementById("price");
 let coinpair = document.getElementById("coin-pair");
 // buy/sell buttons
@@ -13,32 +18,44 @@ let pricevalue = document.getElementById("price-value");
 
 let optionCoin = document.getElementById("optionCoin");
 let optionPair = document.getElementById("optionPair");
+// ==================================================
 
 pricevalue.style.visibility = "hidden";
 
-buyBtn.addEventListener("click", buy());
-sellBtn.addEventListener("click", sell());
+buyBtn.addEventListener("click", buy);
+sellBtn.addEventListener("click", sell);
 
 
 function buy() {
     pricevalue.style.visibility = "visible";
+    console.log("xdddd");
 }
 
 function sell() {
     pricevalue.style.visibility = "visible";
 }
 
+// Grafikon rajzolása
 chart()
+
+// Adat beérkezése esetén
 socket.on('data', function (data) {
-    pricetxt.innerText = data.price + " $";
-    values = data.values;
-    coinpair.innerText = (data.coin + "-" + data.pair).toUpperCase();
-    optionCoin.innerText = (data.coin).toUpperCase();
-    optionPair.innerText = (data.pair).toUpperCase();
+    price = data.price;
     coin = data.coin;
+    pair = data.pair;
+    if(pair == "busd") {
+        pair = "usd";
+    }
+    pricetxt.innerText = price + " $";
+    values = data.values;
+    coinpair.innerText = (coin + "-" + pair).toUpperCase();
+    title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
+    optionCoin.innerText = (coin).toUpperCase();
+    optionPair.innerText = (pair).toUpperCase();
+
+
+    // Grafikon rajzolasa a frissitett adatok alapjan
     chart();
-
-
 });
 
 
