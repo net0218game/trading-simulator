@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradingSimulatorBeta</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
+
 <div class="banner">
+    <div id="chart_div" style="width: 800px; height: 400px;"></div>
     <div class="navbar">
         <ul>
             <li><a href="#">About</a></li>
@@ -30,5 +34,6 @@
     <div class="container">
         <button class="btn-1">Try without registration!</button>
     </div>
+    <script src="login.js"></script>
 </body>
 </html>
