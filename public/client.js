@@ -17,8 +17,11 @@ let sellBtn = document.getElementById("sell");
 
 let pricevalue = document.getElementById("price-value");
 
+let options = document.getElementById("currency");
 let optionCoin = document.getElementById("optionCoin");
 let optionPair = document.getElementById("optionPair");
+
+let converted = document.getElementById("converted");
 // ==================================================
 
 pricevalue.style.visibility = "hidden";
@@ -26,15 +29,38 @@ pricevalue.style.visibility = "hidden";
 buyBtn.addEventListener("click", buy);
 sellBtn.addEventListener("click", sell);
 
-
 function buy() {
-    pricevalue.style.visibility = "visible";
-    console.log("xdddd");
+    if (pricevalue.style.visibility === "visible") {
+        socket.emit("buy", {
+            amount: pricevalue.value,
+            type: options.value
+        });
+    } else {
+        pricevalue.style.visibility = "visible";
+    }
 }
 
 function sell() {
-    pricevalue.style.visibility = "visible";
+    if (pricevalue.style.visibility === "visible") {
+        socket.emit("sell", {
+            amount: pricevalue.value,
+            type: options.value
+        });
+    } else {
+        pricevalue.style.visibility = "visible";
+    }
 }
+/*
+function convert() {
+    socket.emit("convert", {
+        amount: pricevalue.value,
+        type: options.value
+    })
+    socket.on("convert", function (data) {
+        converted.innerText = data.value + " " + data.pair;
+    });
+}
+ */
 
 // Grafikon rajzolása
 chart()
@@ -44,7 +70,7 @@ socket.on('data', function (data) {
     price = data.price;
     coin = data.coin;
     pair = data.pair;
-    if(pair == "busd") {
+    if (pair == "busd") {
         pair = "usd";
     }
     pricetxt.innerText = price + " $";
@@ -53,10 +79,11 @@ socket.on('data', function (data) {
     title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
     optionCoin.innerText = (coin).toUpperCase();
     optionPair.innerText = (pair).toUpperCase();
-    //tokens.innerText = data.tokens;
+    tokens.innerHTML = '<i class="fa fa-money" aria-hidden="true"></i>:' + " " + data.tokens;
 
     // Grafikon rajzolasa a frissitett adatok alapjan
     chart();
+    //convert();
 });
 
 
@@ -80,7 +107,6 @@ function chart() {
             },
             //'backgroundColor': 'transparent'
         };
-
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 

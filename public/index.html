@@ -7,18 +7,34 @@
     <title id="pageTitle"></title>
 </head>
 <body>
-<h1 id="coin-pair">---</h1>
-<h2 id="price">--- $</h2>
-<h3 id="tokens"><i class="fa fa-money" aria-hidden="true"></i>: ---</h3>
-<div id="chart_div" style="width: 800px; height: 400px;"></div>
-<button id="buy">BUY</button>
-<button id="sell">SELL</button>
 
-<select name="currency" id="currency">
-    <option id="optionCoin" value="coin">COIN</option>
-    <option id="optionPair" value="pair">PAIR</option>
-</select>
-<input type="number" id="price-value" value="0">
+<table>
+    <tr>
+        <th>
+            <h1 id="coin-pair">---</h1>
+            <h2 id="price">--- $</h2>
+            <h3 id="tokens"><i class="fa fa-money" aria-hidden="true"></i>: ---</h3>
+            <div id="chart_div" style="width: 800px; height: 400px;"></div>
+        </th>
+        <th >
+            <p>Your Name</p>
+            <input type="text" id="name">
+            <br>
+            <br>
+            <button id="buy">BUY</button>
+            <button id="sell">SELL</button>
+            <br>
+            <br>
+            <select name="currency" id="currency">
+                <option id="optionCoin" value="coin">COIN</option>
+                <option id="optionPair" value="pair">PAIR</option>
+            </select>
+            <input type="number" id="price-value" value="0">
+            <p id="converted">0</p>
+        </th>
+    </tr>
+</table>
+
 <script src="client.js"></script>
 </body>
 </html>
