@@ -12,7 +12,6 @@ var io = require('socket.io')(server, {
         origin: '*',
     }
 });
-
 app.use(express.static('public'));
 
 let price = 0;
@@ -53,7 +52,9 @@ io.on('connection', (socket) => {
             if (values.length >= maxItems) {
                 values.shift();
             }
+            // lekerdezes az adatbazisbol
             getInfo("david").then(function (result) {
+                // adat kuldese socket.io val
                 socket.emit("data", {
                     price: price,
                     values: values,
@@ -61,6 +62,8 @@ io.on('connection', (socket) => {
                     pair: pair,
                     tokens: result[0].tokenValue
                 });
+            }).catch(function (error) {
+                console.log(error);
             });
         }
     }
@@ -71,6 +74,10 @@ io.on('connection', (socket) => {
 
     socket.on("sell", function (data) {
         sell(data);
+    });
+
+    socket.on("register", function (data) {
+        registerUser(data.username, data.password);
     });
 
     /*
@@ -95,6 +102,7 @@ function sell(data) {
         price, coin, pair);
 }
 
+
 /*
 function convert(data) {
     let value;
@@ -115,16 +123,16 @@ function convert(data) {
 }
  */
 
+// adatbazis lekerdezesek
 function getInfo(user) {
-
     return new Promise((resolve, reject) => {
 
-
-        var sql = "SELECT * FROM users WHERE username = " + "'" + user + "'";
+        //var sql = "SELECT * FROM users WHERE username = " + "'" + user + "'";
+        var sql = "SELECT * FROM coins WHERE userID = 0";
 
         database.query(sql, function (error, results) {
             if (error) {
-                return reject(error);
+                return reject("nem inditottad el az xamppot!");
             } else {
                 return resolve(results);
             }
@@ -141,5 +149,29 @@ function getInfo(user) {
     });
 }
 
+function registerUser(username, password) {
 
+    return new Promise((resolve, reject) => {
+        var sql = "SELECT username FROM users WHERE username = " + "'" + username + "'";
 
+        database.query(sql, function (error, results) {
+            if (error) {
+                return reject(error);
+            } else {
+                if (results.length === 0) {
+                    var sql = "INSERT INTO users(username, password) VALUES (" + "'" + username + "'" + "," + "'" + password + "'" + ")";
+
+                    database.query(sql, function (error, results) {
+                        if (error) {
+                            return reject(error);
+                        } else {
+                            return resolve(results);
+                        }
+                    });
+                } else {
+                    console.log("user", username, "already exists!")
+                }
+            }
+        });
+    });
+}
