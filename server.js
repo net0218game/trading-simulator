@@ -2,9 +2,11 @@
 var socket = require('socket.io');
 const WebSocket = require('ws')
 const database = require("./database.js");
-
+const cookieParser = require("cookie-parser");
+const sessions = require('express-session');
 //szerver oldali alkalmazasok felallitasa / konfiguracioja
 const express = require("express");
+const path = require("path");
 var app = express();
 var server = app.listen(4000);
 var io = require('socket.io')(server, {
@@ -12,7 +14,7 @@ var io = require('socket.io')(server, {
         origin: '*',
     }
 });
-app.use(express.static('public'));
+//app.use(express.static('public'));
 
 let price = 0;
 let values = [];
@@ -25,6 +27,70 @@ let digits = 4;
 let coin = "btc";
 // coin pair
 let pair = "busd";
+
+// session generalasa
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(sessions({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized: true,
+    cookie: {maxAge: oneDay},
+    resave: false
+}));
+
+// bejovo adat feldolgozasa
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+// root directory path-je
+app.use(express.static(path.join(__dirname, '/public')));
+
+// cookie parser nemtom mi
+app.use(cookieParser());
+
+// ebbe a valtozoba van mentve a session
+var session;
+
+app.get('/a', (req, res) => {
+    session = req.session;
+    if (session.userid) {
+        console.log(">   [session] be vagy jelentkezve")
+    } else
+        console.log(">   [session] nem vagy bejelentkezve")
+    res.sendFile('public/login/login.html', {root: __dirname})
+});
+
+app.post('/login', (req, res) => {
+    getLoginInfo(req.body.username).then(function (result) {
+        if (req.body.username == result[0].username && req.body.password == result[0].password) {
+            session = req.session;
+            session.userid = req.body.username;
+            console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
+            //console.log(req.session)
+            res.sendFile('/public/index.html', {root: __dirname})
+        } else {
+            console.log(">   [server] sikertelen bejelentkezes");
+            res.send('Invalid username or password');
+        }
+    });
+});
+
+app.post('/registeruser', function (req, res) {
+    if (req.body.password === req.body.password2) {
+        registerUser(req.body.username, req.body.password);
+        res.sendFile(path.join(__dirname + '/public/login/login.html'));
+    } else {
+        console.log("nem egyezik a 2 jelszo");
+    }
+});
+
+app.get('/user', function (req, res) {
+    res.sendFile(path.join(__dirname + '/public/wallet/wallet.html'));
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
 
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {
@@ -53,14 +119,15 @@ io.on('connection', (socket) => {
                 values.shift();
             }
             // lekerdezes az adatbazisbol
-            getInfo("david").then(function (result) {
+            getInfo(session.userid).then(function (result) {
                 // adat kuldese socket.io val
                 socket.emit("data", {
                     price: price,
                     values: values,
                     coin: coin,
                     pair: pair,
-                    tokens: result[0].tokenValue
+                    tokens: result[0].tokenValue,
+                    username: session.userid
                 });
             }).catch(function (error) {
                 console.log(error);
@@ -102,7 +169,6 @@ function sell(data) {
         price, coin, pair);
 }
 
-
 /*
 function convert(data) {
     let value;
@@ -127,28 +193,27 @@ function convert(data) {
 function getInfo(user) {
     return new Promise((resolve, reject) => {
 
-        //var sql = "SELECT * FROM users WHERE username = " + "'" + user + "'";
-        var sql = "SELECT * FROM coins WHERE userID = 0";
+        var sql = "SELECT ID FROM users WHERE username = " + "'" + user + "'";
 
         database.query(sql, function (error, results) {
             if (error) {
-                return reject("nem inditottad el az xamppot!");
+                console.log(">   [MySQL] valami baj van az id keresesevel a felhasznalok tablaban");
             } else {
-                return resolve(results);
-            }
-        });
-        /*
-        database.end(function (err) {
-            if (err) {
-                console.error('Error connecting: ' + err);
-            }
-            console.log('Connection closed!');
-        });
+                var sql = "SELECT * FROM coins WHERE userID = " + "'" + results[0].ID + "'";
 
-         */
+                database.query(sql, function (error, results) {
+                    if (error) {
+                        return reject(">   [MySQL] nem inditottad el az xamppot!");
+                    } else {
+                        return resolve(results);
+                    }
+                });
+            }
+        });
     });
 }
 
+// uj felhasznalo regisztralasa
 function registerUser(username, password) {
 
     return new Promise((resolve, reject) => {
@@ -158,8 +223,9 @@ function registerUser(username, password) {
             if (error) {
                 return reject(error);
             } else {
-                if (results.length === 0) {
-                    var sql = "INSERT INTO users(username, password) VALUES (" + "'" + username + "'" + "," + "'" + password + "'" + ")";
+                if (results.length === 0 && username.length !== 0 && password.length > 7) {
+                    var sql = "INSERT INTO users(username, password) VALUES (" + "'" + username + "'" + "," +
+                        "'" + password + "'" + ")";
 
                     database.query(sql, function (error, results) {
                         if (error) {
@@ -168,9 +234,26 @@ function registerUser(username, password) {
                             return resolve(results);
                         }
                     });
+                    console.log(">   [MySQL] user", username, "has been registered!")
                 } else {
-                    console.log("user", username, "already exists!")
+                    console.log(">   [MySQL] user", username, "already exists!");
                 }
+            }
+        });
+    });
+}
+
+function getLoginInfo(user) {
+    return new Promise((resolve, reject) => {
+
+        var sql = "SELECT * FROM users WHERE username = " + "'" + user + "'";
+
+        database.query(sql, function (error, results) {
+            if (error) {
+                console.log(">   [MySQL] valami baj van az id keresesevel a felhasznalok tablaban");
+            } else {
+                console.log(results[0].username);
+                return resolve(results);
             }
         });
     });

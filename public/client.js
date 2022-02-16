@@ -22,6 +22,7 @@ let optionCoin = document.getElementById("optionCoin");
 let optionPair = document.getElementById("optionPair");
 
 let converted = document.getElementById("converted");
+let name = document.getElementById("name");
 // ==================================================
 
 pricevalue.style.visibility = "hidden";
@@ -80,6 +81,7 @@ socket.on('data', function (data) {
     optionCoin.innerText = (coin).toUpperCase();
     optionPair.innerText = (pair).toUpperCase();
     tokens.innerHTML = '<i class="fa fa-money" aria-hidden="true"></i>:' + " " + data.tokens;
+   name.innerText = "Username:" + " " + data.username;
 
     // Grafikon rajzolasa a frissitett adatok alapjan
     chart();

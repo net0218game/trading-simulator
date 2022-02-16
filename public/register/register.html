@@ -6,10 +6,12 @@
     <title>Register</title>
 </head>
 <body>
-<input id="username">
-<input id="password", type="password">
-<input id="password2", type="password">
-<button type="submit" id="register">Register</button>
-<script src="register.js"></script>
+<form action="/registeruser" method="post">
+    <input id="username" name="username">
+    <input id="password" type="password" name="password">
+    <input id="password2" type="password" name="password2">
+    <input type="submit" value="LogIn">
+</form>
+
 </body>
 </html>
