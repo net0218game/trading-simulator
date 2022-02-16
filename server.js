@@ -50,23 +50,28 @@ app.use(cookieParser());
 // ebbe a valtozoba van mentve a session
 var session;
 
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname + '/public/main/main.html'));
+});
+
 app.get('/a', (req, res) => {
     session = req.session;
     if (session.userid) {
         console.log(">   [session] be vagy jelentkezve")
-    } else
+    } else {
         console.log(">   [session] nem vagy bejelentkezve")
-    res.sendFile('public/login/login.html', {root: __dirname})
+        res.sendFile('public/login/login.html', {root: __dirname})
+    }
 });
 
-app.post('/login', (req, res) => {
+app.post('/main', (req, res) => {
     getLoginInfo(req.body.username).then(function (result) {
         if (req.body.username == result[0].username && req.body.password == result[0].password) {
             session = req.session;
             session.userid = req.body.username;
             console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
             //console.log(req.session)
-            res.sendFile('/public/index.html', {root: __dirname})
+            res.sendFile('/public/main/main.html', {root: __dirname})
         } else {
             console.log(">   [server] sikertelen bejelentkezes");
             res.send('Invalid username or password');
@@ -89,51 +94,56 @@ app.get('/user', function (req, res) {
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
-    res.redirect('/');
+    console.log(">   [session]", session.userid, "kijelentkezett!")
+    res.redirect('/a');
 });
 
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {
+    let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@trade');
     console.log(">   [Socket.io] sikeres csatlakozás")
 
     function getPrice() {
         //websocket cucc
-        let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@trade');
 
         let before = 0;
         ws.onmessage = (event) => {
-            let cryptodata = JSON.parse(event.data);
-            price = parseFloat(cryptodata.p).toFixed(digits);
-            before = price;
+            if (session.userid) {
+                let cryptodata = JSON.parse(event.data);
+                price = parseFloat(cryptodata.p).toFixed(digits);
+                before = price;
 
-            const d = new Date();
-            let sec = d.getSeconds();
+                const d = new Date();
+                let sec = d.getSeconds();
 
-            // belerakja egy listaba a datumot (elso hely), es az arat (masodik hely)
-            if (sec !== lastsec) {
-                values.push([(d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()).toString(), parseInt(price)]);
-                lastsec = sec;
-            }
-            // diagramm max adatok ellenorzese
-            if (values.length >= maxItems) {
-                values.shift();
-            }
-            // lekerdezes az adatbazisbol
-            getInfo(session.userid).then(function (result) {
-                // adat kuldese socket.io val
-                socket.emit("data", {
-                    price: price,
-                    values: values,
-                    coin: coin,
-                    pair: pair,
-                    tokens: result[0].tokenValue,
-                    username: session.userid
+                // belerakja egy listaba a datumot (elso hely), es az arat (masodik hely)
+                if (sec !== lastsec) {
+                    values.push([(d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()).toString(), parseInt(price)]);
+                    lastsec = sec;
+                }
+                // diagramm max adatok ellenorzese
+                if (values.length >= maxItems) {
+                    values.shift();
+                }
+                // lekerdezes az adatbazisbol
+                getInfo(session.userid).then(function (result) {
+                    // adat kuldese socket.io val
+                    socket.emit("data", {
+                        price: price,
+                        values: values,
+                        coin: coin,
+                        pair: pair,
+                        tokens: result[0].tokenValue,
+                        username: session.userid
+                    });
+                }).catch(function (error) {
+                    console.log(error);
                 });
-            }).catch(function (error) {
-                console.log(error);
-            });
+            }
+
         }
     }
+
 
     socket.on("buy", function (data) {
         buy(data);
@@ -157,6 +167,8 @@ io.on('connection', (socket) => {
      */
 
     getPrice();
+
+
 });
 
 function buy(data) {

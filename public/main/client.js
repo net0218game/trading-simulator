@@ -51,6 +51,7 @@ function sell() {
         pricevalue.style.visibility = "visible";
     }
 }
+
 /*
 function convert() {
     socket.emit("convert", {
@@ -81,7 +82,7 @@ socket.on('data', function (data) {
     optionCoin.innerText = (coin).toUpperCase();
     optionPair.innerText = (pair).toUpperCase();
     tokens.innerHTML = '<i class="fa fa-money" aria-hidden="true"></i>:' + " " + data.tokens;
-   name.innerText = "Username:" + " " + data.username;
+    name.innerText = "Username:" + " " + data.username;
 
     // Grafikon rajzolasa a frissitett adatok alapjan
     chart();
