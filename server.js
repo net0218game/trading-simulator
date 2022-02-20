@@ -51,7 +51,7 @@ app.use(cookieParser());
 var session;
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/public/main/main.html'));
+    res.sendFile(path.join(__dirname + '/public/login/login.html'));
 });
 
 app.get('/a', (req, res) => {
@@ -62,6 +62,10 @@ app.get('/a', (req, res) => {
         console.log(">   [session] nem vagy bejelentkezve")
         res.sendFile('public/login/login.html', {root: __dirname})
     }
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile('public/register/register.html', {root: __dirname})
 });
 
 app.post('/main', (req, res) => {
@@ -80,10 +84,15 @@ app.post('/main', (req, res) => {
 });
 
 app.post('/registeruser', function (req, res) {
-    if (req.body.password === req.body.password2) {
-        registerUser(req.body.username, req.body.password);
-        res.sendFile(path.join(__dirname + '/public/login/login.html'));
+    if (req.body.password === req.body.password2 && req.body.username.length !== 0 && req.body.password.length > 7) {
+        registerUser(req.body.username, req.body.password).then(function () {
+            res.sendFile(path.join(__dirname + '/public/login/login.html'));
+        }).catch(function (error) {
+            console.log("something went wrong", error)
+        });
+
     } else {
+        res.send("nem egyezik a 2 jelszo");
         console.log("nem egyezik a 2 jelszo");
     }
 });
@@ -95,7 +104,7 @@ app.get('/user', function (req, res) {
 app.get('/logout', (req, res) => {
     req.session.destroy();
     console.log(">   [session]", session.userid, "kijelentkezett!")
-    res.redirect('/a');
+    res.redirect('/');
 });
 
 //Ha uj kapcsolat jon letre
@@ -133,7 +142,7 @@ io.on('connection', (socket) => {
                         values: values,
                         coin: coin,
                         pair: pair,
-                        tokens: result[0].tokenValue,
+                        tokens: result[0].token,
                         username: session.userid
                     });
                 }).catch(function (error) {
@@ -143,7 +152,6 @@ io.on('connection', (socket) => {
 
         }
     }
-
 
     socket.on("buy", function (data) {
         buy(data);
@@ -205,21 +213,13 @@ function convert(data) {
 function getInfo(user) {
     return new Promise((resolve, reject) => {
 
-        var sql = "SELECT ID FROM users WHERE username = " + "'" + user + "'";
+        var sql = "SELECT * FROM users WHERE username = " + "'" + user + "'";
 
         database.query(sql, function (error, results) {
             if (error) {
-                console.log(">   [MySQL] valami baj van az id keresesevel a felhasznalok tablaban");
+                return reject(">   [MySQL] nem inditottad el az xamppot!");
             } else {
-                var sql = "SELECT * FROM coins WHERE userID = " + "'" + results[0].ID + "'";
-
-                database.query(sql, function (error, results) {
-                    if (error) {
-                        return reject(">   [MySQL] nem inditottad el az xamppot!");
-                    } else {
-                        return resolve(results);
-                    }
-                });
+                return resolve(results);
             }
         });
     });
@@ -227,26 +227,51 @@ function getInfo(user) {
 
 // uj felhasznalo regisztralasa
 function registerUser(username, password) {
-
     return new Promise((resolve, reject) => {
-        var sql = "SELECT username FROM users WHERE username = " + "'" + username + "'";
+        var sql = "SELECT username FROM users WHERE username =" + "'" + username + "'";
 
         database.query(sql, function (error, results) {
             if (error) {
                 return reject(error);
             } else {
-                if (results.length === 0 && username.length !== 0 && password.length > 7) {
-                    var sql = "INSERT INTO users(username, password) VALUES (" + "'" + username + "'" + "," +
-                        "'" + password + "'" + ")";
+                if (results.length === 0 && username.length > 2 && password.length > 7) {
+                    var sql = "INSERT INTO users(username, password, token) VALUES (" + "'" + username + "'"
+                        + "," + "'" + password + "'" + "," + "'" + 10000 + "'" + ")";
 
                     database.query(sql, function (error, results) {
                         if (error) {
                             return reject(error);
                         } else {
+                            console.log(">   [MySQL] user", username, "has been registered!");
                             return resolve(results);
                         }
                     });
-                    console.log(">   [MySQL] user", username, "has been registered!")
+
+                    sql = "SELECT userID FROM users WHERE username =" + "'" + username + "'";
+                    database.query(sql, function (error, results) {
+                        if (error) {
+                            console.log(">   [MySQL] userID nem talalhato")
+                        } else {
+                            sql = "INSERT INTO coins(ID) VALUES (" + "'" + results[0].userID + "'" + ")";
+                            database.query(sql, function (error) {
+                                if (error) {
+                                    console.log(">   [MySQL] hiba tortent a coins tablaba letrehozasnal")
+                                }
+                            });
+                        }
+                    });
+
+                    /*
+                    var sql = "INSERT INTO coins (userID, tokenValue) VALUES (" + userdata[0].ID + "," + 10000 + ")";
+
+                    database.query(sql, function (error) {
+                        if (error) {
+                            console.log(">   [MySQL] hiba történt az új felhasználó regisztrációja során a COINS " +
+                                "táblába.")
+                        }
+                    });
+                     */
+
                 } else {
                     console.log(">   [MySQL] user", username, "already exists!");
                 }
