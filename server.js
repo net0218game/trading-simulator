@@ -50,11 +50,7 @@ app.use(cookieParser());
 // ebbe a valtozoba van mentve a session
 var session;
 
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/public/login/login.html'));
-});
-
-app.get('/a', (req, res) => {
+app.get('/', (req, res) => {
     session = req.session;
     if (session.userid) {
         console.log(">   [session] be vagy jelentkezve")
