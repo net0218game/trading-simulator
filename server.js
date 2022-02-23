@@ -54,6 +54,18 @@ app.get('/', (req, res) => {
     session = req.session;
     if (session.userid) {
         console.log(">   [session] be vagy jelentkezve")
+        res.sendFile('public/main/main.html', {root: __dirname})
+    } else {
+        console.log(">   [session] nem vagy bejelentkezve")
+        res.sendFile('public/login/login.html', {root: __dirname})
+    }
+});
+
+app.get('/main', (req, res) => {
+    session = req.session;
+    if (session.userid) {
+        console.log(">   [session] be vagy jelentkezve")
+        res.sendFile('public/main/main.html', {root: __dirname})
     } else {
         console.log(">   [session] nem vagy bejelentkezve")
         res.sendFile('public/login/login.html', {root: __dirname})
@@ -64,11 +76,15 @@ app.get('/register', (req, res) => {
     res.sendFile('public/register/register.html', {root: __dirname})
 });
 
+// fo oldal
 app.post('/main', (req, res) => {
     getLoginInfo(req.body.username).then(function (result) {
         if (req.body.username == result[0].username && req.body.password == result[0].password) {
             session = req.session;
             session.userid = req.body.username;
+            getInfo(req.body.username).then(function (data) {
+                session.usernameid = data[0].userID
+            });
             console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
             //console.log(req.session)
             res.sendFile('/public/main/main.html', {root: __dirname})
@@ -79,6 +95,7 @@ app.post('/main', (req, res) => {
     });
 });
 
+// regisztralas funcio
 app.post('/registeruser', function (req, res) {
     if (req.body.password === req.body.password2 && req.body.username.length !== 0 && req.body.password.length > 7) {
         registerUser(req.body.username, req.body.password).then(function () {
@@ -88,15 +105,22 @@ app.post('/registeruser', function (req, res) {
         });
 
     } else {
-        res.send("nem egyezik a 2 jelszo");
-        console.log("nem egyezik a 2 jelszo");
+        res.send("nem egyezik a 2 jelszo, vagy nem felel meg a kovetelmenyeknek");
+        console.log("nem egyezik a 2 jelszo, vagy nem felel meg a kovetelmenyeknek");
     }
 });
 
+// portfolio oldal
 app.get('/user', function (req, res) {
-    res.sendFile(path.join(__dirname + '/public/wallet/wallet.html'));
+    session = req.session;
+    if (session.userid) {
+        res.sendFile(path.join(__dirname + '/public/wallet/wallet.html'));
+    } else {
+        res.sendFile('public/login/login.html', {root: __dirname})
+    }
 });
 
+// kijelentkezes
 app.get('/logout', (req, res) => {
     req.session.destroy();
     console.log(">   [session]", session.userid, "kijelentkezett!")
@@ -113,6 +137,7 @@ io.on('connection', (socket) => {
 
         let before = 0;
         ws.onmessage = (event) => {
+            // ha be van jelentkezve valaki
             if (session.userid) {
                 let cryptodata = JSON.parse(event.data);
                 price = parseFloat(cryptodata.p).toFixed(digits);
@@ -148,17 +173,13 @@ io.on('connection', (socket) => {
 
         }
     }
-
+    // vasarlas funcio
     socket.on("buy", function (data) {
         buy(data);
     });
-
+    // eladas funkcio
     socket.on("sell", function (data) {
         sell(data);
-    });
-
-    socket.on("register", function (data) {
-        registerUser(data.username, data.password);
     });
 
     /*
@@ -176,8 +197,22 @@ io.on('connection', (socket) => {
 });
 
 function buy(data) {
-    console.log("buying process", data.amount, data.type, "\n",
-        price, coin, pair);
+    if(data.amount > 0) {
+        getInfo(session.userid).then(function (userdata) {
+            let currentValue = data.amount * price;
+            if(userdata[0].token >= currentValue) {
+                // ide jon a vasarlas funkcio
+                console.log("vettel", data.amount, "db", coin + "-t", currentValue, "értékben")
+            } else {
+                // ha a felhasznalonak nincsen eleg tokenje
+                console.log("nincs ra eleg tokened!")
+            }
+        });
+    } else {
+        // ha nulla van beirva osszegnek
+        console.log("0 nál többek kell vegyél!")
+    }
+
 }
 
 function sell(data) {
@@ -230,7 +265,9 @@ function registerUser(username, password) {
             if (error) {
                 return reject(error);
             } else {
+                // ha meg nem letezik ilyen felhasznalo es az adatok megfelelnel a kovetelmenyeknek
                 if (results.length === 0 && username.length > 2 && password.length > 7) {
+                    // felhasznalo letrehozasa a users tablaban 10 000 alap tokennel
                     var sql = "INSERT INTO users(username, password, token) VALUES (" + "'" + username + "'"
                         + "," + "'" + password + "'" + "," + "'" + 10000 + "'" + ")";
 
@@ -243,6 +280,7 @@ function registerUser(username, password) {
                         }
                     });
 
+                    // portfolio letrehozasa a coins tablaban
                     sql = "SELECT userID FROM users WHERE username =" + "'" + username + "'";
                     database.query(sql, function (error, results) {
                         if (error) {
@@ -270,6 +308,7 @@ function registerUser(username, password) {
 
                 } else {
                     console.log(">   [MySQL] user", username, "already exists!");
+
                 }
             }
         });

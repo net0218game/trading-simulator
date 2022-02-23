@@ -9,8 +9,21 @@
     border: none;
     font-size: 20px;
 }
+
 table {
     width: 100%;
     text-align: left;
     height: 100%;
+}
+
+#logout {
+    background-color: red;
+    border: none;
+    font-size: 20px;
+}
+
+#portfolio {
+    background-color: deepskyblue;
+    border: none;
+    font-size: 20px;
 }

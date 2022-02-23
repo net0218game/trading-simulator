@@ -4,7 +4,7 @@ const database = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "trading-simulator"
+    database: "trading"
 });
 
 module.exports = database;
