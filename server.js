@@ -4,6 +4,7 @@ const WebSocket = require('ws')
 const database = require("./database.js");
 const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
+
 //szerver oldali alkalmazasok felallitasa / konfiguracioja
 const express = require("express");
 const path = require("path");
@@ -97,10 +98,11 @@ app.post('/main', (req, res) => {
 
 // regisztralas funcio
 app.post('/registeruser', function (req, res) {
-    if (req.body.password === req.body.password2 && req.body.username.length !== 0 && req.body.password.length > 7) {
+    if (req.body.password === req.body.password2 && req.body.username.length > 3 && req.body.password.length > 7) {
         registerUser(req.body.username, req.body.password).then(function () {
             res.sendFile(path.join(__dirname + '/public/login/login.html'));
         }).catch(function (error) {
+            res.send(error);
             console.log("something went wrong", error)
         });
 
@@ -173,6 +175,7 @@ io.on('connection', (socket) => {
 
         }
     }
+
     // vasarlas funcio
     socket.on("buy", function (data) {
         buy(data);
@@ -192,27 +195,52 @@ io.on('connection', (socket) => {
      */
 
     getPrice();
-
-
 });
 
 function buy(data) {
-    if(data.amount > 0) {
+    if (data.amount > 0) {
         getInfo(session.userid).then(function (userdata) {
             let currentValue = data.amount * price;
-            if(userdata[0].token >= currentValue) {
+            if (userdata[0].token >= currentValue) {
                 // ide jon a vasarlas funkcio
+                /*
+                var sql = "UPDATE coins SET currency =" + "'" + coin + "', pair =" + "'" + pair + "', currencyValue =" +
+                    data.amount + ", pairValue =" + currentValue + " WHERE ID =" + session.usernameid;
+                console.log(sql);
+                 */
+
+                let sql = "INSERT INTO coins(currency, pair, currencyValue, pairValue) VALUES(" + "'" + coin + "','" + pair +
+                    "'," + data.amount + "," + currentValue + ")";
+                console.log(sql);
+                database.query(sql, function (error) {
+                    if (error) {
+                        return reject(">   [MySQL] nem inditottad el az xamppot!");
+                    } else {
+                        getInfo(session.userid).then(function (result) {
+                            id = result[0].ID;
+                            userTokens = result[0].token - currentValue;
+                            sql = "UPDATE users SET token=" + userTokens + "WHERE ID =" + id;
+                            database.query(sql, function (error) {
+                                if (error) {
+                                    console.log(">   [MySQL] baj van a vasarlas funkcioval")
+                                }
+                            });
+                        });
+                    }
+                });
                 console.log("vettel", data.amount, "db", coin + "-t", currentValue, "értékben")
             } else {
                 // ha a felhasznalonak nincsen eleg tokenje
+                app.post("/main", function (req, res) {
+                    res.send('<script>alert("your alert message"); window.location.href = "/main"; </script>');
+                });
                 console.log("nincs ra eleg tokened!")
             }
         });
     } else {
         // ha nulla van beirva osszegnek
-        console.log("0 nál többek kell vegyél!")
+        console.log("0 nál többet kell vegyél!")
     }
-
 }
 
 function sell(data) {
@@ -266,7 +294,7 @@ function registerUser(username, password) {
                 return reject(error);
             } else {
                 // ha meg nem letezik ilyen felhasznalo es az adatok megfelelnel a kovetelmenyeknek
-                if (results.length === 0 && username.length > 2 && password.length > 7) {
+                if (results.length === 0 && username.length > 3 && password.length > 7) {
                     // felhasznalo letrehozasa a users tablaban 10 000 alap tokennel
                     var sql = "INSERT INTO users(username, password, token) VALUES (" + "'" + username + "'"
                         + "," + "'" + password + "'" + "," + "'" + 10000 + "'" + ")";
@@ -279,36 +307,9 @@ function registerUser(username, password) {
                             return resolve(results);
                         }
                     });
-
-                    // portfolio letrehozasa a coins tablaban
-                    sql = "SELECT userID FROM users WHERE username =" + "'" + username + "'";
-                    database.query(sql, function (error, results) {
-                        if (error) {
-                            console.log(">   [MySQL] userID nem talalhato")
-                        } else {
-                            sql = "INSERT INTO coins(ID) VALUES (" + "'" + results[0].userID + "'" + ")";
-                            database.query(sql, function (error) {
-                                if (error) {
-                                    console.log(">   [MySQL] hiba tortent a coins tablaba letrehozasnal")
-                                }
-                            });
-                        }
-                    });
-
-                    /*
-                    var sql = "INSERT INTO coins (userID, tokenValue) VALUES (" + userdata[0].ID + "," + 10000 + ")";
-
-                    database.query(sql, function (error) {
-                        if (error) {
-                            console.log(">   [MySQL] hiba történt az új felhasználó regisztrációja során a COINS " +
-                                "táblába.")
-                        }
-                    });
-                     */
-
                 } else {
                     console.log(">   [MySQL] user", username, "already exists!");
-
+                    return reject("user '" + username + "' already exists!");
                 }
             }
         });
