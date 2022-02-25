@@ -133,7 +133,6 @@ app.get('/logout', (req, res) => {
 io.on('connection', (socket) => {
     let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@trade');
     console.log(">   [Socket.io] sikeres csatlakozás")
-
     function getPrice() {
         //websocket cucc
 
@@ -141,6 +140,7 @@ io.on('connection', (socket) => {
         ws.onmessage = (event) => {
             // ha be van jelentkezve valaki
             if (session.userid) {
+
                 let cryptodata = JSON.parse(event.data);
                 price = parseFloat(cryptodata.p).toFixed(digits);
                 before = price;
@@ -211,7 +211,6 @@ function buy(data) {
 
                 let sql = "INSERT INTO coins(currency, pair, currencyValue, pairValue) VALUES(" + "'" + coin + "','" + pair +
                     "'," + data.amount + "," + currentValue + ")";
-                console.log(sql);
                 database.query(sql, function (error) {
                     if (error) {
                         return reject(">   [MySQL] nem inditottad el az xamppot!");
@@ -325,7 +324,6 @@ function getLoginInfo(user) {
             if (error) {
                 console.log(">   [MySQL] valami baj van az id keresesevel a felhasznalok tablaban");
             } else {
-                console.log(results[0].username);
                 return resolve(results);
             }
         });

@@ -188,7 +188,7 @@ iframe {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 10%;
+    padding: 1%;
     background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url(bakcground.png);
 }
 
@@ -208,7 +208,7 @@ iframe {
 }
 
 .login100-pic {
-    width: 200px
+    width: 300px
 }
 
 .login100-pic img {
