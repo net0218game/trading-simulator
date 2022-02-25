@@ -43,14 +43,18 @@ a {
 a:focus {
     outline: none !important
 }
+a:visited {
+    color: #666;
+
+}
 
 a:hover {
     text-decoration: none;
-    color: #57b846
+    color: #51C4D3;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin: 0
+    margin: 0;
 }
 
 p {
@@ -58,17 +62,17 @@ p {
     font-size: 14px;
     line-height: 1.7;
     color: #666;
-    margin: 0
+    margin: 0;
 }
 
 ul, li {
     margin: 0;
-    list-style-type: none
+    list-style-type: none;
 }
 
 input {
     outline: none;
-    border: none
+    border: none;
 }
 
 textarea {
@@ -260,7 +264,7 @@ iframe {
     width: 100%;
     height: 100%;
     box-shadow: 0 0;
-    color: rgba(87, 184, 70, .8)
+    color: #51C4D3;
 }
 
 .input100:focus + .focus-input100 {
@@ -306,7 +310,7 @@ iframe {
 }
 
 .input100:focus + .focus-input100 + .symbol-input100 {
-    color: #57b846;
+    color: #51C4D3;
     padding-left: 28px
 }
 
@@ -331,7 +335,7 @@ iframe {
     width: 100%;
     height: 50px;
     border-radius: 25px;
-    background: #57b846;
+    background: #51C4D3;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -347,7 +351,7 @@ iframe {
 }
 
 .login100-form-btn:hover {
-    background: #333
+    background: #126E82
 }
 
 @media (max-width: 992px) {
