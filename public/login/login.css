@@ -208,7 +208,8 @@ iframe {
 }
 
 .login100-pic {
-    width: 300px
+    width:300px;
+    align-self: center;
 }
 
 .login100-pic img {
@@ -231,10 +232,11 @@ iframe {
 }
 
 .wrap-input100 {
-    position: relative;
+    position:absolute;
     width: 100%;
     z-index: 1;
-    margin-bottom: 30px
+    margin-bottom: 10%;
+    margin-top: 10%;
 }
 
 .input100 {
@@ -364,7 +366,7 @@ iframe {
 
 @media (max-width: 768px) {
     .wrap-login100 {
-        padding: 100px 40px 33px
+        padding: 100px 250px 33px
     }
 
     .login100-pic {
