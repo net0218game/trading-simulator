@@ -84,17 +84,17 @@ app.post('/main', (req, res) => {
             session = req.session;
             session.userid = req.body.username;
             getInfo(req.body.username).then(function (data) {
-                session.usernameid = data[0].userID
+                session.usernameid = data[0].userID;
             });
             console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
             //console.log(req.session)
-            res.sendFile('/public/main/main.html', {root: __dirname})
+            res.sendFile('/public/main/main.html', {root: __dirname});
         } else {
             console.log(">   [server] sikertelen bejelentkezes");
             res.send('Invalid username or password');
         }
     }).catch(function () {
-        res.send('Error logging in');
+        res.send('Invalid username or password');
     });
 });
 
@@ -105,7 +105,7 @@ app.post('/registeruser', function (req, res) {
             res.sendFile(path.join(__dirname + '/public/login/login.html'));
         }).catch(function (error) {
             res.send(error);
-            console.log("something went wrong", error)
+            console.log("something went wrong", error);
         });
 
     } else {
@@ -120,7 +120,7 @@ app.get('/user', function (req, res) {
     if (session.userid) {
         res.sendFile(path.join(__dirname + '/public/wallet/wallet.html'));
     } else {
-        res.sendFile('public/login/login.html', {root: __dirname})
+        res.sendFile('public/login/login.html', {root: __dirname});
     }
 });
 

@@ -350,7 +350,7 @@ iframe {
 
 @media (max-width: 992px) {
     .wrap-login100 {
-        padding: 177px 90px 33px 85px
+        padding: 50px 90px 33px 85px
     }
 
     .login100-pic {
@@ -364,7 +364,7 @@ iframe {
 
 @media (max-width: 768px) {
     .wrap-login100 {
-        padding: 100px 80px 33px
+        padding: 100px 40px 33px
     }
 
     .login100-pic {
