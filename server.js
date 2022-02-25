@@ -133,6 +133,7 @@ app.get('/logout', (req, res) => {
 io.on('connection', (socket) => {
     let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@trade');
     console.log(">   [Socket.io] sikeres csatlakozás")
+
     function getPrice() {
         //websocket cucc
 
