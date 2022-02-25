@@ -93,6 +93,8 @@ app.post('/main', (req, res) => {
             console.log(">   [server] sikertelen bejelentkezes");
             res.send('Invalid username or password');
         }
+    }).catch(function () {
+        res.send('Error logging in');
     });
 });
 
