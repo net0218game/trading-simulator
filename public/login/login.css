@@ -235,8 +235,8 @@ iframe {
     position:absolute;
     width: 100%;
     z-index: 1;
-    margin-bottom: 10%;
-    margin-top: 10%;
+    margin-bottom: 5%;
+    margin-top: 5%;
 }
 
 .input100 {
