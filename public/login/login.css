@@ -42,6 +42,7 @@ a {
 a:focus {
     outline: none !important
 }
+
 a:visited {
     color: #666;
 
@@ -189,7 +190,7 @@ iframe {
     justify-content: center;
     align-items: center;
     padding: 1%;
-    background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url(bakcground.png);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url(bakcground.png);
 }
 
 .wrap-login100 {
@@ -208,7 +209,7 @@ iframe {
 }
 
 .login100-pic {
-    width:300px;
+    width: 300px;
     align-self: center;
 }
 
@@ -232,7 +233,7 @@ iframe {
 }
 
 .wrap-input100 {
-    position:absolute;
+    position: absolute;
     width: 100%;
     z-index: 1;
     margin-bottom: 10%;
@@ -380,8 +381,9 @@ iframe {
 
 @media (max-width: 576px) {
     .wrap-login100 {
-        padding: 100px 15px 33px
+        padding: 100px 120px 33px
     }
+
 }
 
 .validate-input {

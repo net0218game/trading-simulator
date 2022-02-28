@@ -8,6 +8,7 @@ const sessions = require('express-session');
 //szerver oldali alkalmazasok felallitasa / konfiguracioja
 const express = require("express");
 const path = require("path");
+const {response} = require("express");
 var app = express();
 var server = app.listen(4000);
 var io = require('socket.io')(server, {
@@ -80,11 +81,14 @@ app.get('/register', (req, res) => {
 // fo oldal
 app.post('/main', (req, res) => {
     getLoginInfo(req.body.username).then(function (result) {
-        if (req.body.username == result[0].username && req.body.password == result[0].password) {
+        if (req.body.username == result[0].username && req.body.password == result[0].password
+            && req.body.password.length > 7) {
             session = req.session;
             session.userid = req.body.username;
             getInfo(req.body.username).then(function (data) {
                 session.usernameid = data[0].userID;
+            }).catch(function (error) {
+                res.send("error");
             });
             console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
             //console.log(req.session)
@@ -94,23 +98,29 @@ app.post('/main', (req, res) => {
             res.send('Invalid username or password');
         }
     }).catch(function () {
-        res.send('Invalid username or password');
+        res.sendFile('/public/error/error.html', {root: __dirname});
     });
 });
 
 // regisztralas funcio
 app.post('/registeruser', function (req, res) {
-    if (req.body.password === req.body.password2 && req.body.username.length > 3 && req.body.password.length > 7) {
-        registerUser(req.body.username, req.body.password).then(function () {
-            res.sendFile(path.join(__dirname + '/public/login/login.html'));
-        }).catch(function (error) {
-            res.send(error);
-            console.log("something went wrong", error);
-        });
-
+    if (req.body.password === req.body.password2) {
+        if (req.body.username.length > 3) {
+            if (req.body.password.length > 7) {
+                registerUser(req.body.username, req.body.password).then(function () {
+                    res.sendFile(path.join(__dirname + '/public/login/login.html'));
+                }).catch(function (error) {
+                    res.send(error);
+                    console.log("something went wrong", error);
+                });
+            } else {
+                res.send("Password is not long enough! Min. 8 characters")
+            }
+        } else {
+            res.send("Username is not long enough! Min. 3 characters")
+        }
     } else {
-        res.send("nem egyezik a 2 jelszo, vagy nem felel meg a kovetelmenyeknek");
-        console.log("nem egyezik a 2 jelszo, vagy nem felel meg a kovetelmenyeknek");
+        res.send("The 2 given password doesn't match!");
     }
 });
 
@@ -119,6 +129,9 @@ app.get('/user', function (req, res) {
     session = req.session;
     if (session.userid) {
         res.sendFile(path.join(__dirname + '/public/wallet/wallet.html'));
+        getPortfolio(session.userid).then(function (result) {
+
+        });
     } else {
         res.sendFile('public/login/login.html', {root: __dirname});
     }
@@ -129,6 +142,10 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     console.log(">   [session]", session.userid, "kijelentkezett!")
     res.redirect('/');
+});
+
+app.post('/error', (req, res) => {
+    res.sendFile('public/error/error.html', {root: __dirname});
 });
 
 //Ha uj kapcsolat jon letre
@@ -187,16 +204,6 @@ io.on('connection', (socket) => {
     socket.on("sell", function (data) {
         sell(data);
     });
-
-    /*
-    socket.on("convert", function (data) {
-
-        socket.emit("convert", {
-            value: convert(data)
-        });
-    });
-     */
-
     getPrice();
 });
 
@@ -205,18 +212,11 @@ function buy(data) {
         getInfo(session.userid).then(function (userdata) {
             let currentValue = data.amount * price;
             if (userdata[0].token >= currentValue) {
-                // ide jon a vasarlas funkcio
-                /*
-                var sql = "UPDATE coins SET currency =" + "'" + coin + "', pair =" + "'" + pair + "', currencyValue =" +
-                    data.amount + ", pairValue =" + currentValue + " WHERE ID =" + session.usernameid;
-                console.log(sql);
-                 */
-
-                let sql = "INSERT INTO coins(currency, pair, currencyValue, pairValue) VALUES(" + "'" + coin + "','" + pair +
+                let sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + userdata[0].ID + ",'" + coin + "','" + pair +
                     "'," + data.amount + "," + currentValue + ")";
                 database.query(sql, function (error) {
                     if (error) {
-                        return reject(">   [MySQL] nem inditottad el az xamppot!");
+                        console.log(error)
                     } else {
                         getInfo(session.userid).then(function (result) {
                             id = result[0].ID;
@@ -246,29 +246,41 @@ function buy(data) {
 }
 
 function sell(data) {
-    console.log("selling process", data.amount, data.type, "\n",
-        price, coin, pair);
-}
+    if(data.amount > 0) {
+        getPortfolio(session.userid).then(function (result) {
+            currencies = [];
+            for (let i = 0; i < result.length; i++) {
+                if(currencies.includes(result[i].currency) === false) {
+                    currencies.push(result[i].currency);
+                }
+            }
+            currencyValues = []
+            for (let i = 0; i < currencies.length; i++) {
+                currencyValues.push([currencies[i], 0])
+                for (let j = 0; j < result.length; j++) {
+                    if(result[j].currency === currencies[i]) {
+                        currencyValues[i][1] += result[j].currencyValue;
+                    }
+                }
+            }
+            userValue = 0;
+            for (let i = 0; i < currencyValues.length; i++) {
+                if(currencyValues[i][0] === coin) {
+                    userValue += currencyValues[i][1]
+                }
+            }
+            console.log(userValue)
 
-/*
-function convert(data) {
-    let value;
-    if (data.type === coin) {
-        value = price * data.amount;
-        console.log(value);
-        //return value;
+            if(userValue <= data.amount) {
+
+            }
+        }).catch(function () {
+            console.log("baj van");
+        });
     } else {
-        let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + pair + coin + '@trade');
-        ws.onmessage = (event) => {
-            let cryptodata = JSON.parse(event.data);
-            let exchangePrice = parseFloat(cryptodata.p).toFixed(digits);
-            //value = exchangePrice * data.amount
-
-        }
+        console.log("0 nal tobbet kell eladnod!");
     }
-    return value;
 }
- */
 
 // adatbazis lekerdezesek
 function getInfo(user) {
@@ -326,9 +338,29 @@ function getLoginInfo(user) {
         database.query(sql, function (error, results) {
             if (error) {
                 console.log(">   [MySQL] valami baj van az id keresesevel a felhasznalok tablaban");
+                return reject()
             } else {
                 return resolve(results);
             }
+        });
+    });
+}
+
+function getPortfolio(user) {
+    return new Promise((resolve, reject) => {
+        getInfo(user).then(function (result) {
+            id = result[0].ID;
+            var sql = "SELECT * FROM coins WHERE userID = " + id;
+            database.query(sql, function (error, results) {
+                if (error) {
+                    console.log(">   [MySQL] valami baj van a portfolio lekeresevel a coins tablaban");
+                } else {
+                    return resolve(results);
+                }
+            });
+        }).catch(function () {
+            return reject();
+            console.log("itt van a baj");
         });
     });
 }

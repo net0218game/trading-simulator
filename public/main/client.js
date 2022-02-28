@@ -37,16 +37,12 @@ function buy() {
         type: options.value
     });
 }
-    function sell() {
-        if (pricevalue.style.visibility === "visible") {
-            socket.emit("sell", {
-                amount: pricevalue.value,
-                type: options.value
-            });
-        } else {
-            pricevalue.style.visibility = "visible";
-        }
-    }
+function sell() {
+    socket.emit("sell", {
+        amount: pricevalue.value,
+        type: options.value
+    });
+}
 
     logout.addEventListener("click", function () {
         window.location.replace("/logout");
