@@ -194,9 +194,9 @@ iframe {
 
 .wrap-login100 {
     width: 960px;
-    height: 480px;
+    height: 460px;
     background: rgba(18, 110, 130, 0.3);
-    border-radius: 35px;
+    border-radius: 20px;
     overflow: hidden;
     display: -webkit-box;
     display: -webkit-flex;
@@ -209,12 +209,12 @@ iframe {
 }
 
 .login100-pic {
-    width:300px;
+    width:290px;
     align-self: center;
 }
 
 .login100-pic img {
-    max-width: 90%
+    max-width: 80%
 }
 
 .login100-form {
@@ -236,8 +236,8 @@ iframe {
     position:absolute;
     width: 100%;
     z-index: 1;
-    margin-bottom: 5%;
-    margin-top: 5%;
+    margin-bottom: 3%;
+    margin-top: 3%;
 }
 
 .input100 {
@@ -253,7 +253,7 @@ iframe {
 }
 
 .focus-input100 {
-    display: block;
+    display: flex;
     position: absolute;
     border-radius: 25px;
     bottom: 0;
