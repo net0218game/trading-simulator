@@ -194,6 +194,7 @@ iframe {
 
 .wrap-login100 {
     width: 960px;
+    height: auto;
     background: rgba(18, 110, 130, 0.3);
     border-radius: 35px;
     overflow: hidden;
@@ -213,7 +214,7 @@ iframe {
 }
 
 .login100-pic img {
-    max-width: 100%
+    max-width: 90%
 }
 
 .login100-form {
