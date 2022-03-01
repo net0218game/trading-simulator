@@ -49,7 +49,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 // cookie parser nemtom mi
 app.use(cookieParser());
 
-// ebbe a valtozoba van mentve a session
+// ebbe a valtozoban van mentve a session
 var session;
 
 app.get('/', (req, res) => {
@@ -208,34 +208,58 @@ io.on('connection', (socket) => {
 });
 
 function buy(data) {
+    let currentWealth = 0
     if (data.amount > 0) {
+
         getInfo(session.userid).then(function (userdata) {
+            id = userdata[0].ID;
             let currentValue = data.amount * price;
+
+            // ha van ra eleg tokenje a felhasznalonak
             if (userdata[0].token >= currentValue) {
-                let sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + userdata[0].ID + ",'" + coin + "','" + pair +
-                    "'," + data.amount + "," + currentValue + ")";
-                database.query(sql, function (error) {
-                    if (error) {
-                        console.log(error)
+                getPortfolio(session.userid).then(function (result) {
+                    if (result.length > 0) {
+
+                        currentWealth = parseFloat(result[0].currencyValue.toFixed(10));
+                        data.amount = parseFloat(data.amount)
+                        let setto = data.amount + currentWealth
+                        let setpair = parseFloat(result[0].pairValue) + currentValue
+                        console.log("pair", setpair)
+                        console.log("mar van")
+                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + "WHERE userID = " + id;
+
+                        database.query(sql, function (error) {
+                            if (error) {
+                                console.log(error)
+                            } else {
+                                let userTokens = userdata[0].token - currentValue;
+                                sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
+
+                                database.query(sql, function (error) {
+                                    if (error) {
+                                        console.log(error)
+                                        console.log(">   [MySQL] baj van a vasarlas funkcioval")
+                                    }
+                                });
+                            }
+                        })
                     } else {
-                        getInfo(session.userid).then(function (result) {
-                            id = result[0].ID;
-                            userTokens = result[0].token - currentValue;
-                            sql = "UPDATE users SET token=" + userTokens + "WHERE ID =" + id;
-                            database.query(sql, function (error) {
-                                if (error) {
-                                    console.log(">   [MySQL] baj van a vasarlas funkcioval")
-                                }
-                            });
-                        });
+                        console.log("meg nincs")
+                        let sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + id
+                            + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
+                        console.log(sql)
+                        database.query(sql, function (error) {
+                            if(error) {
+                                console.log(error)
+                            }
+                        })
                     }
+                }).catch(function () {
+
                 });
                 console.log("vettel", data.amount, "db", coin + "-t", currentValue, "értékben")
             } else {
                 // ha a felhasznalonak nincsen eleg tokenje
-                app.post("/main", function (req, res) {
-                    res.send('<script>alert("your alert message"); window.location.href = "/main"; </script>');
-                });
                 console.log("nincs ra eleg tokened!")
             }
         });
@@ -246,11 +270,11 @@ function buy(data) {
 }
 
 function sell(data) {
-    if(data.amount > 0) {
+    if (data.amount > 0) {
         getPortfolio(session.userid).then(function (result) {
             currencies = [];
             for (let i = 0; i < result.length; i++) {
-                if(currencies.includes(result[i].currency) === false) {
+                if (currencies.includes(result[i].currency) === false) {
                     currencies.push(result[i].currency);
                 }
             }
@@ -258,20 +282,20 @@ function sell(data) {
             for (let i = 0; i < currencies.length; i++) {
                 currencyValues.push([currencies[i], 0])
                 for (let j = 0; j < result.length; j++) {
-                    if(result[j].currency === currencies[i]) {
+                    if (result[j].currency === currencies[i]) {
                         currencyValues[i][1] += result[j].currencyValue;
                     }
                 }
             }
             userValue = 0;
             for (let i = 0; i < currencyValues.length; i++) {
-                if(currencyValues[i][0] === coin) {
+                if (currencyValues[i][0] === coin) {
                     userValue += currencyValues[i][1]
                 }
             }
             console.log(userValue)
 
-            if(userValue <= data.amount) {
+            if (userValue <= data.amount) {
 
             }
         }).catch(function () {
