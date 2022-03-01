@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Feb 25. 22:33
+-- Létrehozás ideje: 2022. Már 02. 00:13
 -- Kiszolgáló verziója: 10.4.22-MariaDB
 -- PHP verzió: 8.0.13
 
@@ -28,11 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `coins` (
-  `userID` int(100) NOT NULL,
-  `currency` varchar(100) NOT NULL,
-  `pair` varchar(100) NOT NULL,
-  `currencyValue` int(100) NOT NULL,
-  `pairValue` int(100) NOT NULL,
+  `userID` int(16) NOT NULL,
+  `currency` varchar(16) NOT NULL,
+  `pair` varchar(16) NOT NULL,
+  `currencyValue` float NOT NULL,
+  `pairValue` float NOT NULL,
   `date` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -41,12 +41,7 @@ CREATE TABLE `coins` (
 --
 
 INSERT INTO `coins` (`userID`, `currency`, `pair`, `currencyValue`, `pairValue`, `date`) VALUES
-(0, 'btc', 'busd', 0, 7867, '0000-00-00 00:00:00.000000'),
-(0, 'btc', 'busd', 0, 7882, '0000-00-00 00:00:00.000000'),
-(0, 'btc', 'busd', 0, 3957, '0000-00-00 00:00:00.000000'),
-(0, 'btc', 'busd', 0, 7900, '0000-00-00 00:00:00.000000'),
-(0, 'btc', 'busd', 0, 40, '0000-00-00 00:00:00.000000'),
-(0, 'btc', 'busd', 0, 1, '0000-00-00 00:00:00.000000');
+(1, 'btc', 'busd', 0.027575, 1175.75, '0000-00-00 00:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -55,11 +50,11 @@ INSERT INTO `coins` (`userID`, `currency`, `pair`, `currencyValue`, `pairValue`,
 --
 
 CREATE TABLE `users` (
-  `ID` int(100) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `token` int(100) NOT NULL
+  `ID` int(16) NOT NULL,
+  `username` varchar(16) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `token` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -67,8 +62,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `username`, `email`, `password`, `token`) VALUES
-(1, 'david', '', 'davidvagyok', 2059),
-(2, 'gyork', '', 'gyorkvagyok', 10000);
+(1, 'david', 'game.net0218@gmail.com', 'davidvagyok', 8824.21);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -88,7 +82,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

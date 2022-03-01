@@ -107,7 +107,7 @@ app.post('/registeruser', function (req, res) {
     if (req.body.password === req.body.password2) {
         if (req.body.username.length > 3) {
             if (req.body.password.length > 7) {
-                registerUser(req.body.username, req.body.password).then(function () {
+                registerUser(req.body.username, req.body.password, req.body.email).then(function () {
                     res.sendFile(path.join(__dirname + '/public/login/login.html'));
                 }).catch(function (error) {
                     res.send(error);
@@ -208,6 +208,7 @@ io.on('connection', (socket) => {
 });
 
 function buy(data) {
+    // BELE KELL RAKNI HOGY AND CURRENCY = COIN
     let currentWealth = 0
     if (data.amount > 0) {
 
@@ -280,6 +281,7 @@ function buy(data) {
 }
 
 function sell(data) {
+    // BELE KELL RAKNI HOGY AND CURRENCY = COIN
     if (data.amount > 0) {
         getInfo(session.userid).then(function (userdata) {
             id = userdata[0].ID;
@@ -342,7 +344,7 @@ function getInfo(user) {
 }
 
 // uj felhasznalo regisztralasa
-function registerUser(username, password) {
+function registerUser(username, password, email) {
     return new Promise((resolve, reject) => {
         var sql = "SELECT username FROM users WHERE username =" + "'" + username + "'";
 
@@ -353,8 +355,7 @@ function registerUser(username, password) {
                 // ha meg nem letezik ilyen felhasznalo es az adatok megfelelnel a kovetelmenyeknek
                 if (results.length === 0 && username.length > 3 && password.length > 7) {
                     // felhasznalo letrehozasa a users tablaban 10 000 alap tokennel
-                    var sql = "INSERT INTO users(username, password, token) VALUES (" + "'" + username + "'"
-                        + "," + "'" + password + "'" + "," + "'" + 10000 + "'" + ")";
+                    var sql = "INSERT INTO users(username, email, password, token) VALUES (" + "'" + username + "'" + "," + "'" + email + "'" + ", '" + password + "'" + "," + "'" + 10000 + "'" + ")";
 
                     database.query(sql, function (error, results) {
                         if (error) {
