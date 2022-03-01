@@ -214,6 +214,7 @@ function buy(data) {
         getInfo(session.userid).then(function (userdata) {
             id = userdata[0].ID;
             let currentValue = data.amount * price;
+            let userTokens = userdata[0].token - currentValue;
 
             // ha van ra eleg tokenje a felhasznalonak
             if (userdata[0].token >= currentValue) {
@@ -232,7 +233,24 @@ function buy(data) {
                             if (error) {
                                 console.log(error)
                             } else {
-                                let userTokens = userdata[0].token - currentValue;
+                                sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
+
+                                database.query(sql, function (error) {
+                                    if (error) {
+                                        console.log(error)
+                                        console.log(">   [MySQL] baj van a vasarlas funkcioval")
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        let sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + id
+                            + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
+                        console.log(sql)
+                        database.query(sql, function (error) {
+                            if(error) {
+                                console.log(error)
+                            } else {
                                 sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
 
                                 database.query(sql, function (error) {
@@ -243,25 +261,17 @@ function buy(data) {
                                 });
                             }
                         })
-                    } else {
-                        console.log("meg nincs")
-                        let sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + id
-                            + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
-                        console.log(sql)
-                        database.query(sql, function (error) {
-                            if(error) {
-                                console.log(error)
-                            }
-                        })
                     }
                 }).catch(function () {
-
+                    //ha hiba van a portfolio adatok lekeresevel
                 });
                 console.log("vettel", data.amount, "db", coin + "-t", currentValue, "értékben")
             } else {
                 // ha a felhasznalonak nincsen eleg tokenje
                 console.log("nincs ra eleg tokened!")
             }
+        }).catch(function (error) {
+            //ha hiba van a felhasznalo adatok lekeresevel
         });
     } else {
         // ha nulla van beirva osszegnek
@@ -271,36 +281,45 @@ function buy(data) {
 
 function sell(data) {
     if (data.amount > 0) {
-        getPortfolio(session.userid).then(function (result) {
-            currencies = [];
-            for (let i = 0; i < result.length; i++) {
-                if (currencies.includes(result[i].currency) === false) {
-                    currencies.push(result[i].currency);
-                }
-            }
-            currencyValues = []
-            for (let i = 0; i < currencies.length; i++) {
-                currencyValues.push([currencies[i], 0])
-                for (let j = 0; j < result.length; j++) {
-                    if (result[j].currency === currencies[i]) {
-                        currencyValues[i][1] += result[j].currencyValue;
+        getInfo(session.userid).then(function (userdata) {
+            id = userdata[0].ID;
+            getPortfolio(session.userid).then(function (result) {
+                if(result.length > 0) {
+                    let currentWealth = parseFloat(result[0].currencyValue.toFixed(10));
+                    if(data.amount <= currentWealth) {
+
+                        data.amount = parseFloat(data.amount)
+                        let currentValue = data.amount * price
+                        let setto = currentWealth - data.amount
+                        let setpair = parseFloat(result[0].pairValue) - currentValue
+
+                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + "WHERE userID = " + id;
+
+                        database.query(sql, function (error) {
+                            if (error) {
+                                console.log(error)
+                            } else {
+                                let userTokens = userdata[0].token + currentValue;
+                                sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
+
+                                database.query(sql, function (error) {
+                                    if (error) {
+                                        console.log(error)
+                                        console.log(">   [MySQL] baj van az eladas funkcioval")
+                                    }
+                                });
+                            }
+                        });
                     }
+                } else {
+                    // ha a felhasznalonak nincsen meg semmije
                 }
-            }
-            userValue = 0;
-            for (let i = 0; i < currencyValues.length; i++) {
-                if (currencyValues[i][0] === coin) {
-                    userValue += currencyValues[i][1]
-                }
-            }
-            console.log(userValue)
-
-            if (userValue <= data.amount) {
-
-            }
-        }).catch(function () {
-            console.log("baj van");
-        });
+            }).catch(function () {
+                //ha hiba van a portfolio adatok lekeresevel
+            });
+        }).catch(function (error){
+            //ha hiba van a felhasznalo adatok lekeresevel
+        })
     } else {
         console.log("0 nal tobbet kell eladnod!");
     }
