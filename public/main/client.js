@@ -108,7 +108,7 @@ function sell() {
                 }, vAxis: {
                     title: 'Price'
                 },
-                //'backgroundColor': 'transparent'
+                'backgroundColor': 'transparent'
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

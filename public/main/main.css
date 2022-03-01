@@ -1,17 +1,18 @@
 body {
+    background-color: #51C4D3;
     font-family: 'Poppins', sans-serif;
 }
 
 #buy {
     background-color: green;
-    border: none;
-    font-size: 20px;
+    border: 2px solid black;
+    font-size: 18px;
 }
 
 #sell {
     background-color: red;
-    border: none;
-    font-size: 20px;
+    border: 2px solid black;
+    font-size: 18px;
 }
 
 table {
@@ -21,13 +22,21 @@ table {
 }
 
 #logout {
+    border-radius: 10px;
     background-color: red;
-    border: none;
-    font-size: 20px;
+    border: 2px solid black;
+    font-size: 17px;
+
 }
 
 #portfolio {
+    border-color: blue;
+    border-radius: 10px;
     background-color: deepskyblue;
-    border: none;
-    font-size: 20px;
+    border: 2px solid black;
+    font-size: 17px;
+}
+p{
+  text-align: left;
+  font-size: 20px;
 }
