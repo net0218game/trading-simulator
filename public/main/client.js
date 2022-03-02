@@ -79,11 +79,12 @@ function sell() {
         values = data.values;
         coinpair.innerText = (coin + "-" + pair).toUpperCase();
         title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
-        optionCoin.innerText = (coin).toUpperCase();
-        optionPair.innerText = (pair).toUpperCase();
+
         tokens.innerHTML = '<i class="fa fa-money" aria-hidden="true"></i>:' + " " + data.tokens;
         name.innerText = "Username:" + " " + data.username;
 
+        optionCoin.innerText = (coin).toUpperCase();
+        optionPair.innerText = (pair).toUpperCase();
         // Grafikon rajzolasa a frissitett adatok alapjan
         chart();
         //convert();
