@@ -80,21 +80,22 @@ app.get('/register', (req, res) => {
 
 // fo oldal
 app.post('/main', (req, res) => {
-    getLoginInfo(req.body.username).then(function (result) {
-        if (req.body.username == result[0].username && req.body.password == result[0].password
-            && req.body.password.length > 7) {
-            session = req.session;
-            session.userid = req.body.username;
-            getInfo(req.body.username).then(function (data) {
-                session.usernameid = data[0].userID;
-            }).catch(function (error) {
-                res.send("error");
-            });
-            console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
-            //console.log(req.session)
-            res.sendFile('/public/main/main.html', {root: __dirname});
+    getInfo(req.body.username).then(function (result) {
+        console.log(req.body.username)
+        if(result.length > 0) {
+            if (req.body.username === result[0].email || req.body.username === result[0].username
+                && req.body.password === result[0].password
+                && req.body.password.length > 7) {
+
+                session = req.session;
+                session.userid = result[0].username;
+                session.usernameid = result[0].userID;
+
+                console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
+                //console.log(req.session)
+                res.sendFile('/public/main/main.html', {root: __dirname});
+            }
         } else {
-            console.log(">   [server] sikertelen bejelentkezes");
             res.send('Invalid username or password');
         }
     }).catch(function () {
@@ -331,7 +332,7 @@ function sell(data) {
 function getInfo(user) {
     return new Promise((resolve, reject) => {
 
-        var sql = "SELECT * FROM users WHERE username = " + "'" + user + "'";
+        var sql = "SELECT * FROM users WHERE username = " + "'" + user + "' OR email = " + "'" + user + "'";
 
         database.query(sql, function (error, results) {
             if (error) {
@@ -369,22 +370,6 @@ function registerUser(username, password, email) {
                     console.log(">   [MySQL] user", username, "already exists!");
                     return reject("user '" + username + "' already exists!");
                 }
-            }
-        });
-    });
-}
-
-function getLoginInfo(user) {
-    return new Promise((resolve, reject) => {
-
-        var sql = "SELECT * FROM users WHERE username = " + "'" + user + "'";
-
-        database.query(sql, function (error, results) {
-            if (error) {
-                console.log(">   [MySQL] valami baj van az id keresesevel a felhasznalok tablaban");
-                return reject()
-            } else {
-                return resolve(results);
             }
         });
     });
