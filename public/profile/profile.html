@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="pictures/icon.png">
+    <link rel="stylesheet" href="profile.css">
+    <title>User Profile</title>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>Username</th>
+        <th><p id="username">david</p></th>
+    </tr>
+    <tr>
+        <th>E-mail</th>
+        <th><p id="email">game.net0218@gmail.com</p></th>
+    </tr>
+</table>
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Change</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Change Password / Username</h2>
+        </div>
+        <div class="modal-body">
+            <input type="text" placeholder="Current username"><br>
+            <input type="text" placeholder="New username"><br>
+            <input type="text" placeholder="Password"><br>
+            <button>Change</button>
+        </div>
+    </div>
+
+</div>
+<script src="profile.js"></script>
+</body>
+</html>

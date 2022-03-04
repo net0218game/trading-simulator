@@ -145,9 +145,9 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-app.post('/error', (req, res) => {
-    res.sendFile('public/error/error.html', {root: __dirname});
-});
+app.post('/buy', (req, res) => {
+    console.log("vétel funkcio", req)
+})
 
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {

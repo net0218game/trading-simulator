@@ -32,6 +32,7 @@ buyBtn.addEventListener("click", buy);
 sellBtn.addEventListener("click", sell);
 
 function buy() {
+    fetch('/buy', {method: 'POST'})
     socket.emit("buy", {
         amount: pricevalue.value,
         type: options.value
