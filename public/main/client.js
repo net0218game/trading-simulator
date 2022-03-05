@@ -106,11 +106,6 @@ function sell() {
             data.addRows(values);
 
             var options = {
-                hAxis: {
-                    title: 'Time\nDate, H:M:S'
-                }, vAxis: {
-                    title: 'Price'
-                },
                 curveType: 'function',
                 legend: { position: 'bottom' },
                 'backgroundColor': 'transparent',
