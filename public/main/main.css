@@ -5,15 +5,37 @@ body {
 }
 
 #buy {
-    background-color: green;
+    border-radius: 15px;
+    text-align: left;
+    background-color: #9AD0EC;
     border: 2px solid black;
-    font-size: 18px;
+    font-size: 35px;
 }
 
 #sell {
-    background-color: red;
+    border-radius: 15px;
+    text-align: left;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    padding-right: 1px;
+    padding-left: 1px;
+    background-color: #1572A1;
     border: 2px solid black;
-    font-size: 18px;
+    font-size: 35px;
+}
+
+
+#chart_div{
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    padding-right: 1px;
+    padding-left: 1px;
+    margin-top: 150px;
+    margin-bottom: 1px;
+    margin-right: 10px;
+    margin-left: 250px;
+    border: 2px solid black;
+
 }
 
 table {
