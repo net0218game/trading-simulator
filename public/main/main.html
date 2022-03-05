@@ -7,18 +7,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title id="pageTitle"></title>
 </head>
+
 <body>
+<div class="topnav" id="myTopnav">
+    <a href="#home" class="active">Home</a>
+    <div class="dropdown">
+        <button class="dropbtn" id="name">Username
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="#">Portfolio</a>
+            <a href="#">Profile</a>
+            <a href="#">Settings</a>
+            <a href="#">About Us</a>
+            <a href="#" style="color: red">Log Out</a>
+        </div>
+
+    </div>
+    <p id="coin-pair">---</p>
+    <p id="price">0</p>
+    <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+</div>
 
 <table>
     <tr>
         <th>
-            <h1 id="coin-pair">---</h1>
-            <h2 id="price">--- $</h2>
+
             <h3 id="tokens"><i class="fa fa-money" aria-hidden="true"></i>: ---</h3>
             <div id="chart_div" style="width: 800px; height: 400px;"></div>
         </th>
         <th>
-            <p id="name">Your Name</p>
             <button id="logout">Log Out</button>
             <button id="portfolio">Portfolio</button>
             <br>

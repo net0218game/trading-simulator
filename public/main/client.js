@@ -1,3 +1,12 @@
+function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topnav";
+    }
+}
+
 //Csatlakozas letrehozasa
 var socket = io.connect('http://localhost:4000');
 
@@ -82,7 +91,7 @@ function sell() {
         title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
 
         tokens.innerHTML = '<i class="fa fa-money" aria-hidden="true"></i>:' + " " + data.tokens;
-        name.innerText = "Username:" + " " + data.username;
+        name.innerHTML = data.username + " <i class=\"fa fa-caret-down\"></i>";
 
         optionCoin.innerText = (coin).toUpperCase();
         optionPair.innerText = (pair).toUpperCase();

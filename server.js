@@ -8,7 +8,6 @@ const sessions = require('express-session');
 //szerver oldali alkalmazasok felallitasa / konfiguracioja
 const express = require("express");
 const path = require("path");
-const {response} = require("express");
 var app = express();
 var server = app.listen(4000);
 var io = require('socket.io')(server, {
@@ -26,7 +25,7 @@ let maxItems = 100;
 // tizedes jegyek az ar vegen
 let digits = 4;
 // crypto
-let coin = "btc";
+let coin = "eth";
 // coin pair
 let pair = "busd";
 
@@ -121,7 +120,7 @@ app.post('/registeruser', function (req, res) {
             res.send("Username is not long enough! Min. 3 characters")
         }
     } else {
-        res.send("The 2 given password doesn't match!");
+        res.send("The 2 given passwords doesn't match!");
     }
 });
 
@@ -144,10 +143,6 @@ app.get('/logout', (req, res) => {
     console.log(">   [session]", session.userid, "kijelentkezett!")
     res.redirect('/');
 });
-
-app.post('/buy', (req, res) => {
-    console.log("vétel funkcio", req)
-})
 
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {
@@ -229,8 +224,8 @@ function buy(data) {
                         let setpair = parseFloat(result[0].pairValue) + currentValue
                         console.log("pair", setpair)
                         console.log("mar van")
-                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + "WHERE userID = " + id;
-
+                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + " WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair +"'";
+                        console.log(sql)
                         database.query(sql, function (error) {
                             if (error) {
                                 console.log(error)
@@ -296,7 +291,7 @@ function sell(data) {
                         let setto = currentWealth - data.amount
                         let setpair = parseFloat(result[0].pairValue) - currentValue
 
-                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + "WHERE userID = " + id;
+                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + "WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair +"'";
 
                         database.query(sql, function (error) {
                             if (error) {
