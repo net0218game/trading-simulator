@@ -46,7 +46,7 @@ body {margin:0;font-family:Arial}
 
 .topnav {
     overflow: hidden;
-    background-color: #333;
+    background-color: #132C33;
 }
 
 .topnav a {
@@ -70,7 +70,7 @@ body {margin:0;font-family:Arial}
 }
 
 .active {
-    background-color: #04AA6D;
+    background-color: #126E82;
     color: white;
 }
 
@@ -79,11 +79,13 @@ body {margin:0;font-family:Arial}
 }
 
 .dropdown {
+    min-width: 160px;
     float: right;
     overflow: hidden;
 }
 
 .dropdown .dropbtn {
+    min-width: 160px;
     font-size: 17px;
     border: none;
     outline: none;
@@ -97,7 +99,7 @@ body {margin:0;font-family:Arial}
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #D8E3E7;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
