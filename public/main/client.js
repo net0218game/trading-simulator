@@ -109,7 +109,6 @@ function sell() {
                 curveType: 'function',
                 legend: { position: 'bottom' },
                 'backgroundColor': 'transparent',
-                'border': '10px black'
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
