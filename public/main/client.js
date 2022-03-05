@@ -82,7 +82,7 @@ function sell() {
         coinpair.innerText = (coin + "-" + pair).toUpperCase();
         title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
 
-        tokens.innerHTML = '<i class="fa fa-money" aria-hidden="true"></i>:' + " " + data.tokens;
+        tokens.innerHTML = data.tokens + " <i class=\"fa fa-money\" aria-hidden=\"true\"></i>";
         name.innerHTML = "<i class=\"fa fa-user\"></i> " + data.username + " <i class=\"fa fa-caret-down\"></i>";
 
         optionCoin.innerText = (coin).toUpperCase();
