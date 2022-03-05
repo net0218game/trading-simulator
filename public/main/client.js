@@ -80,6 +80,7 @@ function sell() {
         pricetxt.innerText = price + " $";
         values = data.values;
         coinpair.innerText = (coin + "-" + pair).toUpperCase();
+//a kurva anyad
         title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
 
         tokens.innerHTML = data.tokens + " <i class=\"fa fa-money\" aria-hidden=\"true\"></i>";

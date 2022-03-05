@@ -9,7 +9,7 @@ body {
     text-align: left;
     background-color: #9AD0EC;
     border: 2px solid black;
-    font-size: 35px;
+    font-size: 200%;
 }
 
 #sell {
@@ -17,23 +17,23 @@ body {
     text-align: left;
     padding-top: 0.5%;
     padding-bottom: 0.5%;
-    padding-right: 1px;
-    padding-left: 1px;
+    padding-right: 1%;
+    padding-left: 1%;
     background-color: #1572A1;
     border: 2px solid black;
-    font-size: 35px;
+    font-size: 200%;
 }
 
 
 #chart_div{
     padding-top: 0.5%;
     padding-bottom: 0.5%;
-    padding-right: 1px;
-    padding-left: 1px;
-    margin-top: 150px;
-    margin-bottom: 1px;
-    margin-right: 10px;
-    margin-left: 250px;
+    padding-right: 1%;
+    padding-left: 1%;
+    margin-top: 10%;
+    margin-bottom: 1%;
+    margin-right: 10%;
+    margin-left: 20%;
     border: 2px solid black;
 
 }
