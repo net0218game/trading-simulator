@@ -25,7 +25,7 @@ let maxItems = 100;
 // tizedes jegyek az ar vegen
 let digits = 4;
 // crypto
-let coin = "eth";
+let coin = "btc";
 // coin pair
 let pair = "busd";
 

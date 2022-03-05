@@ -54,14 +54,6 @@ function sell() {
     });
 }
 
-    logout.addEventListener("click", function () {
-        window.location.replace("/logout");
-    });
-
-    portfolio.addEventListener("click", function () {
-        window.location.replace("/user");
-    });
-
     /*
     function convert() {
         socket.emit("convert", {
@@ -119,7 +111,10 @@ function sell() {
                 }, vAxis: {
                     title: 'Price'
                 },
-                'backgroundColor': 'transparent'
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                'backgroundColor': 'transparent',
+                'border': '10px black'
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
