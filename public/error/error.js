@@ -1,4 +1,4 @@
-errorCode = 500;
+errorCode = 404;
 
 
 //$('#errorName').text("new dialog title");

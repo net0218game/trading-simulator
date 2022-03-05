@@ -137,6 +137,19 @@ app.get('/user', function (req, res) {
     }
 });
 
+app.get('/profile', function (req, res) {
+    session = req.session;
+    if (session.userid) {
+        res.sendFile(path.join(__dirname + '/public/profile/profile.html'));
+    } else {
+        res.sendFile('public/login/login.html', {root: __dirname});
+    }
+});
+
+app.get('/error', function (req, res) {
+    res.sendFile(path.join(__dirname + '/public/error/error.html'));
+});
+
 // kijelentkezes
 app.get('/logout', (req, res) => {
     req.session.destroy();
