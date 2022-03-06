@@ -23,7 +23,7 @@ let lastsec = 0;
 // ennyi adatot fog abrazolni a diagramm
 let maxItems = 100;
 // tizedes jegyek az ar vegen
-let digits = 4;
+let digits = 2;
 // crypto
 let coin = "btc";
 // coin pair
@@ -146,6 +146,15 @@ app.get('/profile', function (req, res) {
     }
 });
 
+app.get('/index', function (req, res) {
+    session = req.session;
+    if (session.userid) {
+        res.sendFile(path.join(__dirname + '/public/frontpage/frontpage.html'));
+    } else {
+        res.sendFile('public/login/login.html', {root: __dirname});
+    }
+});
+
 app.get('/error', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/error/error.html'));
 });
@@ -200,6 +209,9 @@ io.on('connection', (socket) => {
                 }).catch(function (error) {
                     console.log(error);
                 });
+            } else {
+                console.log("fasz")
+                express.response.redirect("/")
             }
 
         }

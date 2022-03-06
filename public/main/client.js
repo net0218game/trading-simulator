@@ -109,6 +109,7 @@ function sell() {
                 curveType: 'function',
                 legend: { position: 'bottom' },
                 'backgroundColor': 'transparent',
+                colors:['#132C33']
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

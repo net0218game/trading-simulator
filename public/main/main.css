@@ -26,15 +26,17 @@ body {
 
 
 #chart_div{
+
     padding-top: 0.5%;
     padding-bottom: 0.5%;
-    padding-right: 1px;
-    padding-left: 1px;
-    margin-top: 150px;
-    margin-bottom: 1px;
-    margin-right: 10px;
-    margin-left: 250px;
+    padding-right: 0.5%;
+    padding-left: 0.5%;
+    margin-top: 5%;
+    margin-bottom: 0.5%;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
     border: 2px solid black;
+    background-color: rgba(255,255,255,0.3);
 
 }
 
