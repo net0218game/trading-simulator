@@ -48,6 +48,7 @@ function buy() {
         type: options.value
     });
 }
+
 function sell() {
     socket.emit("sell", {
         amount: pricevalue.value,
@@ -55,70 +56,70 @@ function sell() {
     });
 }
 
-    /*
-    function convert() {
-        socket.emit("convert", {
-            amount: pricevalue.value,
-            type: options.value
-        })
-        socket.on("convert", function (data) {
-            converted.innerText = data.value + " " + data.pair;
-        });
-    }
-     */
+/*
+function convert() {
+    socket.emit("convert", {
+        amount: pricevalue.value,
+        type: options.value
+    })
+    socket.on("convert", function (data) {
+        converted.innerText = data.value + " " + data.pair;
+    });
+}
+ */
 
 // Grafikon rajzolása
-    chart()
+chart()
 
 // Adat beérkezése esetén
-    socket.on('data', function (data) {
-        price = data.price;
-        change = data.change;
-        coin = data.coin;
-        pair = data.pair;
-        if (pair == "busd") {
-            pair = "usd";
-        }
-        pricetxt.innerText = price + " $";
-        changetxt.innerText = "24h Change: " + change + "%";
-        values = data.values;
-        coinpair.innerText = (coin + "-" + pair).toUpperCase();
-//a kurva anyad
-        title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
-
-        tokens.innerHTML = data.tokens + " <i class=\"fa fa-money\" aria-hidden=\"true\"></i>";
-        name.innerHTML = "<i class=\"fa fa-user\"></i> " + data.username + " <i class=\"fa fa-caret-down\"></i>";
-
-        optionCoin.innerText = (coin).toUpperCase();
-        optionPair.innerText = (pair).toUpperCase();
-        // Grafikon rajzolasa a frissitett adatok alapjan
-        chart();
-        //convert();
-    });
-
-
-    function chart() {
-        google.charts.load('current', {packages: ['corechart', 'line']});
-        google.charts.setOnLoadCallback(drawBasic);
-
-        function drawBasic() {
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Time');
-            data.addColumn('number', coin.toUpperCase());
-
-            data.addRows(values);
-
-            var options = {
-                curveType: 'function',
-                legend: { position: 'bottom' },
-                'backgroundColor': 'transparent',
-                colors:['#132C33'],
-                'chartArea': {'width': '80%', 'height': '70%'},
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
-            chart.draw(data, options);
-        }
+socket.on('data', function (data) {
+    price = data.price;
+    change = data.change;
+    coin = data.coin;
+    pair = data.pair;
+    if (pair == "busd") {
+        pair = "usd";
     }
+    pricetxt.innerText = price + " $";
+    changetxt.innerText = "24h Change: " + change + "%";
+    values = data.values;
+    coinpair.innerText = (coin + "-" + pair).toUpperCase();
+//a kurva anyad
+    title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
+
+    tokens.innerHTML = data.tokens + " <i class=\"fa fa-money\" aria-hidden=\"true\"></i>";
+    name.innerHTML = "<i class=\"fa fa-user\"></i> " + data.username + " <i class=\"fa fa-caret-down\"></i>";
+
+    optionCoin.innerText = (coin).toUpperCase();
+    optionPair.innerText = (pair).toUpperCase();
+    // Grafikon rajzolasa a frissitett adatok alapjan
+    chart();
+    //convert();
+});
+
+
+function chart() {
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(drawBasic);
+
+    function drawBasic() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Time');
+        data.addColumn('number', coin.toUpperCase());
+
+        data.addRows(values);
+
+        var options = {
+            curveType: 'function',
+            legend: {position: 'bottom'},
+            'backgroundColor': 'transparent',
+            colors: ['#132C33'],
+            'chartArea': {'width': '80%', 'height': '70%'},
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+    }
+}
