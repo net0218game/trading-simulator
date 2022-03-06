@@ -39,16 +39,20 @@
             <div id="chart_div" style="height: 70vh; width: 120vh"></div>
         </th>
         <th>
-            <p id="change">24h Change: 0</p>
+
             <button id="buy">BUY</button>
             <button id="sell">SELL</button>
             <br>
             <br>
-            <select name="currency" id="currency">
+            <select name="currency" id="currency" style="height:30px; width: 20%; font-size:17px; background-color:#D8E3E7; border-radius:7px;">
                 <option id="optionCoin" value="coin">COIN</option>
                 <option id="optionPair" value="pair">PAIR</option>
             </select>
-            <input type="number" id="price-value" value="0"> <!-- btc kivalasztos buy cucc  -->
+            <input type="number" id="price-value" style="height:30px; width: 50%; font-size:17px; background-color:#D8E3E7;border-radius:7px;" value="0">
+            <p id="change" style="font-size:20px;" >24h Change: 0 </p>
+            <p id="low" style="font-size:20px;" >24h Low: 0</p>
+            <p id="high" style="font-size:20px;" >24h High: 0 </p>
+            <p id="marketcap" style="font-size:20px;" >Market Cap: 0 </p>
         </th>
     </tr>
 </table>

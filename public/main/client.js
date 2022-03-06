@@ -84,7 +84,7 @@ socket.on('data', function (data) {
     changetxt.innerText = "24h Change: " + change + "%";
     values = data.values;
     coinpair.innerText = (coin + "-" + pair).toUpperCase();
-//a kurva anyad
+//a kurva anyad bico :)
     title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
 
     tokens.innerHTML = data.tokens + " <i class=\"fa fa-money\" aria-hidden=\"true\"></i>";
@@ -115,7 +115,7 @@ function chart() {
             legend: {position: 'bottom'},
             'backgroundColor': 'transparent',
             colors: ['#132C33'],
-            'chartArea': {'width': '80%', 'height': '70%'},
+            'chartArea': {'width': '60%', 'height': '50%'},
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

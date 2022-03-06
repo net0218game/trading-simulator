@@ -5,7 +5,8 @@ body {
 }
 
 #buy {
-    border-radius: 15px;
+    margin: 0.5% 0.5% -10% -1%; /* top right bottom left */
+    border-radius: 12px;
     text-align: left;
     background-color: #9AD0EC;
     border: 2px solid black;
@@ -13,40 +14,59 @@ body {
 }
 
 #buy:hover {
-    background-color: green;
+    background-color: #D8E3E7;
 }
 
 #sell {
-    border-radius: 15px;
-    text-align: left;
-    padding-top: 0.5%;
-    padding-bottom: 0.5%;
+    margin: -0.5% 0.5% -10% 0.5%; /* top right bottom left */
+    border-radius: 12px;
+    text-align: left;;
     padding-right: 1%;
     padding-left: 1%;
     background-color: #1572A1;
     border: 2px solid black;
     font-size: 200%;
 }
-.input-number{
-  text-color:red;
-}
 
 #sell:hover {
-    background-color: red;
+    background-color: #D8E3E7;
 }
+
+#currency{ /*btc es a nyil*/
+  margin-bottom:1%;
+  
+}
+
 
 #chart_div {
     padding: 0.5%;
     margin: 5% 0.5% 0.5%;
     border: 2px solid black;
     background-color: rgba(255, 255, 255, 0.3);
+    margin-right: 2%;
+}
+
+#change {
+  line-height: 5px;
+
+}
+#low {
+  line-height: 5px;
+
+}
+#high {
+  line-height: 5px;
+
+}
+#marketcap {
+  line-height: 5px;
+
 }
 
 table {
-    width: 90%;
+    width: 100%;
     text-align: left;
 }
-
 
 .topnav {
     width: 100%;
