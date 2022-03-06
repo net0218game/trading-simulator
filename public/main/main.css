@@ -1,7 +1,10 @@
 body {
     margin: 0;
-    background-color: #126E82;
     font-family: 'Poppins', sans-serif;
+    background-position: center;
+    background-size: cover;
+    background-image:linear-gradient(rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url("background.png");
+    min-height: 100%;
 }
 
 #buy {
@@ -55,8 +58,15 @@ body {
     padding: 0.5%;
     margin: 5% 0.5% 0.5%;
     border: 2px solid black;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(26, 55, 77, 0.7);
+    border-radius: 6%;
     margin-right: 2%;
+
+}
+
+#fasz{
+  font-size: 30px;
+  padding-top: 1%;
 }
 
 select:focus{
@@ -66,19 +76,23 @@ input:focus{
   color:red;
 }
 #change {
-  line-height: 5px;
+  color:#D8E3E7;
+  line-height: 15px;
 
 }
 #low {
-  line-height: 5px;
+  color:#D8E3E7;
+  line-height: 15px;
 
 }
 #high {
-  line-height: 5px;
+  color:#D8E3E7;
+  line-height: 15px;
 
 }
 #marketcap {
-  line-height: 5px;
+  color:#D8E3E7;
+  line-height: 15px;
 
 }
 
