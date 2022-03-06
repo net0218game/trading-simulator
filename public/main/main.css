@@ -27,6 +27,9 @@ body {
     border: 2px solid black;
     font-size: 200%;
 }
+.input-number{
+  text-color:red;
+}
 
 #sell:hover {
     background-color: red;
@@ -40,9 +43,10 @@ body {
 }
 
 table {
-    width: 100%;
+    width: 90%;
     text-align: left;
 }
+
 
 .topnav {
     width: 100%;
