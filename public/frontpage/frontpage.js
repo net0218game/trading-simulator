@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:4000');
+var socket = io.connect('http://localhost:5000');
 
 function myFunction() {
     var x = document.getElementById("myTopnav");
