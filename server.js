@@ -25,7 +25,7 @@ let maxItems = 100;
 // tizedes jegyek az ar vegen
 let digits = 2;
 // crypto
-let coin = "btc";
+let coin = "";
 // coin pair
 let pair = "busd";
 
@@ -84,7 +84,7 @@ app.get('/register', (req, res) => {
 app.post('/main', (req, res) => {
     getInfo(req.body.username).then(function (result) {
         console.log(req.body.username)
-        if(result.length > 0) {
+        if (result.length > 0) {
             if (req.body.username === result[0].email || req.body.username === result[0].username
                 && req.body.password === result[0].password
                 && req.body.password.length > 7) {
@@ -172,18 +172,38 @@ app.get('/logout', (req, res) => {
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {
     let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@ticker');
+    let wsbtc = new WebSocket('wss://stream.binance.com:9443/ws/btcbusd@ticker');
+    let wseth = new WebSocket('wss://stream.binance.com:9443/ws/ethbusd@ticker');
+    let wsbnb = new WebSocket('wss://stream.binance.com:9443/ws/bnbbusd@ticker');
+    let wsdoge = new WebSocket('wss://stream.binance.com:9443/ws/dogebusd@ticker');
+    let wsshib = new WebSocket('wss://stream.binance.com:9443/ws/shibbusd@ticker');
     console.log(">   [Socket.io] sikeres csatlakozás")
+
+    getInfo(session.userid).then(function (result) {
+        socket.emit("userdata", {
+            username: session.userid,
+            tokens: result[0].token
+        });
+    }).catch(function (error) {
+        console.log(error);
+    });
 
     function getPrice() {
         //websocket cucc
 
         let before = 0;
         ws.onmessage = (event) => {
-            // ha be van jelentkezve valaki
-            if (session.userid) {
+            // ha be van jelentkezve valaki es ha van megadva coin
+            if (session.userid && coin.length > 0) {
 
                 let cryptodata = JSON.parse(event.data);
-                price = parseFloat(cryptodata.c).toFixed(digits);
+                if (coin === "shib") {
+                    price = parseFloat(cryptodata.c).toFixed(8);
+                } else if (coin === "doge") {
+                    price = parseFloat(cryptodata.c).toFixed(4);
+                } else {
+                    price = parseFloat(cryptodata.c).toFixed(digits);
+                }
                 pricechg = cryptodata.P;
 
                 const d = new Date();
@@ -216,9 +236,71 @@ io.on('connection', (socket) => {
             }
         }
     }
+
+    wsbtc.onmessage = (event) => {
+        let cryptodata = JSON.parse(event.data);
+        price = parseFloat(cryptodata.c).toFixed(digits);
+        pricechg = cryptodata.P;
+
+        socket.emit("btcData", {
+            price: price,
+            change: pricechg
+        });
+
+    }
+
+    wseth.onmessage = (event) => {
+        let cryptodata = JSON.parse(event.data);
+        price = parseFloat(cryptodata.c).toFixed(digits);
+        pricechg = cryptodata.P;
+
+        socket.emit("ethData", {
+            price: price,
+            change: pricechg
+        });
+
+    }
+
+    wsbnb.onmessage = (event) => {
+        let cryptodata = JSON.parse(event.data);
+        price = parseFloat(cryptodata.c).toFixed(digits);
+        pricechg = cryptodata.P;
+
+        socket.emit("bnbData", {
+            price: price,
+            change: pricechg
+        });
+
+    }
+
+    wsdoge.onmessage = (event) => {
+        let cryptodata = JSON.parse(event.data);
+        price = parseFloat(cryptodata.c).toFixed(4);
+        pricechg = cryptodata.P;
+
+        socket.emit("dogeData", {
+            price: price,
+            change: pricechg
+        });
+
+    }
+
+    wsshib.onmessage = (event) => {
+        let cryptodata = JSON.parse(event.data);
+        price = parseFloat(cryptodata.c).toFixed(8);
+        pricechg = cryptodata.P;
+
+        socket.emit("shibData", {
+            price: price,
+            change: pricechg
+        });
+
+    }
+
     socket.on("changeCoinPair", function (data) {
-       coin = data.coin;
-       values = []
+        values = []
+        coin = data.coin;
+
     });
 
     // vasarlas funcio
@@ -253,7 +335,7 @@ function buy(data) {
                         let setpair = parseFloat(result[0].pairValue) + currentValue
                         console.log("pair", setpair)
                         console.log("mar van")
-                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + " WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair +"'";
+                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + " WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair + "'";
                         console.log(sql)
                         database.query(sql, function (error) {
                             if (error) {
@@ -274,7 +356,7 @@ function buy(data) {
                             + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
                         console.log(sql)
                         database.query(sql, function (error) {
-                            if(error) {
+                            if (error) {
                                 console.log(error)
                             } else {
                                 sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
@@ -311,16 +393,16 @@ function sell(data) {
         getInfo(session.userid).then(function (userdata) {
             id = userdata[0].ID;
             getPortfolio(session.userid).then(function (result) {
-                if(result.length > 0) {
+                if (result.length > 0) {
                     let currentWealth = parseFloat(result[0].currencyValue.toFixed(10));
-                    if(data.amount <= currentWealth) {
+                    if (data.amount <= currentWealth) {
 
                         data.amount = parseFloat(data.amount)
                         let currentValue = data.amount * price
                         let setto = currentWealth - data.amount
                         let setpair = parseFloat(result[0].pairValue) - currentValue
 
-                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + "WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair +"'";
+                        let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + "WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair + "'";
 
                         database.query(sql, function (error) {
                             if (error) {
@@ -344,7 +426,7 @@ function sell(data) {
             }).catch(function () {
                 //ha hiba van a portfolio adatok lekeresevel
             });
-        }).catch(function (error){
+        }).catch(function (error) {
             //ha hiba van a felhasznalo adatok lekeresevel
         })
     } else {
