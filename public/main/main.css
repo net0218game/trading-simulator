@@ -5,7 +5,7 @@ body {
 }
 
 #buy {
-    margin: 0.5% 0.5% -10% -1%; /* top right bottom left */
+    margin: 0.5% 0.5% -10% -0.3%; /* top right bottom left */
     border-radius: 12px;
     text-align: left;
     background-color: #9AD0EC;
@@ -18,7 +18,7 @@ body {
 }
 
 #sell {
-    margin: -0.5% 0.5% -10% 0.5%; /* top right bottom left */
+    margin: -0.5% 0.5% -10% -0.3%; /* top right bottom left */
     border-radius: 12px;
     text-align: left;;
     padding-right: 1%;
@@ -32,11 +32,24 @@ body {
     background-color: #D8E3E7;
 }
 
-#currency{ /*btc es a nyil*/
-  margin-bottom:1%;
-  
-}
+#currency{  /*btc es a nyil*/
+    padding-top: 3px;
+    height:40px;
+    width: 20%;
+    font-size:20px;
+    background-color:#D8E3E7;
+    border-radius:25px;
 
+}
+#price-value{  /*btc es a nyil melletti doboz*/
+    padding-top: -5px;
+    height:40px;
+    width: 20%;
+    font-size:25px;
+    background-color:#D8E3E7;
+    border-radius:25px;
+    text-align:center;
+}
 
 #chart_div {
     padding: 0.5%;
@@ -46,6 +59,12 @@ body {
     margin-right: 2%;
 }
 
+select:focus{
+  color:red;
+}
+input:focus{
+  color:red;
+}
 #change {
   line-height: 5px;
 
