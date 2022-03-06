@@ -70,10 +70,10 @@ body {
 }
 
 select:focus{
-  color:red;
+  color:red;   /*ezt csak azert hogy tudjam hogy ez azt valtoztatja*/
 }
 input:focus{
-  color:red;
+  color:red; /*ezt szintugy (semmi jelentossege)*/
 }
 #change {
   color:#D8E3E7;
