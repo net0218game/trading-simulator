@@ -29,6 +29,9 @@ let coin = "btc";
 // coin pair
 let pair = "busd";
 
+// Price chagne percent
+let pricechg = 0;
+
 // session generalasa
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(sessions({
@@ -55,7 +58,7 @@ app.get('/', (req, res) => {
     session = req.session;
     if (session.userid) {
         console.log(">   [session] be vagy jelentkezve")
-        res.sendFile('public/main/main.html', {root: __dirname})
+        res.sendFile('public/frontpage/frontpage.html', {root: __dirname})
     } else {
         console.log(">   [session] nem vagy bejelentkezve")
         res.sendFile('public/login/login.html', {root: __dirname})
@@ -92,7 +95,7 @@ app.post('/main', (req, res) => {
 
                 console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
                 //console.log(req.session)
-                res.sendFile('/public/main/main.html', {root: __dirname});
+                res.sendFile('/public/frontpage/frontpage.html', {root: __dirname});
             }
         } else {
             res.send('Invalid username or password');
@@ -168,7 +171,7 @@ app.get('/logout', (req, res) => {
 
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {
-    let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@trade');
+    let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@ticker');
     console.log(">   [Socket.io] sikeres csatlakozás")
 
     function getPrice() {
@@ -180,8 +183,8 @@ io.on('connection', (socket) => {
             if (session.userid) {
 
                 let cryptodata = JSON.parse(event.data);
-                price = parseFloat(cryptodata.p).toFixed(digits);
-                before = price;
+                price = parseFloat(cryptodata.c).toFixed(digits);
+                pricechg = cryptodata.P;
 
                 const d = new Date();
                 let sec = d.getSeconds();
@@ -200,6 +203,7 @@ io.on('connection', (socket) => {
                     // adat kuldese socket.io val
                     socket.emit("data", {
                         price: price,
+                        change: pricechg,
                         values: values,
                         coin: coin,
                         pair: pair,
@@ -209,13 +213,13 @@ io.on('connection', (socket) => {
                 }).catch(function (error) {
                     console.log(error);
                 });
-            } else {
-                console.log("fasz")
-                express.response.redirect("/")
             }
-
         }
     }
+    socket.on("changeCoinPair", function (data) {
+       coin = data.coin;
+       values = []
+    });
 
     // vasarlas funcio
     socket.on("buy", function (data) {

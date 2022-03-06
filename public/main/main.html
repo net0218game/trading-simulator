@@ -10,7 +10,7 @@
 
 <body>
 <div class="topnav" id="myTopnav">
-    <a href="#home" class="active">Home</a>
+    <a href="/index" class="active">Home</a>
     <div class="dropdown">
         <button class="dropbtn" id="name">
             <i class="fa fa-user"></i>
@@ -23,7 +23,7 @@
             <a href="/profile">Profile</a>
             <a href="/error">Settings</a>
             <a href="/error">About Us</a>
-            <a href="/logout" style="color: red">Log Out</a>
+            <a href="/logout" id="logout">Log Out</a>
         </div>
 
     </div>
@@ -39,6 +39,7 @@
             <div id="chart_div" style="height: 70vh; width: 120vh"></div>
         </th>
         <th>
+            <p id="change">24h Change: 0</p>
             <button id="buy">BUY</button>
             <button id="sell">SELL</button>
             <br>

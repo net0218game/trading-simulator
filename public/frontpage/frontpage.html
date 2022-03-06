@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" type="image/png" href="pictures/icon.png">
     <meta charset="UTF-8">
@@ -8,21 +9,62 @@
     <link rel="stylesheet" href="/frontpage/frontpage.css">
 </head>
 <body>
-<h2>Front Page lófasz</h2>
+<div class="topnav" id="myTopnav">
+    <a href="/index" class="active">Home</a>
+    <div class="dropdown">
+        <button class="dropbtn" id="name">
+            <i class="fa fa-user"></i>
+            Username
+            <i class="fa fa-caret-down"></i>
 
-<button class="accordion">BTC-USD <p class="price">$ 452768</p></button>
-<div class="panel">
-    <p>chart comes here</p>
+        </button>
+        <div class="dropdown-content">
+            <a href="/user">Portfolio</a>
+            <a href="/profile">Profile</a>
+            <a href="/error">Settings</a>
+            <a href="/error">About Us</a>
+            <a href="/logout" id="logout">Log Out</a>
+        </div>
+
+    </div>
+    <p style="font-weight: bold">Trading-Simulator</p>
+    <p id="tokens">0 <i class="fa fa-money" aria-hidden="true"></i></p>
+    <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 
-<button class="accordion">ETH-USD</button>
-<div class="panel">
-    <p>chart comes here</p>
+<div class="coin" id="btc">
+    <p class="coin-pair">BTC-USD</p>
+    <p class="price">$ 42 043.86</p>
+    <p class="change" style="color: green">+ 1.04%</p>
 </div>
 
-<button class="accordion">DOGE-USD </button>
-<div class="panel">
-    <p>chart comes here</p>
+<div class="coin" id="eth">
+    <p class="coin-pair">ETH-USD</p>
+    <p class="price">$ 2 622.60</p>
+    <p class="change" style="color: red">- 3.009%</p>
+</div>
+
+<div class="coin" id="bnb">
+    <p class="coin-pair">BNB-USD</p>
+    <p class="price">$ 377.77</p>
+    <p class="change" style="color: red">- 6.81%</p>
+</div>
+
+<div class="coin" id="doge">
+    <p class="coin-pair">DOGE-USD</p>
+    <p class="price">$ 0.1235</p>
+    <p class="change" style="color: green">+ 0.24%</p>
+</div>
+
+<div class="coin" id="shib">
+    <p class="coin-pair">SHIB-USD</p>
+    <p class="price">$ 0.000024</p>
+    <p class="change" style="color: green">+ 0.29%</p>
+</div>
+
+<div class="footer">
+    <p>Trading-Simulator</p>
+    <p>Trade Crypto any time without any risk!</p>
 </div>
 
 <script src="/frontpage/frontpage.js"></script>

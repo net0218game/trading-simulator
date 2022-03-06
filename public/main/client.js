@@ -18,6 +18,7 @@ let pair = "";
 // html elements
 let title = document.getElementById("pageTitle");
 let pricetxt = document.getElementById("price");
+let changetxt = document.getElementById("change");
 let coinpair = document.getElementById("coin-pair");
 let tokens = document.getElementById("tokens");
 // buy/sell buttons
@@ -72,12 +73,14 @@ function sell() {
 // Adat beérkezése esetén
     socket.on('data', function (data) {
         price = data.price;
+        change = data.change;
         coin = data.coin;
         pair = data.pair;
         if (pair == "busd") {
             pair = "usd";
         }
         pricetxt.innerText = price + " $";
+        changetxt.innerText = "24h Change: " + change + "%";
         values = data.values;
         coinpair.innerText = (coin + "-" + pair).toUpperCase();
 //a kurva anyad
@@ -110,7 +113,8 @@ function sell() {
                 curveType: 'function',
                 legend: { position: 'bottom' },
                 'backgroundColor': 'transparent',
-                colors:['#132C33']
+                colors:['#132C33'],
+                'chartArea': {'width': '80%', 'height': '70%'},
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

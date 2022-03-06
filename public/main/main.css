@@ -9,7 +9,11 @@ body {
     text-align: left;
     background-color: #9AD0EC;
     border: 2px solid black;
-    font-size: 35px;
+    font-size: 200%;
+}
+
+#buy:hover {
+    background-color: green;
 }
 
 #sell {
@@ -17,27 +21,22 @@ body {
     text-align: left;
     padding-top: 0.5%;
     padding-bottom: 0.5%;
-    padding-right: 1px;
-    padding-left: 1px;
+    padding-right: 1%;
+    padding-left: 1%;
     background-color: #1572A1;
     border: 2px solid black;
-    font-size: 35px;
+    font-size: 200%;
 }
 
+#sell:hover {
+    background-color: red;
+}
 
-#chart_div{
-
-    padding-top: 0.5%;
-    padding-bottom: 0.5%;
-    padding-right: 0.5%;
-    padding-left: 0.5%;
-    margin-top: 5%;
-    margin-bottom: 0.5%;
-    margin-right: 0.5%;
-    margin-left: 0.5%;
+#chart_div {
+    padding: 0.5%;
+    margin: 5% 0.5% 0.5%;
     border: 2px solid black;
-    background-color: rgba(255,255,255,0.3);
-
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 table {
@@ -83,7 +82,7 @@ table {
 }
 
 .dropdown {
-    min-width: 140px;
+    min-width: 160px;
     float: right;
     overflow: hidden;
 }
@@ -106,7 +105,7 @@ table {
     position: absolute;
     background-color: #D8E3E7;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
@@ -133,10 +132,19 @@ table {
     display: block;
 }
 
+#logout {
+    color: red;
+}
+
+#logout:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
 @media screen and (max-width: 600px) {
     .topnav a:not(:first-child), .dropdown .dropbtn {
         display: none;
     }
+
     .topnav a.icon {
         float: right;
         display: block;
@@ -144,19 +152,30 @@ table {
 }
 
 @media screen and (max-width: 600px) {
-    .topnav.responsive {position: relative;}
+    .topnav.responsive {
+        position: relative;
+    }
+
     .topnav.responsive .icon {
         position: absolute;
         right: 0;
         top: 0;
     }
+
     .topnav.responsive a {
         float: none;
         display: block;
         text-align: left;
     }
-    .topnav.responsive .dropdown {float: none;}
-    .topnav.responsive .dropdown-content {position: relative;}
+
+    .topnav.responsive .dropdown {
+        float: none;
+    }
+
+    .topnav.responsive .dropdown-content {
+        position: relative;
+    }
+
     .topnav.responsive .dropdown .dropbtn {
         display: block;
         width: 100%;
