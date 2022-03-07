@@ -112,10 +112,10 @@ function chart() {
 
         var options = {
             curveType: 'function',
-            legend: {position: 'bottom'},
+            legend: {position: 'top'},
             'backgroundColor': 'transparent',
-            colors: ['#132C33'],
-            'chartArea': {'width': '60%', 'height': '50%'},
+            colors: ['orange'],
+            'chartArea': {'width': '87%', 'height': '87%'},
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

@@ -23,7 +23,8 @@
             <a href="/profile">Profile</a>
             <a href="/error">Settings</a>
             <a href="/error">About Us</a>
-            <a href="/logout" id="logout">Log Out</a>
+            <br>
+            <a href="/logout" id="logout" style="font-size:20px">Log Out</a>
         </div>
 
     </div>
@@ -31,12 +32,16 @@
     <p id="price">0</p>
     <p id="tokens">0 <i class="fa fa-money" aria-hidden="true"></i></p>
     <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+
 </div>
 
 <table>
     <tr>
         <th>
-            <div id="chart_div" style="height: 70vh; width: 120vh"></div>
+            <p id="fasz" style="color:white">BitCoin</p>
+            <div id="chart_div" style="height: 70vh; width: 120vh">
+
+            </div>
         </th>
         <th>
 
@@ -44,11 +49,13 @@
             <button id="sell">SELL</button>
             <br>
             <br>
-            <select name="currency" id="currency" style="height:30px; width: 20%; font-size:17px; background-color:#D8E3E7; border-radius:7px;">
+            <select name="currency" id="currency">
                 <option id="optionCoin" value="coin">COIN</option>
                 <option id="optionPair" value="pair">PAIR</option>
             </select>
-            <input type="number" id="price-value" style="height:30px; width: 50%; font-size:17px; background-color:#D8E3E7;border-radius:7px;" value="0">
+
+            <input type="number" id="price-value" value="0">
+
             <p id="change" style="font-size:20px;" >24h Change: 0 </p>
             <p id="low" style="font-size:20px;" >24h Low: 0</p>
             <p id="high" style="font-size:20px;" >24h High: 0 </p>
