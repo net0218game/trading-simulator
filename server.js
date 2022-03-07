@@ -331,30 +331,31 @@ function buy(data) {
 
                         currentWealth = parseFloat(result[0].currencyValue.toFixed(10));
                         data.amount = parseFloat(data.amount)
-                        let setto = data.amount + currentWealth
-                        let setpair = parseFloat(result[0].pairValue) + currentValue
-                        console.log("pair", setpair)
-                        console.log("mar van")
+                        let setto = data.amount + currentWealth;
+                        let setpair = parseFloat(result[0].pairValue) + currentValue;
+                        console.log("pair", setpair);
+                        console.log("mar van");
                         let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + " WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair + "'";
-                        console.log(sql)
+                        console.log(sql);
                         database.query(sql, function (error) {
                             if (error) {
-                                console.log(error)
+                                console.log(error);
                             } else {
                                 sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
 
                                 database.query(sql, function (error) {
                                     if (error) {
-                                        console.log(error)
-                                        console.log(">   [MySQL] baj van a vasarlas funkcioval")
+                                        console.log(error);
+                                        console.log(">   [MySQL] baj van a vasarlas funkcioval");
                                     }
                                 });
                             }
                         });
                     } else {
+                        // ha még nincs cryptod
+                        console.log("még nincs cryptod")
                         let sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + id
                             + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
-                        console.log(sql)
                         database.query(sql, function (error) {
                             if (error) {
                                 console.log(error)
