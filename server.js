@@ -20,7 +20,7 @@ var io = require('socket.io')(server, {
 let price = 0;
 let values = [];
 let lastsec = 0;
-// ennyi adatot fog abrazolni a diagramm
+// ennyi adatot fog abrazolni a diagram
 let maxItems = 100;
 // tizedes jegyek az ar vegen
 let digits = 2;
@@ -29,7 +29,7 @@ let coin = "";
 // coin pair
 let pair = "busd";
 
-// Price chagne percent
+// Price change percent
 let pricechg = 0;
 
 // session generalasa

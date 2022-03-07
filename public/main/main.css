@@ -60,10 +60,6 @@ body {
 
 }
 
-#fasz{
-  font-size: 30px;
-  padding-top: 1%;
-}
 
 select:focus{
   color:red;   /*ezt csak azert hogy tudjam hogy ez azt valtoztatja*/

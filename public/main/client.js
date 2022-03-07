@@ -114,7 +114,7 @@ function chart() {
             curveType: 'function',
             legend: {position: 'top'},
             'backgroundColor': 'transparent',
-            colors: ['orange'],
+            colors: ['lightblue'],
             'chartArea': {'width': '87%', 'height': '87%'},
         };
 
