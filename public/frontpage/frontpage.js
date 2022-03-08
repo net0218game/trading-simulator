@@ -31,6 +31,7 @@ socket.on("btcData", function (data) {
     if(data.change < 0) {
         btcChange.style.color = "red";
     } else {
+        btcChange.innerText = "+" + data.change + "%"
         btcChange.style.color = "green";
     }
 });
@@ -45,6 +46,7 @@ socket.on("ethData", function (data) {
     if(data.change < 0) {
         ethChange.style.color = "red";
     } else {
+        ethChange.innerText = "+" + data.change + "%"
         ethChange.style.color = "green";
     }
 });
@@ -59,6 +61,7 @@ socket.on("bnbData", function (data) {
     if(data.change < 0) {
         bnbChange.style.color = "red";
     } else {
+        bnbChange.innerText = "+" + data.change + "%"
         bnbChange.style.color = "green";
     }
 });
@@ -73,6 +76,7 @@ socket.on("dogeData", function (data) {
     if(data.change < 0) {
         dogeChange.style.color = "red";
     } else {
+        dogeChange.innerText = "+" + data.change + "%"
         dogeChange.style.color = "green";
     }
 });
@@ -87,6 +91,7 @@ socket.on("shibData", function (data) {
     if(data.change < 0) {
         shibChange.style.color = "red";
     } else {
+        shibChange.innerText = "+" + data.change + "%"
         shibChange.style.color = "green";
     }
 });

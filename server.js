@@ -190,11 +190,9 @@ io.on('connection', (socket) => {
 
     function getPrice() {
         //websocket cucc
-
-        let before = 0;
         ws.onmessage = (event) => {
             // ha be van jelentkezve valaki es ha van megadva coin
-            if (session.userid && coin.length > 0) {
+            if (coin.length > 0) {
 
                 let cryptodata = JSON.parse(event.data);
                 if (coin === "shib") {
@@ -205,6 +203,9 @@ io.on('connection', (socket) => {
                     price = parseFloat(cryptodata.c).toFixed(digits);
                 }
                 pricechg = cryptodata.P;
+
+                console.log(coin)
+                console.log(price)
 
                 const d = new Date();
                 let sec = d.getSeconds();
@@ -238,69 +239,63 @@ io.on('connection', (socket) => {
     }
 
     wsbtc.onmessage = (event) => {
-        let cryptodata = JSON.parse(event.data);
-        price = parseFloat(cryptodata.c).toFixed(digits);
-        pricechg = cryptodata.P;
+        let Thiscryptodata = JSON.parse(event.data);
+        let Thisprice = parseFloat(Thiscryptodata.c).toFixed(digits);
+        let Thispricechg = Thiscryptodata.P;
 
         socket.emit("btcData", {
-            price: price,
-            change: pricechg
+            price: Thisprice,
+            change: Thispricechg
         });
-
     }
 
     wseth.onmessage = (event) => {
-        let cryptodata = JSON.parse(event.data);
-        price = parseFloat(cryptodata.c).toFixed(digits);
-        pricechg = cryptodata.P;
+        let Thiscryptodata = JSON.parse(event.data);
+        let Thisprice = parseFloat(Thiscryptodata.c).toFixed(digits);
+        let Thispricechg = Thiscryptodata.P;
 
         socket.emit("ethData", {
-            price: price,
-            change: pricechg
+            price: Thisprice,
+            change: Thispricechg
         });
-
     }
 
     wsbnb.onmessage = (event) => {
-        let cryptodata = JSON.parse(event.data);
-        price = parseFloat(cryptodata.c).toFixed(digits);
-        pricechg = cryptodata.P;
+        let Thiscryptodata = JSON.parse(event.data);
+        let Thisprice = parseFloat(Thiscryptodata.c).toFixed(digits);
+        let Thispricechg = Thiscryptodata.P;
 
         socket.emit("bnbData", {
-            price: price,
-            change: pricechg
+            price: Thisprice,
+            change: Thispricechg
         });
-
     }
 
     wsdoge.onmessage = (event) => {
-        let cryptodata = JSON.parse(event.data);
-        price = parseFloat(cryptodata.c).toFixed(4);
-        pricechg = cryptodata.P;
+        let Thiscryptodata = JSON.parse(event.data);
+        let Thisprice = parseFloat(Thiscryptodata.c).toFixed(4);
+        let Thispricechg = Thiscryptodata.P;
 
         socket.emit("dogeData", {
-            price: price,
-            change: pricechg
+            price: Thisprice,
+            change: Thispricechg
         });
-
     }
 
     wsshib.onmessage = (event) => {
-        let cryptodata = JSON.parse(event.data);
-        price = parseFloat(cryptodata.c).toFixed(8);
-        pricechg = cryptodata.P;
+        let Thiscryptodata = JSON.parse(event.data);
+        let Thisprice = parseFloat(Thiscryptodata.c).toFixed(8);
+        let Thispricechg = Thiscryptodata.P;
 
         socket.emit("shibData", {
-            price: price,
-            change: pricechg
+            price: Thisprice,
+            change: Thispricechg
         });
-
     }
 
     socket.on("changeCoinPair", function (data) {
         values = []
         coin = data.coin;
-
     });
 
     // vasarlas funcio

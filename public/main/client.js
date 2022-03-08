@@ -42,7 +42,6 @@ buyBtn.addEventListener("click", buy);
 sellBtn.addEventListener("click", sell);
 
 function buy() {
-    fetch('/buy', {method: 'POST'})
     socket.emit("buy", {
         amount: pricevalue.value,
         type: options.value
@@ -73,20 +72,18 @@ chart()
 
 // Adat beérkezése esetén
 socket.on('data', function (data) {
-    price = data.price;
-    change = data.change;
-    coin = data.coin;
-    pair = data.pair;
-    if (pair == "busd") {
+    let price = data.price;
+    let change = data.change;
+    let coin = data.coin;
+    let pair = data.pair;
+    if (pair === "busd") {
         pair = "usd";
     }
     pricetxt.innerText = price + " $";
     changetxt.innerText = "24h Change: " + change + "%";
     values = data.values;
     coinpair.innerText = (coin + "-" + pair).toUpperCase();
-//a kurva anyad bico :)
     title.innerText = price + " | " + (coin + "-" + pair).toUpperCase();
-
     tokens.innerHTML = data.tokens + " <i class=\"fa fa-money\" aria-hidden=\"true\"></i>";
     name.innerHTML = "<i class=\"fa fa-user\"></i> " + data.username + " <i class=\"fa fa-caret-down\"></i>";
 
@@ -94,7 +91,6 @@ socket.on('data', function (data) {
     optionPair.innerText = (pair).toUpperCase();
     // Grafikon rajzolasa a frissitett adatok alapjan
     chart();
-    //convert();
 });
 
 
