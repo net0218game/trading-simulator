@@ -19,7 +19,16 @@ function drawChart() {
     ]);
 
     var options = {
-        title: 'Portfolio'
+        title: 'Portfolio',
+        'backgroundColor': 'transparent',
+        slices: {
+          0: { color: 'orange' },
+          1: { color: 'navy' },
+          2: { color: '#FF9966' },
+          3: { color: 'blue' },
+          4: { color: 'black' },
+        }
+
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
