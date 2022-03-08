@@ -56,13 +56,7 @@ var session;
 
 app.get('/', (req, res) => {
     session = req.session;
-    if (session.userid) {
-        console.log(">   [session] be vagy jelentkezve")
-        res.sendFile('public/frontpage/frontpage.html', {root: __dirname})
-    } else {
-        console.log(">   [session] nem vagy bejelentkezve")
-        res.sendFile('public/login/login.html', {root: __dirname})
-    }
+    res.sendFile('public/welcome/welcome.html', {root: __dirname})
 });
 
 app.get('/main', (req, res) => {
