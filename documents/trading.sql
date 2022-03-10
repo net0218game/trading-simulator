@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2022. Már 02. 00:13
+-- Létrehozás ideje: 2022. Már 10. 18:43
 -- Kiszolgáló verziója: 10.4.22-MariaDB
 -- PHP verzió: 8.0.13
 
@@ -41,7 +41,8 @@ CREATE TABLE `coins` (
 --
 
 INSERT INTO `coins` (`userID`, `currency`, `pair`, `currencyValue`, `pairValue`, `date`) VALUES
-(1, 'btc', 'busd', 0.027575, 1175.75, '0000-00-00 00:00:00.000000');
+(1, 'btc', 'busd', 0.022575, 935.819, '0000-00-00 00:00:00.000000'),
+(5, 'btc', 'busd', 0.001, 39.0098, '0000-00-00 00:00:00.000000');
 
 -- --------------------------------------------------------
 
@@ -51,7 +52,7 @@ INSERT INTO `coins` (`userID`, `currency`, `pair`, `currencyValue`, `pairValue`,
 
 CREATE TABLE `users` (
   `ID` int(16) NOT NULL,
-  `username` varchar(16) NOT NULL,
+  `username` varchar(30) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(30) NOT NULL,
   `token` float NOT NULL
@@ -62,7 +63,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `username`, `email`, `password`, `token`) VALUES
-(1, 'david', 'game.net0218@gmail.com', 'davidvagyok', 8824.21);
+(1, 'david', 'game.net0218@gmail.com', 'davidvagyok', 6084.39),
+(5, 'sziaendavidvagyo', 'alma@gmail.com', 'davidvagyok', 9960.99),
+(6, 'david2', 'game.net0218@gmail.com', 'davidvagyok', 10000),
+(7, 'sziaezafelhasznalonevem', 'a@gmail.com', 'davidvagyok', 10000);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -82,7 +86,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

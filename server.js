@@ -198,9 +198,6 @@ io.on('connection', (socket) => {
                 }
                 pricechg = cryptodata.P;
 
-                console.log(coin)
-                console.log(price)
-
                 const d = new Date();
                 let sec = d.getSeconds();
 
