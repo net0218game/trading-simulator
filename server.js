@@ -95,6 +95,7 @@ app.post('/main', (req, res) => {
             res.send('Invalid username or password');
         }
     }).catch(function () {
+        console.log("problema van")
         res.sendFile('/public/error/error.html', {root: __dirname});
     });
 });
