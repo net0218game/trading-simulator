@@ -13,6 +13,7 @@ var server = app.listen(5000);
 var io = require('socket.io')(server, {
     cors: {
         origin: '*',
+        methods: ["GET", "POST"]
     }
 });
 //app.use(express.static('public'));
