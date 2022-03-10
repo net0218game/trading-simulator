@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-const database = mysql.createConnection({
+const database = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "",
