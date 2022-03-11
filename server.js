@@ -9,11 +9,13 @@ const sessions = require('express-session');
 const express = require("express");
 const path = require("path");
 var app = express();
+
 app.use(require('cors')())
 var server = app.listen(5000);
 var io = require('socket.io')(server, {
     cors: {
-        origin: '127.0.0.1:5000',
+        origin: 'http://localhost:5000',
+        optionsSuccessStatus: 200,
         methods: ["GET", "POST"]
     }
 });

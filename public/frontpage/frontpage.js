@@ -25,7 +25,6 @@ let btcPrice = document.getElementById("btcPrice")
 let btcChange = document.getElementById("btcChange")
 
 socket.on("btcData", function (data) {
-    console.log("erkezett be adat", data.price)
     btcPrice.innerText = "$ " + data.price;
     btcChange.innerText = data.change + "%";
     if(data.change < 0) {
