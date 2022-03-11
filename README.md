@@ -7,4 +7,6 @@ without the risk of losing your money. You will be buying currencies with "token
 
 Prices are synced real time with the market, (from binance.com) so you will always be up to date when it comes to 
 prices. The buy and sell mechanisms are the same as in the market too! That means you get a 100% reality based broker 
-app where you don't have to worry about losing your invested money. 
+app where you don't have to worry about losing your invested money.
+
+http://www.tradingsimulator.org/
