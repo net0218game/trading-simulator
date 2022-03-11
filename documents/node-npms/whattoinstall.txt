@@ -1,0 +1,2 @@
+npm install mysql -g
+npm install nodemon -g

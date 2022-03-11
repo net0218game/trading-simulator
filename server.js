@@ -11,6 +11,7 @@ const path = require("path");
 var app = express();
 
 app.use(require('cors')())
+
 var server = app.listen(5000);
 var io = require('socket.io')(server, {
     cors: {
@@ -126,6 +127,23 @@ app.post('/registeruser', function (req, res) {
     }
 });
 
+app.post('/change', function (req, res) {
+    if (req.body.password !== req.body.password2) {
+        if (req.body.password2.length > 7) {
+            changePassword(req.body.username, req.body.password, req.body.password2, req.body.email).then(function () {
+                res.sendFile(path.join(__dirname + '/public/login/login.html'));
+            }).catch(function (error) {
+                res.send(error);
+                console.log("something went wrong", error);
+            });
+        } else {
+            res.send("Password is not long enough! Min. 8 characters.")
+        }
+    } else {
+        res.send("New password can't be the same as the old one.");
+    }
+});
+
 // portfolio oldal
 app.get('/user', function (req, res) {
     session = req.session;
@@ -145,6 +163,15 @@ app.get('/profile', function (req, res) {
         res.sendFile(path.join(__dirname + '/public/profile/profile.html'));
     } else {
         res.sendFile('public/login/login.html', {root: __dirname});
+    }
+});
+
+app.get('/chng', (req, res) => {
+    session = req.session;
+    if (session.userid) {
+        res.sendFile('public/changepassword/chngpswd.html', {root: __dirname})
+    } else {
+        res.sendFile('public/login/login.html', {root: __dirname})
     }
 });
 
@@ -489,5 +516,34 @@ function getPortfolio(user) {
             return reject();
             console.log("itt van a baj");
         });
+    });
+}
+
+function changePassword(username, oldPassw, newPassw, email) {
+    return new Promise((resolve, reject) => {
+        getInfo(username).then(function (result) {
+            if (result[0].password === oldPassw) {
+                if (result[0].email === email) {
+                    let sql = "UPDATE users SET password = " + "'" + newPassw + "'" + " WHERE username = " + "'" + username + "'" + " AND email = " + "'" + email + "'";
+                    console.log(sql)
+                    database.query(sql, function (error, results) {
+                        if (error) {
+                            console.log(">   [MySQL] valami baj van a portfolio lekeresevel a coins tablaban");
+                        } else {
+                            return resolve(results);
+                        }
+                    });
+                } else {
+                    // Ha nem jo az email cim
+                    return reject("This email doesn't match the email connected with that profile.")
+                }
+            } else {
+                // Ha nem jo a jelszo
+                return reject("Wrong password.");
+            }
+        }).catch(function (error) {
+            console.log(error)
+        });
+
     });
 }
