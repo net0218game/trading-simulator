@@ -11,11 +11,9 @@ function drawChart() {
 
     var data = google.visualization.arrayToDataTable([
         ['Currency', '% of portfolio'],
-        ['BTC', 30],
-        ['ETH', 10],
-        ['DOGE', 30],
-        ['SHIB', 5],
-        ['FUN', 25]
+        ['BTC', 60],
+        ['ETH', 12],
+        ['DOGE', 28]
     ]);
 
     var options = {
