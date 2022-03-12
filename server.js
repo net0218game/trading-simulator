@@ -59,9 +59,9 @@ app.use(cookieParser());
 // ebbe a valtozoban van mentve a session
 var session;
 
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
     session = req.session;
-    res.sendFile('public/welcome/welcome.html', {root: __dirname})
+    res.sendFile('public/welcome/welcome.html', {root: __dirname});
 });
 
 app.get('/main', (req, res) => {
@@ -197,6 +197,7 @@ app.get('/logout', (req, res) => {
 
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {
+
     let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@ticker');
     let wsbtc = new WebSocket('wss://stream.binance.com:9443/ws/btcbusd@ticker');
     let wseth = new WebSocket('wss://stream.binance.com:9443/ws/ethbusd@ticker');
@@ -544,6 +545,5 @@ function changePassword(username, oldPassw, newPassw, email) {
         }).catch(function (error) {
             console.log(error)
         });
-
     });
 }
