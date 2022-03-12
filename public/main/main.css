@@ -11,7 +11,6 @@ body {
     margin: 0.5% 0.5% -10% -0.3%; /* top right bottom left */
     text-align: left;
     background-color: #9AD0EC;
-    border: 2px solid #D8E3E7;
     font-size: 200%;
 }
 
@@ -25,7 +24,6 @@ body {
     padding-right: 1%;
     padding-left: 1%;
     background-color: #1572A1;
-    border: 2px solid #D8E3E7;
     font-size: 200%;
 }
 
