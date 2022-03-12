@@ -115,7 +115,7 @@ function chart() {
             legend: {position: 'top'},
             'backgroundColor': 'transparent',
             colors: ['lightblue'],
-            'chartArea': {'width': '87%', 'height': '87%'},
+            'chartArea': {'width': '87%', 'height': '87%'}
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

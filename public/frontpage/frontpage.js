@@ -1,13 +1,4 @@
-var socket = io.connect('http://localhost:5000');
-
-function myFunction() {
-    var x = document.getElementById("myTopnav");
-    if (x.className === "topnav") {
-        x.className += " responsive";
-    } else {
-        x.className = "topnav";
-    }
-}
+let socket = io.connect('http://localhost:5000');
 
 let divs = document.getElementsByClassName("coin");
 
@@ -39,7 +30,6 @@ let ethPrice = document.getElementById("ethPrice")
 let ethChange = document.getElementById("ethChange")
 
 socket.on("ethData", function (data) {
-    console.log("erkezett be adat", data.price)
     ethPrice.innerText = "$ " + data.price;
     ethChange.innerText = data.change + "%";
     if(data.change < 0) {
@@ -54,7 +44,6 @@ let bnbPrice = document.getElementById("bnbPrice")
 let bnbChange = document.getElementById("bnbChange")
 
 socket.on("bnbData", function (data) {
-    console.log("erkezett be adat", data.price)
     bnbPrice.innerText = "$ " + data.price;
     bnbChange.innerText = data.change + "%";
     if(data.change < 0) {
@@ -69,7 +58,6 @@ let dogePrice = document.getElementById("dogePrice")
 let dogeChange = document.getElementById("dogeChange")
 
 socket.on("dogeData", function (data) {
-    console.log("erkezett be adat", data.price)
     dogePrice.innerText = "$ " + data.price;
     dogeChange.innerText = data.change + "%";
     if(data.change < 0) {
@@ -84,7 +72,6 @@ let shibPrice = document.getElementById("shibPrice")
 let shibChange = document.getElementById("shibChange")
 
 socket.on("shibData", function (data) {
-    console.log("erkezett be adat", data.price)
     shibPrice.innerText = "$ " + data.price;
     shibChange.innerText = data.change + "%";
     if(data.change < 0) {

@@ -7,8 +7,12 @@ back.addEventListener("click", function () {
 google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
+var intervalId = window.setInterval(function () {
+    drawChart()
+}, 1000);
 
+
+function drawChart() {
     var data = google.visualization.arrayToDataTable([
         ['Currency', '% of portfolio'],
         ['BTC', 60],
@@ -20,12 +24,15 @@ function drawChart() {
         title: 'Portfolio',
         'backgroundColor': 'transparent',
         slices: {
-          0: { color: 'orange' },
-          1: { color: 'navy' },
-          2: { color: '#FF9966' },
-          3: { color: 'blue' },
-          4: { color: 'black' },
-        }
+            0: {color: 'orange'},
+            1: {color: 'navy'},
+            2: {color: '#FF9966'},
+            3: {color: 'blue'},
+            4: {color: 'black'},
+        },
+        'backgroundColor': 'transparent',
+
+        'chartArea': {'width': '100%', 'height': '100%'}
 
     };
 
@@ -33,3 +40,4 @@ function drawChart() {
 
     chart.draw(data, options);
 }
+

@@ -6,43 +6,47 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/wallet/wallet.css">
+    <link rel="stylesheet" href="/topnav/topnav.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        html, body, h1, h2, h3, h4, h5, h6 {
-            font-family: "Roboto", sans-serif
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Raleway", sans-serif
+        }
+
+        body, html {
+            height: 100%;
+            line-height: 1.8;
         }
     </style>
 </head>
 <body>
-  <div class="topnav" id="myTopnav">
-      <a href="/index" class="active">Home</a>
-      <div class="dropdown">
-          <button class="dropbtn" id="name">
-              <i class="fa fa-user"></i>
-              Username
-              <i class="fa fa-caret-down"></i>
 
-          </button>
-          <div class="dropdown-content">
-              <a href="/user">Portfolio</a>
-              <a href="/profile">Profile</a>
-              <a href="/error">Settings</a>
-              <a href="/error">About Us</a>
-              <a href="/logout" id="logout" style="font-size:20px">Log Out</a>
-          </div>
-      </div>
+<div class="topnav" id="myTopnav">
+    <a href="/index" class="active">Home</a>
+    <div class="dropdown">
+        <button class="dropbtn" id="name">
+            <i class="fa fa-user"></i>
+            Username
+            <i class="fa fa-caret-down"></i>
 
-      <p id="coin-pair" style="font-weight: bold">---</p>
-      <p id="price">0</p>
-      <p id="tokens">0 <i class="fa fa-money" aria-hidden="true"></i></p>
-      <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
-
-  </div>
+        </button>
+        <div class="dropdown-content">
+            <a href="/user">Portfolio</a>
+            <a href="/profile">Profile</a>
+            <a href="/error">Settings</a>
+            <a href="/error">About Us</a>
+            <a href="/logout" id="logout">Log Out</a>
+        </div>
+    </div>
+    <p style="font-weight: bold">Trading-Simulator</p>
+    <p id="tokens">0 <i class="fa fa-money" aria-hidden="true"></i></p>
+    <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+</div>
 
 <!-- Page Container -->
-<div class="w3-content w3-margin-top" style="max-width:1400px;">
+<div class="w3-content w3-margin-top" style="max-width:1400px; margin-top: 50px">
+
 
     <!-- The Grid -->
     <div class="w3-row-padding">
@@ -51,8 +55,10 @@
         <div class="w3-twothird">
 
             <div class="w3-container w3-card w3-white w3-margin-bottom">
-                <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-bar-chart fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Portfolio</h2>
-                <div id="piechart" style="width: 1000px; height: 600px; "></div>
+                <h2 class="w3-text-grey w3-padding-16"><i
+                        class="fa fa-bar-chart fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Portfolio</h2>
+                <div id="piechart" style="width: 100%; height: 100%; "></div>
+                <br>
             </div>
 
             <br>
@@ -73,7 +79,9 @@
                     <p class="w3-large"><b>Wallet</b></p>
                     <p>BTC</p>
                     <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:60%">60%</div>
+                        <div class="w3-container w3-center w3-round-xlarge w3-teal"
+                             style="width:60%; color: #666666">60%
+                        </div>
                     </div>
                     <p>ETH</p>
                     <div class="w3-light-grey w3-round-xlarge w3-small">
@@ -106,5 +114,6 @@
 </footer>
 
 <script src="/wallet/wallet.js"></script>
+<script src="/topnav/topnav.js"></script>
 </body>
 </html>
