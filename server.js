@@ -356,16 +356,35 @@ function buy(data) {
                         console.log("mar van");
                         let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + " WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair + "'";
                         console.log(sql);
-                        database.query(sql, function (error) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
+                        database.query(sql, function (error, results) {
+                            if (results.affectedRows > 0) {
+                                if (error) {
+                                    console.log(error);
+                                } else {
+                                    sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
 
+                                    database.query(sql, function (error) {
+                                        if (error) {
+                                            console.log(error);
+                                            console.log(">   [MySQL] baj van a vasarlas funkcioval");
+                                        }
+                                    });
+                                }
+                            } else {
+                                sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + id
+                                    + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
                                 database.query(sql, function (error) {
                                     if (error) {
                                         console.log(error);
-                                        console.log(">   [MySQL] baj van a vasarlas funkcioval");
+                                    } else {
+                                        sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
+
+                                        database.query(sql, function (error) {
+                                            if (error) {
+                                                console.log(error)
+                                                console.log(">   [MySQL] baj van a vasarlas funkcioval")
+                                            }
+                                        });
                                     }
                                 });
                             }
