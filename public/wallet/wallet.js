@@ -40,4 +40,3 @@ function drawChart() {
 
     chart.draw(data, options);
 }
-
