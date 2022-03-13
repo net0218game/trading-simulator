@@ -46,11 +46,10 @@ function drawChart() {
         title: 'Portfolio',
         'backgroundColor': 'transparent',
         slices: {
-            0: {color: 'orange'},
-            1: {color: 'navy'},
-            2: {color: '#FF9966'},
-            3: {color: 'blue'},
-            4: {color: 'black'},
+            0: {color: '#04009A'},
+            1: {color: '#77ACF1'},
+            3: {color: '#3EDBF0'},
+            4: {color: '#C0FEFC'}
         },
         'backgroundColor': 'transparent',
 
