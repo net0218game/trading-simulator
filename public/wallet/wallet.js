@@ -2,6 +2,8 @@ let socket = io.connect('http://localhost:5000');
 
 let back = document.getElementById("back");
 
+let chartArray = []
+
 back.addEventListener("click", function () {
     window.location.replace("/main");
 });
@@ -9,9 +11,6 @@ back.addEventListener("click", function () {
 google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-var intervalId = window.setInterval(function () {
-    drawChart()
-}, 1000);
 
 
 let tokens = document.getElementById("tokens");
@@ -28,15 +27,22 @@ socket.on("userdata", function (data) {
     username.innerHTML = "<i class=\"fa fa-user\"></i> " + data.username + " <i class=\"fa fa-caret-down\"></i>";
 });
 
-function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-        ['Currency', '% of portfolio'],
-        ['BTC', 60],
-        ['ETH', 12],
-        ['DOGE', 28]
-    ]);
+socket.on("portfolio", function (data) {
+    chartArray = [['Currency', '% of portfolio']]
 
-    var options = {
+    for(let i = 0; i < data.portfolio.length; i++) {
+        console.log("coin", data.portfolio[i][0])
+        chartArray.push([data.portfolio[i][0], data.portfolio[i][3]])
+    }
+    console.log(chartArray)
+
+    drawChart()
+});
+
+function drawChart() {
+    let data = google.visualization.arrayToDataTable(chartArray);
+
+    let options = {
         title: 'Portfolio',
         'backgroundColor': 'transparent',
         slices: {
@@ -52,7 +58,7 @@ function drawChart() {
 
     };
 
-    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    let chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
     chart.draw(data, options);
 }

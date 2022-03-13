@@ -216,6 +216,19 @@ io.on('connection', (socket) => {
         console.log(error);
     });
 
+    getPortfolio(session.userid).then(function (result){
+        let userPortfolio = []
+        chart = []
+        for(let i = 0; i < result.length; i++) {
+            let data = [result[i].currency, result[i].currencyValue, result[i].pair, result[i].pairValue]
+            userPortfolio.push(data)
+        }
+
+        socket.emit("portfolio", {
+            portfolio: userPortfolio
+        });
+    });
+
     function getPrice() {
         //websocket cucc
         ws.onmessage = (event) => {
@@ -223,6 +236,8 @@ io.on('connection', (socket) => {
             if (coin.length > 0) {
 
                 let cryptodata = JSON.parse(event.data);
+
+
                 if (coin === "shib") {
                     price = parseFloat(cryptodata.c).toFixed(8);
                 } else if (coin === "doge") {
@@ -319,6 +334,7 @@ io.on('connection', (socket) => {
     }
 
     socket.on("changeCoinPair", function (data) {
+        console.log(values)
         values = []
         coin = data.coin;
     });
