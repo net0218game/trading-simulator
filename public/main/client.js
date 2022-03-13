@@ -42,6 +42,7 @@ let portfolio = document.getElementById("portfolio");
 // ==================================================
 
 
+
 buyBtn.addEventListener("click", buy);
 sellBtn.addEventListener("click", sell);
 

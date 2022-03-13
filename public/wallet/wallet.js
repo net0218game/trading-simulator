@@ -5,7 +5,9 @@ let chartArray = []
 google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-
+var intervalId = window.setInterval(function () {
+    drawChart()
+}, 1000);
 
 let tokens = document.getElementById("tokens");
 let tokens2 = document.getElementById("tokens2");
