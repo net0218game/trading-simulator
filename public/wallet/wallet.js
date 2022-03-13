@@ -31,18 +31,42 @@ socket.on("userdata", function (data) {
 
 socket.on("portfolio", function (data) {
     chartArray = [['Currency', '% of portfolio']]
-
+    let sum = 0;
     for (let i = 0; i < data.portfolio.length; i++) {
         console.log("coin", data.portfolio[i][0])
         chartArray.push([data.portfolio[i][0].toUpperCase(), data.portfolio[i][3]])
-
-        stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() +'</p>\n' +
-            '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
-            '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:50%">\n' +
-            '                            <div class="w3-center w3-text-black">50%</div>\n' +
-            '                        </div>\n' +
-            '                    </div>'
+        sum += data.portfolio[i][3];
     }
+
+    for (let i = 0; i < data.portfolio.length; i++) {
+        let percent = ((data.portfolio[i][3] / sum) * 100);
+        console.log(data.portfolio[i][0].toUpperCase(), percent)
+        let other = 0;
+        if(percent > 1) {
+            stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() +'</p>\n' +
+                '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
+                '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + percent + '%">\n' +
+                '                            <div class="w3-center w3-text-black">' + percent.toFixed(1) + '%</div>\n' +
+                '                        </div>\n' +
+                '                    </div>'
+        } else {
+            other += percent
+            let otherDiv = document.getElementById("other");
+            if(! otherDiv) {
+                stat.innerHTML = stat.innerHTML + '<p>Other</p>\n' +
+                    '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
+                    '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + other + '%">\n' +
+                    '                            <div class="w3-center w3-text-black" id="other">' + other.toFixed(1) + '%</div>\n' +
+                    '                        </div>\n' +
+                    '                    </div>'
+            } else {
+                otherDiv.innerText = other + "%";
+            }
+        }
+    }
+
+
+
     stat.innerHTML = stat.innerHTML + "<br>"
     console.log(chartArray)
 
@@ -58,13 +82,11 @@ function drawChart() {
         slices: {
             0: {color: '#04009A'},
             1: {color: '#77ACF1'},
-            3: {color: '#3EDBF0'},
-            4: {color: '#C0FEFC'}
+            2: {color: '#3EDBF0'},
+            3: {color: '#C0FEFC'}
         },
         'backgroundColor': 'transparent',
-
         'chartArea': {'width': '90%', 'height': '90%'}
-
     };
 
     let chart = new google.visualization.PieChart(document.getElementById('piechart'));
