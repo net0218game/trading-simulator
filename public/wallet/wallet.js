@@ -9,7 +9,6 @@ var intervalId = window.setInterval(function () {
     drawChart()
 }, 1000);
 
-let tokens = document.getElementById("tokens");
 let tokens2 = document.getElementById("tokens2");
 let username = document.getElementById("name");
 let username2 = document.getElementById("name2");
@@ -23,7 +22,6 @@ socket.on("userdata", function (data) {
     } else {
         email.innerHTML = "<i class=\"fa fa-envelope fa-fw w3-margin-right w3-large w3-text-cyan\"></i> You don't have any email linked to this account";
     }
-    tokens.innerHTML = data.tokens + "<i class=\"fa fa-money fa-fw w3-margin-right w3-large w3-text\"></i>";
     tokens2.innerHTML = "<i class=\"fa fa-money fa-fw w3-margin-right w3-large w3-text-cyan\"></i>" + data.tokens;
     username2.innerHTML = "<i class=\"fa fa-user fa-fw w3-margin-right w3-large w3-text-cyan\"></i>" + data.username;
     username.innerHTML = "<i class=\"fa fa-user\"></i> " + data.username + " <i class=\"fa fa-caret-down\"></i>";
