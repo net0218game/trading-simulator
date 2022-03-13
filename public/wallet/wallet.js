@@ -62,7 +62,6 @@ function drawChart() {
             4: {color: '#C0FEFC'}
         },
         'chartArea': {'width': '100%', 'height': '100%'}
-
     };
 
     let chart = new google.visualization.PieChart(document.getElementById('piechart'));

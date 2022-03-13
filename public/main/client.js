@@ -39,9 +39,8 @@ let converted = document.getElementById("converted");
 let name = document.getElementById("name");
 let logout = document.getElementById("logout");
 let portfolio = document.getElementById("portfolio");
+
 // ==================================================
-
-
 
 buyBtn.addEventListener("click", buy);
 sellBtn.addEventListener("click", sell);
