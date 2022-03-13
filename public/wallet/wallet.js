@@ -2,7 +2,7 @@ let socket = io.connect('http://localhost:5000');
 
 let chartArray = []
 
-google.charts.load('current', {'packages': ['corechart']});
+google.charts.load('current', {'packages': ['corechart', 'line', 'bar'] });
 google.charts.setOnLoadCallback(drawChart);
 
 var intervalId = window.setInterval(function () {
@@ -61,13 +61,12 @@ function drawChart() {
             3: {color: '#3EDBF0'},
             4: {color: '#C0FEFC'}
         },
-        'backgroundColor': 'transparent',
-
-        'chartArea': {'width': '90%', 'height': '90%'}
+        'chartArea': {'width': '100%', 'height': '100%'}
 
     };
 
     let chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
     chart.draw(data, options);
+
 }
