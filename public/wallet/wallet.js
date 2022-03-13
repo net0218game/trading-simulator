@@ -80,13 +80,17 @@ function drawChart() {
         title: 'Portfolio',
         'backgroundColor': 'transparent',
         slices: {
-            0: {color: '#04009A'},
-            1: {color: '#77ACF1'},
-            2: {color: '#3EDBF0'},
-            3: {color: '#C0FEFC'}
+            0: {color: '#7CB9E8'},
+            1: {color: '#6CB4EE'},
+            2: {color: '#89CFF0'},
+            3: {color: '#318CE7'},
+            3: {color: '#B2FFFF'}
         },
         'backgroundColor': 'transparent',
-        'chartArea': {'width': '90%', 'height': '90%'}
+        'chartArea': {'width': '90%', 'height': '90%'},
+        pieSliceTextStyle: {
+            color: 'black'
+        }
     };
 
     let chart = new google.visualization.PieChart(document.getElementById('piechart'));
