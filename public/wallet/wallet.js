@@ -1,3 +1,5 @@
+let socket = io.connect('http://localhost:5000');
+
 let back = document.getElementById("back");
 
 back.addEventListener("click", function () {
@@ -11,6 +13,14 @@ var intervalId = window.setInterval(function () {
     drawChart()
 }, 1000);
 
+
+let tokens = document.getElementById("tokens");
+let username = document.getElementById("name");
+
+socket.on("userdata", function (data) {
+    tokens.innerText = "$ " + data.tokens
+    username.innerHTML = "<i class=\"fa fa-user\"></i> " + data.username + " <i class=\"fa fa-caret-down\"></i>";
+});
 
 function drawChart() {
     var data = google.visualization.arrayToDataTable([

@@ -3,7 +3,9 @@
 <head>
     <title>Portfolio</title>
     <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="icon" type="image/png" href="pictures/icon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/topnav/topnav.css">
@@ -56,7 +58,7 @@
 
             <div class="w3-container w3-card w3-white w3-margin-bottom">
                 <h2 class="w3-text-grey w3-padding-16"><i
-                        class="fa fa-bar-chart fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Portfolio</h2>
+                        class="fa fa-bar-chart fa-fw w3-margin-right w3-xxlarge w3-text-cyan"></i>Portfolio</h2>
                 <div id="piechart" style="width: 100%; height: 100%; "></div>
                 <br>
             </div>
@@ -71,31 +73,31 @@
 
             <div class="w3-white w3-text-grey w3-card-4">
                 <div class="w3-container">
-                    <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>Username</p>
-                    <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>email@gmail.com</p>
-                    <p><i class="fa fa-calendar fa-fw w3-margin-right w3-large w3-text-teal"></i>2021. 12. 27.</p>
+                    <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-cyan"></i>Username</p>
+                    <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-cyan"></i>email@gmail.com</p>
+                    <p><i class="fa fa-calendar fa-fw w3-margin-right w3-large w3-text-cyan"></i>2021. 12. 27.</p>
                     <hr>
 
                     <p class="w3-large"><b>Wallet</b></p>
                     <p>BTC</p>
                     <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal"
+                        <div class="w3-container w3-center w3-round-xlarge w3-cyan"
                              style="width:60%; color: #666666">60%
                         </div>
                     </div>
                     <p>ETH</p>
                     <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:12%">
+                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:12%">
                             <div class="w3-center w3-text-white">12%</div>
                         </div>
                     </div>
                     <p>DOGE</p>
                     <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:28%">28%</div>
+                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:28%">28%</div>
                     </div>
                     <p>Media</p>
                     <div class="w3-light-grey w3-round-xlarge w3-small">
-                        <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
+                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:50%">50%</div>
                     </div>
                     <br>
                 </div>
@@ -109,8 +111,8 @@
     <!-- End Page Container -->
 </div>
 <button id="back">Back</button>
-<footer class="w3-container w3-teal w3-center w3-margin-top">
-    <p>text</p>
+<footer class="w3-container w3-cyan w3-center w3-margin-top">
+    <p>Trading-Simulator<br>Trade without any risk!</p>
 </footer>
 
 <script src="/wallet/wallet.js"></script>
