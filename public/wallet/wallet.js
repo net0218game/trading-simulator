@@ -80,11 +80,11 @@ function drawChart() {
         title: 'Portfolio',
         'backgroundColor': 'transparent',
         slices: {
-            0: {color: '#7CB9E8'},
-            1: {color: '#6CB4EE'},
-            2: {color: '#89CFF0'},
-            3: {color: '#318CE7'},
-            3: {color: '#B2FFFF'}
+            0: {color: '#d0f5fc'},
+            1: {color: '#9debff'},
+            2: {color: '#59d4ff'},
+            3: {color: '#3badfc'},
+            4: {color: '#0096fe'}
         },
         'backgroundColor': 'transparent',
         'chartArea': {'width': '90%', 'height': '90%'},
