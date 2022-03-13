@@ -208,8 +208,9 @@ io.on('connection', (socket) => {
 
     getInfo(session.userid).then(function (result) {
         socket.emit("userdata", {
-            username: session.userid,
-            tokens: result[0].token
+            username: result[0].username,
+            tokens: result[0].token,
+            email: result[0].email
         });
     }).catch(function (error) {
         console.log(error);
