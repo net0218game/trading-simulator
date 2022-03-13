@@ -15,8 +15,10 @@ let username = document.getElementById("name");
 let username2 = document.getElementById("name2");
 let email = document.getElementById("email");
 
+let stat = document.getElementById("statistics");
+
 socket.on("userdata", function (data) {
-    if(data.email.length > 0) {
+    if (data.email.length > 0) {
         email.innerHTML = "<i class=\"fa fa-envelope fa-fw w3-margin-right w3-large w3-text-cyan\"></i>" + data.email;
     } else {
         email.innerHTML = "<i class=\"fa fa-envelope fa-fw w3-margin-right w3-large w3-text-cyan\"></i> You don't have any email linked to this account";
@@ -30,10 +32,18 @@ socket.on("userdata", function (data) {
 socket.on("portfolio", function (data) {
     chartArray = [['Currency', '% of portfolio']]
 
-    for(let i = 0; i < data.portfolio.length; i++) {
+    for (let i = 0; i < data.portfolio.length; i++) {
         console.log("coin", data.portfolio[i][0])
         chartArray.push([data.portfolio[i][0].toUpperCase(), data.portfolio[i][3]])
+
+        stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() +'</p>\n' +
+            '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
+            '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:50%">\n' +
+            '                            <div class="w3-center w3-text-black">50%</div>\n' +
+            '                        </div>\n' +
+            '                    </div>'
     }
+    stat.innerHTML = stat.innerHTML + "<br>"
     console.log(chartArray)
 
     drawChart()
