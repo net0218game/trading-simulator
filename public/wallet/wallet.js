@@ -86,7 +86,10 @@ function drawChart() {
             3: {color: '#C0FEFC'}
         },
         'backgroundColor': 'transparent',
-        'chartArea': {'width': '90%', 'height': '90%'}
+        'chartArea': {'width': '90%', 'height': '90%'},
+        pieSliceTextStyle: {
+            color: 'black'
+        }
     };
 
     let chart = new google.visualization.PieChart(document.getElementById('piechart'));
