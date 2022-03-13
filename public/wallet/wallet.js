@@ -1,12 +1,6 @@
 let socket = io.connect('http://localhost:5000');
 
-let back = document.getElementById("back");
-
 let chartArray = []
-
-back.addEventListener("click", function () {
-    window.location.replace("/main");
-});
 
 google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawChart);
