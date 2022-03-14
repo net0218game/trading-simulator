@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #126E82;
+    background-color: #adafaa;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -8,9 +8,14 @@ body {
     cursor: pointer;
     margin: 1% 1% 1%;
     width: 70%;
-    height: 47px;
+    height: 70px;
     overflow: hidden;
-    background-color: #132C33;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.coin-pair p{
+    color: black;
 }
 
 .coin .change {
@@ -31,7 +36,7 @@ body {
     cursor: auto;
     float: left;
     display: block;
-    color: #f2f2f2;
+    color: black;
     text-align: center;
     padding-left: 16px;
     text-decoration: none;
