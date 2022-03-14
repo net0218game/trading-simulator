@@ -21,6 +21,13 @@
             line-height: 1.8;
             background-color: #adafaa;
         }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -67,7 +74,7 @@
             <div class="w3-container w3-card w3-white">
                 <h2 class="w3-text-grey w3-padding-16">
                     <i class="fa fa-trophy w3-margin-right w3-xxlarge w3-text-cyan"></i>Your Achievements</h2>
-                <p>There are currently no achievements</p>
+                <p>There are currently no achievements. Please look back later!</p>
                 <br>
                 <br>
             </div>
@@ -76,29 +83,32 @@
         </div>
 
 
-
         <!-- Right Column -->
         <div class="w3-third">
 
             <div class="w3-white w3-text-grey w3-card-4">
                 <div class="w3-container" id="statistics">
 
-                  <h3 class="w3-text-grey w3-padding-16">
-                      <i class="fa fa-info-circle w3-margin-right w3-xxlarge w3-text-cyan"></i> User Info</h3>
+                    <h3 class="w3-text-grey w3-padding-16">
+                        <i class="fa fa-info-circle w3-margin-right w3-xxlarge w3-text-cyan"></i>User Info</h3>
 
-                    <p id="name2" class="w3-text-grey w3-padding-1 w3-large" ><i class="fa fa-user fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>Username</p>
-                    <p id="email" class="w3-text-grey w3-padding-1 w3-large"><i class="fa fa-envelope fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>email@gmail.com</p>
-                    <p id="tokens2" class="w3-text-grey w3-padding-1 w3-large"><i class="fa fa-money fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>0</p>
-
+                    <p id="name2" class="w3-text-grey w3-padding-1 w3-large"><i
+                            class="fa fa-user fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>Username</p>
+                    <p id="email" class="w3-text-grey w3-padding-1 w3-large"><i
+                            class="fa fa-envelope fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>email@gmail.com</p>
+                    <p id="tokens2" class="w3-text-grey w3-padding-1 w3-large"><i
+                            class="fa fa-money fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>0</p>
+                    <hr>
                     <h3 class="w3-text-grey w3-padding-16">
                         <i class="fa fa-bars w3-margin-right w3-xxlarge w3-text-cyan"></i> User Statistics</h3>
 
                 </div>
-            </div>
-            <div class="w3-rest w3-container w3-card w3-white">
-
-                <p class="w3-text-grey w3-padding-1 w3-xlarge">Money spent:</p>
-                <p class="w3-text-grey w3-padding-1 w3-xlarge"><i class="fa fa-plus-square w3-margin-right w3-xxlarge w3-text-cyan" aria-hidden="true"></i>Profit made:</p>
+                <div class="w3-container">
+                    <p id="profit" class="w3-text-grey w3-padding-1 w3-large"><i
+                            class="fa fa-plus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>Profit made: $0</p>
+                    <p id="spent" class="w3-text-grey w3-padding-1 w3-large"><i
+                            class="fa fa-minus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>Money spent: $0</p>
+                </div>
             </div>
         </div>
     </div>

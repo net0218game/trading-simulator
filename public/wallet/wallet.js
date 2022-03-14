@@ -15,6 +15,7 @@ let username2 = document.getElementById("name2");
 let email = document.getElementById("email");
 
 let stat = document.getElementById("statistics");
+let profit = document.getElementById("profit");
 
 socket.on("userdata", function (data) {
     if (data.email.length > 0) {
@@ -40,18 +41,20 @@ socket.on("portfolio", function (data) {
         let percent = ((data.portfolio[i][3] / sum) * 100);
         console.log(data.portfolio[i][0].toUpperCase(), percent)
         let other = 0;
-        if(percent > 1) {
-            stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() +'</p>\n' +
+        let otherCoins = "";
+        if (percent > 1) {
+            stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() + '</p>\n' +
                 '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
                 '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + percent + '%">\n' +
                 '                            <div class="w3-center w3-text-black">' + percent.toFixed(1) + '%</div>\n' +
                 '                        </div>\n' +
                 '                    </div>'
         } else {
+            otherCoins += data.portfolio[i][0].toUpperCase() + " ";
             other += percent
             let otherDiv = document.getElementById("other");
-            if(! otherDiv) {
-                stat.innerHTML = stat.innerHTML + '<p>Other</p>\n' +
+            if (!otherDiv) {
+                stat.innerHTML = stat.innerHTML + '<p>Other: ' + otherCoins + '</p>\n' +
                     '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
                     '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + other + '%">\n' +
                     '                            <div class="w3-center w3-text-black" id="other">' + other.toFixed(1) + '%</div>\n' +
@@ -64,10 +67,16 @@ socket.on("portfolio", function (data) {
     }
 
 
-
-    stat.innerHTML = stat.innerHTML + "<br>"
+    stat.innerHTML = stat.innerHTML + "<br><hr>"
     console.log(chartArray)
-
+    if (data.userinfo.token > data.initialValue) {
+        let userProfit = data.userinfo.token - data.initialValue;
+        profit.innerHTML = '<p id="profit" class="w3-text-grey w3-padding-1 w3-large"><i\n' +
+            '                            class="fa fa-plus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>Profit made: $' + userProfit + '</p>';
+    } else {
+        profit.innerHTML = '<p id="profit" class="w3-text-grey w3-padding-1 w3-large"><i\n' +
+            '                            class="fa fa-plus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>No profit yet!</p>';
+    }
     drawChart()
 });
 

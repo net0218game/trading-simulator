@@ -33,6 +33,8 @@ let digits = 2;
 let coin = "";
 // coin pair
 let pair = "busd";
+// Kezdo token ertek dollarban megadva
+let initialValue = 10000
 
 // Price change percent
 let pricechg = 0;
@@ -216,17 +218,26 @@ io.on('connection', (socket) => {
         console.log(error);
     });
 
-    getPortfolio(session.userid).then(function (result){
-        let userPortfolio = []
-        chart = []
-        for(let i = 0; i < result.length; i++) {
-            let data = [result[i].currency, result[i].currencyValue, result[i].pair, result[i].pairValue]
-            userPortfolio.push(data)
-        }
+    getPortfolio(session.userid).then(function (result) {
+        getInfo(session.userid).then(function (userinfo) {
+            let userPortfolio = []
+            chart = []
+            for (let i = 0; i < result.length; i++) {
+                let data = [result[i].currency, result[i].currencyValue, result[i].pair, result[i].pairValue]
+                userPortfolio.push(data)
+            }
 
-        socket.emit("portfolio", {
-            portfolio: userPortfolio
+            socket.emit("portfolio", {
+                portfolio: userPortfolio,
+                userinfo: userinfo[0],
+                initialValue: initialValue
+            });
+        }).catch(function (error) {
+            console.log(error, "Error Code #1")
         });
+
+    }).catch(function (error) {
+        console.log(error, "Error Code #2")
     });
 
     function getPrice() {
@@ -518,7 +529,7 @@ function registerUser(username, password, email) {
                 // ha meg nem letezik ilyen felhasznalo es az adatok megfelelnel a kovetelmenyeknek
                 if (results.length === 0 && username.length > 3 && password.length > 7) {
                     // felhasznalo letrehozasa a users tablaban 10 000 alap tokennel
-                    var sql = "INSERT INTO users(username, email, password, token) VALUES (" + "'" + username + "'" + "," + "'" + email + "'" + ", '" + password + "'" + "," + "'" + 10000 + "'" + ")";
+                    var sql = "INSERT INTO users(username, email, password, token) VALUES (" + "'" + username + "'" + "," + "'" + email + "'" + ", '" + password + "'" + "," + "'" + initialValue + "'" + ")";
 
                     database.query(sql, function (error, results) {
                         if (error) {
