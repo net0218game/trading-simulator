@@ -218,10 +218,10 @@ io.on('connection', (socket) => {
         console.log(error);
     });
 
-    getPortfolio(session.userid).then(function (result){
+    getPortfolio(session.userid).then(function (result) {
         let userPortfolio = []
         chart = []
-        for(let i = 0; i < result.length; i++) {
+        for (let i = 0; i < result.length; i++) {
             let data = [result[i].currency, result[i].currencyValue, result[i].pair, result[i].pairValue]
             userPortfolio.push(data)
         }
