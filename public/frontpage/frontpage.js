@@ -16,6 +16,7 @@ let btcPrice = document.getElementById("btcPrice")
 let btcChange = document.getElementById("btcChange")
 
 socket.on("btcData", function (data) {
+    btcPrice.style.color = "black";
     btcPrice.innerText = "$ " + data.price;
     btcChange.innerText = data.change + "%";
     if(data.change < 0) {
@@ -30,6 +31,7 @@ let ethPrice = document.getElementById("ethPrice")
 let ethChange = document.getElementById("ethChange")
 
 socket.on("ethData", function (data) {
+    ethPrice.style.color = "black";
     ethPrice.innerText = "$ " + data.price;
     ethChange.innerText = data.change + "%";
     if(data.change < 0) {
@@ -44,6 +46,7 @@ let bnbPrice = document.getElementById("bnbPrice")
 let bnbChange = document.getElementById("bnbChange")
 
 socket.on("bnbData", function (data) {
+    bnbPrice.style.color = "black";
     bnbPrice.innerText = "$ " + data.price;
     bnbChange.innerText = data.change + "%";
     if(data.change < 0) {
@@ -58,6 +61,7 @@ let dogePrice = document.getElementById("dogePrice")
 let dogeChange = document.getElementById("dogeChange")
 
 socket.on("dogeData", function (data) {
+    dogePrice.style.color = "black";
     dogePrice.innerText = "$ " + data.price;
     dogeChange.innerText = data.change + "%";
     if(data.change < 0) {
@@ -72,6 +76,7 @@ let shibPrice = document.getElementById("shibPrice")
 let shibChange = document.getElementById("shibChange")
 
 socket.on("shibData", function (data) {
+    shibPrice.style.color = "black";
     shibPrice.innerText = "$ " + data.price;
     shibChange.innerText = data.change + "%";
     if(data.change < 0) {
