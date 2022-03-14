@@ -219,16 +219,25 @@ io.on('connection', (socket) => {
     });
 
     getPortfolio(session.userid).then(function (result) {
-        let userPortfolio = []
-        chart = []
-        for (let i = 0; i < result.length; i++) {
-            let data = [result[i].currency, result[i].currencyValue, result[i].pair, result[i].pairValue]
-            userPortfolio.push(data)
-        }
+        getInfo(session.userid).then(function (userinfo) {
+            let userPortfolio = []
+            chart = []
+            for (let i = 0; i < result.length; i++) {
+                let data = [result[i].currency, result[i].currencyValue, result[i].pair, result[i].pairValue]
+                userPortfolio.push(data)
+            }
 
-        socket.emit("portfolio", {
-            portfolio: userPortfolio
+            socket.emit("portfolio", {
+                portfolio: userPortfolio,
+                userinfo: userinfo[0],
+                initialValue: initialValue
+            });
+        }).catch(function (error) {
+            console.log(error, "Error Code #1")
         });
+
+    }).catch(function (error) {
+        console.log(error, "Error Code #2")
     });
 
     function getPrice() {

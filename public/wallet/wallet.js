@@ -15,6 +15,7 @@ let username2 = document.getElementById("name2");
 let email = document.getElementById("email");
 
 let stat = document.getElementById("statistics");
+let profit = document.getElementById("profit");
 
 socket.on("userdata", function (data) {
     if (data.email.length > 0) {
@@ -66,9 +67,16 @@ socket.on("portfolio", function (data) {
     }
 
 
-    stat.innerHTML = stat.innerHTML + "<br>"
+    stat.innerHTML = stat.innerHTML + "<br><hr>"
     console.log(chartArray)
-
+    if (data.userinfo.token > data.initialValue) {
+        let userProfit = data.userinfo.token - data.initialValue;
+        profit.innerHTML = '<p id="profit" class="w3-text-grey w3-padding-1 w3-large"><i\n' +
+            '                            class="fa fa-plus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>Profit made: $' + userProfit + '</p>';
+    } else {
+        profit.innerHTML = '<p id="profit" class="w3-text-grey w3-padding-1 w3-large"><i\n' +
+            '                            class="fa fa-plus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>No profit yet!</p>';
+    }
     drawChart()
 });
 
