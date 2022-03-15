@@ -76,6 +76,8 @@ function convert() {
 socket.on("changeCoinPair", function (data) {
     chart.clearChart();
 });
+let before = 0;
+let chartColor;
 
 // Adat beérkezése esetén
 socket.on('data', function (data) {
@@ -86,7 +88,7 @@ socket.on('data', function (data) {
     if (pair === "busd") {
         pair = "usd";
     }
-    pricetxt.innerText = price + " $";
+    pricetxt.innerText = "$ " + price;
     changetxt.innerText = "24h Change: " + change + "%";
     values = data.values;
     coinpair.innerText = (coin + "-" + pair).toUpperCase();
@@ -96,6 +98,19 @@ socket.on('data', function (data) {
 
     optionCoin.innerText = (coin).toUpperCase();
     optionPair.innerText = (pair).toUpperCase();
+
+    if(before > price) {
+        pricetxt.style.color = "red";
+        chartColor = "#FF0000";
+    } else if(before < price) {
+        pricetxt.style.color = "green";
+        chartColor = "#008000";
+    } else if(before === price) {
+        pricetxt.style.color = "gray";
+        chartColor = "#808080";
+    }
+    before = data.price
+
     // Grafikon rajzolasa a frissitett adatok alapjan
     chart();
 });
@@ -106,7 +121,6 @@ function chart() {
     google.charts.setOnLoadCallback(drawBasic);
 
     function drawBasic() {
-
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Time');
         data.addColumn('number', coin.toUpperCase());
@@ -115,12 +129,13 @@ function chart() {
 
         var options = {
             curveType: 'function',
-            legend: {position: 'top'},
+            legend: "none",
             'backgroundColor': 'transparent',
             'chartArea': {'width': '87%', 'height': '87%'},
             vAxis: {
                 scaleType: 'scale'
-            }
+            },
+            color: [chartColor]
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
