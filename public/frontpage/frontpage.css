@@ -4,7 +4,9 @@ body {
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
 }
-
+div.footer{
+  background-color: black;
+}
 .coin {
     cursor: pointer;
     margin: 1% 1% 2%;
