@@ -36,35 +36,41 @@ socket.on("portfolio", function (data) {
         chartArray.push([data.portfolio[i][0].toUpperCase(), data.portfolio[i][3]])
         sum += data.portfolio[i][3];
     }
-
-    for (let i = 0; i < data.portfolio.length; i++) {
-        let percent = ((data.portfolio[i][3] / sum) * 100);
-        console.log(data.portfolio[i][0].toUpperCase(), percent)
-        let other = 0;
-        let otherCoins = "";
-        if (percent > 1) {
-            stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() + '</p>\n' +
-                '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
-                '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + percent + '%">\n' +
-                '                            <div class="w3-center w3-text-black">' + percent.toFixed(1) + '%</div>\n' +
-                '                        </div>\n' +
-                '                    </div>'
-        } else {
-            otherCoins += data.portfolio[i][0].toUpperCase() + " ";
-            other += percent
-            let otherDiv = document.getElementById("other");
-            if (!otherDiv) {
-                stat.innerHTML = stat.innerHTML + '<p>Other: ' + otherCoins + '</p>\n' +
+    if(data.portfolio.length > 0) {
+        for (let i = 0; i < data.portfolio.length; i++) {
+            let percent = ((data.portfolio[i][3] / sum) * 100);
+            console.log(data.portfolio[i][0].toUpperCase(), percent)
+            let other = 0;
+            let otherCoins = "";
+            if (percent > 1) {
+                stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() + ' - $ ' + data.portfolio[i][3] + '</p>\n' +
                     '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
-                    '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + other + '%">\n' +
-                    '                            <div class="w3-center w3-text-black" id="other">' + other.toFixed(1) + '%</div>\n' +
+                    '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + percent + '%">\n' +
+                    '                            <div class="w3-center w3-text-black">' + percent.toFixed(1) + '%</div>\n' +
                     '                        </div>\n' +
                     '                    </div>'
             } else {
-                otherDiv.innerText = other + "%";
+                otherCoins += data.portfolio[i][0].toUpperCase() + " ";
+                other += percent
+                let otherDiv = document.getElementById("other");
+                if (!otherDiv) {
+                    stat.innerHTML = stat.innerHTML + '<p>Other: ' + otherCoins + '</p>\n' +
+                        '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
+                        '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + other + '%">\n' +
+                        '                            <div class="w3-center w3-text-black" id="other">' + other.toFixed(1) + '%</div>\n' +
+                        '                        </div>\n' +
+                        '                    </div>'
+                } else {
+                    otherDiv.innerText = other + "%";
+                }
             }
         }
+    } else {
+        stat.innerHTML = stat.innerHTML + '<h4 class="w3-text-grey w3-padding-16">\n' +
+        '                        <i class="fa fa-remove w3-margin-right w3-xlarge w3-text-cyan"></i>You don\'t have any crypto yet!</h4>\n' +
+        '                    <a href="/index"><h4 class="w3-text-grey">Let\'s change that!</h4></a>'
     }
+
 
 
     stat.innerHTML = stat.innerHTML + "<br><hr>"

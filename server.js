@@ -116,7 +116,7 @@ app.post('/registeruser', function (req, res) {
                     res.sendFile(path.join(__dirname + '/public/login/login.html'));
                 }).catch(function (error) {
                     res.send(error);
-                    console.log("something went wrong", error);
+                    console.log("Error #1", error);
                 });
             } else {
                 res.send("Password is not long enough! Min. 8 characters")
@@ -136,7 +136,7 @@ app.post('/change', function (req, res) {
                 res.sendFile(path.join(__dirname + '/public/login/login.html'));
             }).catch(function (error) {
                 res.send(error);
-                console.log("something went wrong", error);
+                console.log("Error #2", error);
             });
         } else {
             res.send("Password is not long enough! Min. 8 characters.")
@@ -215,7 +215,7 @@ io.on('connection', (socket) => {
             email: result[0].email
         });
     }).catch(function (error) {
-        console.log(error);
+        console.log("Error #3", error);
     });
 
     getPortfolio(session.userid).then(function (result) {
@@ -233,11 +233,11 @@ io.on('connection', (socket) => {
                 initialValue: initialValue
             });
         }).catch(function (error) {
-            console.log(error, "Error Code #1")
+            console.log(error, "Error #4")
         });
 
     }).catch(function (error) {
-        console.log(error, "Error Code #2")
+        console.log(error, "Error Code #5")
     });
 
     function getPrice() {
@@ -283,7 +283,7 @@ io.on('connection', (socket) => {
                         username: session.userid
                     });
                 }).catch(function (error) {
-                    console.log(error);
+                    console.log("Error #6", error);
                 });
             }
         }
@@ -387,13 +387,13 @@ function buy(data) {
                         database.query(sql, function (error, results) {
                             if (results.affectedRows > 0) {
                                 if (error) {
-                                    console.log(error);
+                                    console.log("Error #7", error);
                                 } else {
                                     sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
 
                                     database.query(sql, function (error) {
                                         if (error) {
-                                            console.log(error);
+                                            console.log("Error #8", error);
                                             console.log(">   [MySQL] baj van a vasarlas funkcioval");
                                         }
                                     });
@@ -403,13 +403,13 @@ function buy(data) {
                                     + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
                                 database.query(sql, function (error) {
                                     if (error) {
-                                        console.log(error);
+                                        console.log("Error #9", error);
                                     } else {
                                         sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
 
                                         database.query(sql, function (error) {
                                             if (error) {
-                                                console.log(error)
+                                                console.log("Error #10", error)
                                                 console.log(">   [MySQL] baj van a vasarlas funkcioval")
                                             }
                                         });
@@ -424,13 +424,13 @@ function buy(data) {
                             + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
                         database.query(sql, function (error) {
                             if (error) {
-                                console.log(error)
+                                console.log("Error #11", error)
                             } else {
                                 sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
 
                                 database.query(sql, function (error) {
                                     if (error) {
-                                        console.log(error)
+                                        console.log("Error #12", error)
                                         console.log(">   [MySQL] baj van a vasarlas funkcioval")
                                     }
                                 });
@@ -447,6 +447,7 @@ function buy(data) {
             }
         }).catch(function (error) {
             //ha hiba van a felhasznalo adatok lekeresevel
+            console.log("Error #13", error)
         });
     } else {
         // ha nulla van beirva osszegnek
@@ -456,12 +457,18 @@ function buy(data) {
 
 function sell(data) {
     // BELE KELL RAKNI HOGY AND CURRENCY = COIN
+    let currentWealth = 0;
     if (data.amount > 0) {
         getInfo(session.userid).then(function (userdata) {
-            id = userdata[0].ID;
+            let id = userdata[0].ID;
             getPortfolio(session.userid).then(function (result) {
                 if (result.length > 0) {
-                    let currentWealth = parseFloat(result[0].currencyValue.toFixed(10));
+                    for (let i = 0; i < result.length; i++) {
+                        if (result[i].currency === coin) {
+                            currentWealth = result[i].currencyValue;
+                        }
+                    }
+
                     if (data.amount <= currentWealth) {
 
                         data.amount = parseFloat(data.amount)
@@ -473,28 +480,48 @@ function sell(data) {
 
                         database.query(sql, function (error) {
                             if (error) {
-                                console.log(error)
+                                console.log("Error #14", error)
                             } else {
                                 let userTokens = userdata[0].token + currentValue;
                                 sql = "UPDATE users SET token=" + userTokens + "WHERE ID = " + id;
 
                                 database.query(sql, function (error) {
                                     if (error) {
-                                        console.log(error)
+                                        console.log("Error #15", error)
                                         console.log(">   [MySQL] baj van az eladas funkcioval")
                                     }
                                 });
+
+                                getPortfolio(session.userid).then(function (result) {
+                                    for (let i = 0; i < result.length; i++) {
+                                        if (result[i].currency === coin && result[i].currencyValue === 0) {
+                                            sql = "DELETE FROM coins WHERE currency = " + "'" + coin + "' AND userID = " + id;
+                                            console.log(sql)
+                                            database.query(sql, function (error) {
+                                                if (error) {
+                                                    console.log("Error #25", error)
+                                                }
+                                            });
+                                        }
+                                    }
+                                }).catch(function (error) {
+                                    console.log("Error #26", error);
+                                });
                             }
                         });
+                    } else {
+                        console.log("Nincs ennyid a", coin, "valutából")
                     }
                 } else {
-                    // ha a felhasznalonak nincsen meg semmije
+                    console.log("Nincs", coin, "valutád")
                 }
-            }).catch(function () {
+            }).catch(function (error) {
                 //ha hiba van a portfolio adatok lekeresevel
+                console.log("Error #16", error)
             });
         }).catch(function (error) {
             //ha hiba van a felhasznalo adatok lekeresevel
+            console.log("Error #17", error)
         })
     } else {
         console.log("0 nal tobbet kell eladnod!");
@@ -509,6 +536,7 @@ function getInfo(user) {
 
         database.query(sql, function (error, results) {
             if (error) {
+                console.log("Error #18", error)
                 return reject(">   [MySQL] nem inditottad el az xamppot!");
             } else {
                 return resolve(results);
@@ -524,6 +552,7 @@ function registerUser(username, password, email) {
 
         database.query(sql, function (error, results) {
             if (error) {
+                console.log("Error #19", error)
                 return reject(error);
             } else {
                 // ha meg nem letezik ilyen felhasznalo es az adatok megfelelnel a kovetelmenyeknek
@@ -533,6 +562,7 @@ function registerUser(username, password, email) {
 
                     database.query(sql, function (error, results) {
                         if (error) {
+                            console.log("Error #20", error)
                             return reject(error);
                         } else {
                             console.log(">   [MySQL] user", username, "has been registered!");
@@ -555,14 +585,15 @@ function getPortfolio(user) {
             var sql = "SELECT * FROM coins WHERE userID = " + id;
             database.query(sql, function (error, results) {
                 if (error) {
+                    console.log("Error #21", error)
                     console.log(">   [MySQL] valami baj van a portfolio lekeresevel a coins tablaban");
                 } else {
                     return resolve(results);
                 }
             });
-        }).catch(function () {
+        }).catch(function (error) {
             return reject();
-            console.log("itt van a baj");
+            console.log("Error #24", error)
         });
     });
 }
@@ -576,6 +607,7 @@ function changePassword(username, oldPassw, newPassw, email) {
                     console.log(sql)
                     database.query(sql, function (error, results) {
                         if (error) {
+                            console.log("Error #22", error)
                             console.log(">   [MySQL] valami baj van a portfolio lekeresevel a coins tablaban");
                         } else {
                             return resolve(results);
@@ -590,7 +622,7 @@ function changePassword(username, oldPassw, newPassw, email) {
                 return reject("Wrong password.");
             }
         }).catch(function (error) {
-            console.log(error)
+            console.log("Error #23", error)
         });
     });
 }
