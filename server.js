@@ -147,7 +147,7 @@ app.post('/change', function (req, res) {
 });
 
 // portfolio oldal
-app.get('/user', function (req, res) {
+app.get('/portfolio', function (req, res) {
     session = req.session;
     if (session.userid) {
         res.sendFile(path.join(__dirname + '/public/wallet/wallet.html'));
