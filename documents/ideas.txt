@@ -8,3 +8,5 @@ First buy
 First sell
 Profit $10, $50, $100, $1000
 Complete 5, 10, 20, 50 trades
+
+https://stackoverflow.com/questions/63423584/how-to-fix-error-nodemon-ps1-cannot-be-loaded-because-running-scripts-is-disabl

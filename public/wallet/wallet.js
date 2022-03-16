@@ -36,7 +36,7 @@ socket.on("portfolio", function (data) {
         chartArray.push([data.portfolio[i][0].toUpperCase(), data.portfolio[i][3]])
         sum += data.portfolio[i][3];
     }
-    if(data.portfolio.length > 0) {
+    if (data.portfolio.length > 0) {
         for (let i = 0; i < data.portfolio.length; i++) {
             let percent = ((data.portfolio[i][3] / sum) * 100);
             console.log(data.portfolio[i][0].toUpperCase(), percent)
@@ -67,10 +67,9 @@ socket.on("portfolio", function (data) {
         }
     } else {
         stat.innerHTML = stat.innerHTML + '<h4 class="w3-text-grey w3-padding-16">\n' +
-        '                        <i class="fa fa-remove w3-margin-right w3-xlarge w3-text-cyan"></i>You don\'t have any crypto yet!</h4>\n' +
-        '                    <a href="/index"><h4 class="w3-text-grey">Let\'s change that!</h4></a>'
+            '                        <i class="fa fa-remove w3-margin-right w3-xlarge w3-text-cyan"></i>You don\'t have any crypto yet!</h4>\n' +
+            '                    <a href="/index"><h4 class="w3-text-grey">Let\'s change that!</h4></a>'
     }
-
 
 
     stat.innerHTML = stat.innerHTML + "<br><hr>"
@@ -78,7 +77,7 @@ socket.on("portfolio", function (data) {
     if (data.userinfo.token > data.initialValue) {
         let userProfit = data.userinfo.token - data.initialValue;
         profit.innerHTML = '<p id="profit" class="w3-text-grey w3-padding-1 w3-large"><i\n' +
-            '                            class="fa fa-plus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>Profit made: $' + userProfit + '</p>';
+            '                            class="fa fa-plus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>Profit made: $' + parseFloat(userProfit).toFixed(2) + '</p>';
     } else {
         profit.innerHTML = '<p id="profit" class="w3-text-grey w3-padding-1 w3-large"><i\n' +
             '                            class="fa fa-plus fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>No profit yet!</p>';

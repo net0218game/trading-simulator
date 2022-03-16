@@ -362,29 +362,35 @@ io.on('connection', (socket) => {
 });
 
 function buy(data) {
-    // BELE KELL RAKNI HOGY AND CURRENCY = COIN
+    // Felhasznalo jelenlegi vagyona
     let currentWealth = 0
+    data.amount = parseFloat(data.amount);
+    // Ellenorzi hogy 0-nal tobbet akar-e venni
     if (data.amount > 0) {
 
         getInfo(session.userid).then(function (userdata) {
-            id = userdata[0].ID;
-            let currentValue = data.amount * price;
+            let id = userdata[0].ID;
+            // Beirt mennyiseg jelenlegi erteke
+            console.log(data.amount, price)
+            let currentValue = parseFloat(data.amount * price);
             let userTokens = userdata[0].token - currentValue;
 
-            // ha van ra eleg tokenje a felhasznalonak
+            // Ha van ra eleg tokenje a felhasznalonak
             if (userdata[0].token >= currentValue) {
                 getPortfolio(session.userid).then(function (result) {
+                    // Ha mar van feljegyzett vasarlasa a felhasznalonak
                     if (result.length > 0) {
 
                         currentWealth = parseFloat(result[0].currencyValue.toFixed(10));
-                        data.amount = parseFloat(data.amount)
+
+                        // Valuta ertek
                         let setto = data.amount + currentWealth;
+                        // Par ertek
                         let setpair = parseFloat(result[0].pairValue) + currentValue;
-                        console.log("pair", setpair);
-                        console.log("mar van");
                         let sql = "UPDATE coins SET currencyValue =" + setto + ", pairValue =" + setpair + " WHERE userID = " + id + " AND currency = " + "'" + coin + "'" + " AND pair = " + "'" + pair + "'";
-                        console.log(sql);
+
                         database.query(sql, function (error, results) {
+                            // Ha mar van feljegyzett adat a felhasznalohoz ezzel a valutaval
                             if (results.affectedRows > 0) {
                                 if (error) {
                                     console.log("Error #7", error);
@@ -394,11 +400,11 @@ function buy(data) {
                                     database.query(sql, function (error) {
                                         if (error) {
                                             console.log("Error #8", error);
-                                            console.log(">   [MySQL] baj van a vasarlas funkcioval");
                                         }
                                     });
                                 }
                             } else {
+                                // Ha meg nincs feljegyzett adat a felhasznalohoz ezzel a valutaval
                                 sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + id
                                     + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
                                 database.query(sql, function (error) {
@@ -418,7 +424,7 @@ function buy(data) {
                             }
                         });
                     } else {
-                        // ha még nincs cryptod
+                        // Ha meg nincs feljegyzett vasarlasa a felhasznalonak
                         console.log("még nincs cryptod")
                         let sql = "INSERT INTO coins(userID, currency, pair, currencyValue, pairValue) VALUES(" + id
                             + ",'" + coin + "','" + pair + "'," + data.amount + "," + currentValue + ")";
@@ -431,44 +437,48 @@ function buy(data) {
                                 database.query(sql, function (error) {
                                     if (error) {
                                         console.log("Error #12", error)
-                                        console.log(">   [MySQL] baj van a vasarlas funkcioval")
                                     }
                                 });
                             }
-                        })
+                        });
                     }
-                }).catch(function () {
+                }).catch(function (error) {
                     //ha hiba van a portfolio adatok lekeresevel
+                    console.log("Error #27", error)
                 });
-                console.log("vettel", data.amount, "db", coin + "-t", currentValue, "értékben")
+                console.log("vettel", coin, "-t", currentValue, "ertekben", data.amount, "szamban")
+                // Ide jon majd a stats adatbazis tablaban a spent mezo hozzaadasa
+
             } else {
                 // ha a felhasznalonak nincsen eleg tokenje
                 console.log("nincs ra eleg tokened!")
             }
         }).catch(function (error) {
-            //ha hiba van a felhasznalo adatok lekeresevel
+            // Ha hiba van a felhasznalo adatok lekeresevel
             console.log("Error #13", error)
         });
     } else {
-        // ha nulla van beirva osszegnek
+        // Ha nulla van beirva osszegnek
         console.log("0 nál többet kell vegyél!")
     }
 }
 
 function sell(data) {
-    // BELE KELL RAKNI HOGY AND CURRENCY = COIN
+    // Felhasznalo jelenlegi vagyona
     let currentWealth = 0;
+    // Ellenorzi hogy tobbet akar-e eladni mint 0
     if (data.amount > 0) {
         getInfo(session.userid).then(function (userdata) {
             let id = userdata[0].ID;
             getPortfolio(session.userid).then(function (result) {
+                // Ha van mar feljegyzett vasarlasa a felhasznalonak
                 if (result.length > 0) {
                     for (let i = 0; i < result.length; i++) {
                         if (result[i].currency === coin) {
                             currentWealth = result[i].currencyValue;
                         }
                     }
-
+                    // Ellenorzi hogy van-e ennyi mennyisegu valutad
                     if (data.amount <= currentWealth) {
 
                         data.amount = parseFloat(data.amount)
@@ -489,24 +499,26 @@ function sell(data) {
                                     if (error) {
                                         console.log("Error #15", error)
                                         console.log(">   [MySQL] baj van az eladas funkcioval")
+                                    } else {
+                                        // Ha eladtad az osszes ilyen valutadat, akkor torli azt a sort az adatbazisbol
+                                        getPortfolio(session.userid).then(function (result) {
+                                            for (let i = 0; i < result.length; i++) {
+                                                if (result[i].currency === coin && result[i].currencyValue === 0) {
+                                                    sql = "DELETE FROM coins WHERE currency = " + "'" + coin + "' AND userID = " + id;
+                                                    console.log(sql)
+                                                    database.query(sql, function (error) {
+                                                        if (error) {
+                                                            console.log("Error #25", error)
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }).catch(function (error) {
+                                            console.log("Error #26", error);
+                                        });
                                     }
                                 });
 
-                                getPortfolio(session.userid).then(function (result) {
-                                    for (let i = 0; i < result.length; i++) {
-                                        if (result[i].currency === coin && result[i].currencyValue === 0) {
-                                            sql = "DELETE FROM coins WHERE currency = " + "'" + coin + "' AND userID = " + id;
-                                            console.log(sql)
-                                            database.query(sql, function (error) {
-                                                if (error) {
-                                                    console.log("Error #25", error)
-                                                }
-                                            });
-                                        }
-                                    }
-                                }).catch(function (error) {
-                                    console.log("Error #26", error);
-                                });
                             }
                         });
                     } else {
