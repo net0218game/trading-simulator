@@ -570,7 +570,7 @@ function registerUser(username, password, email) {
                 // ha meg nem letezik ilyen felhasznalo es az adatok megfelelnel a kovetelmenyeknek
                 if (results.length === 0 && username.length > 3 && password.length > 7) {
                     // felhasznalo letrehozasa a users tablaban 10 000 alap tokennel
-                    var sql = "INSERT INTO users(username, email, password, token) VALUES (" + "'" + username + "'" + "," + "'" + email + "'" + ", '" + password + "'" + "," + "'" + initialValue + "'" + ")";
+                    let sql = "INSERT INTO users(username, email, password, token) VALUES (" + "'" + username + "'" + "," + "'" + email + "'" + ", '" + password + "'" + "," + "'" + initialValue + "'" + ")";
 
                     database.query(sql, function (error, results) {
                         if (error) {
@@ -581,6 +581,17 @@ function registerUser(username, password, email) {
                             return resolve(results);
                         }
                     });
+
+                    getInfo(username).then(function (result) {
+                        let id = result[0].ID;
+                        sql = "INSERT INTO stats (userID) VALUES(" + "'" + id + "'" + ")";
+                        database.query(sql, function (error, results) {
+                            if(error) {
+                                console.log("Error #28", error);
+                            }
+                        });
+                    });
+
                 } else {
                     console.log(">   [MySQL] user", username, "already exists!");
                     return reject("user '" + username + "' already exists!");

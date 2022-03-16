@@ -1,0 +1,21 @@
+footer schema:
+
+<footer class="w3-center w3-black w3-padding-64">
+    <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+    <div class="w3-xlarge w3-section">
+        <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook-official w3-hover-opacity"></i></a>
+        <a href="https://www.instagram.com/" target="_blank"><i class="fa fa-instagram w3-hover-opacity"></i></a>
+        <a href="https://www.reddit.com/user/nokedl0218" target="_blank"><i class="fa fa-reddit-alien w3-hover-opacity"></i></a>
+        <a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i></a>
+    </div>
+    <a href="http://www.tradingsimulator.org/" title="TradingSimulator.org" target="_blank" class="w3-hover-text-green">TradingSimulator.org</a>
+</footer>
+
+
+PhpStorm run nodemon from terminal
+https://stackoverflow.com/questions/63423584/how-to-fix-error-nodemon-ps1-cannot-be-loaded-because-running-scripts-is-disabl
+
+portfolio template: https://www.w3schools.com/w3css/tryw3css_templates_cv.htm
+
+szin paletta a portfolio chart hoz:
+https://www.color-hex.com/color-palette/88328
