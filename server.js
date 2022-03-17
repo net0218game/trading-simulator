@@ -69,7 +69,6 @@ app.get('/', (req, res, next) => {
 app.get('/main', (req, res) => {
     session = req.session;
     if (session.userid) {
-        console.log(">   [session] be vagy jelentkezve")
         res.sendFile('public/main/main.html', {root: __dirname})
     } else {
         console.log(">   [session] nem vagy bejelentkezve")
@@ -84,7 +83,6 @@ app.get('/register', (req, res) => {
 // fo oldal
 app.post('/main', (req, res) => {
     getInfo(req.body.username).then(function (result) {
-        console.log(req.body.username)
         if (result.length > 0) {
             if (req.body.username === result[0].email || req.body.username === result[0].username
                 && req.body.password === result[0].password
@@ -93,13 +91,12 @@ app.post('/main', (req, res) => {
                 session = req.session;
                 session.userid = result[0].username;
                 session.usernameid = result[0].userID;
-
-                console.log(">   [session] sikeres bejelentkezes", session.userid, "néven");
-                //console.log(req.session)
                 res.sendFile('/public/frontpage/frontpage.html', {root: __dirname});
+            } else {
+                res.send('Invalid username or password');
             }
         } else {
-            res.send('Invalid username or password');
+            res.send("User " + req.body.username + " doesn't exist!")
         }
     }).catch(function () {
         console.log("problema van")
@@ -586,7 +583,7 @@ function registerUser(username, password, email) {
                         let id = result[0].ID;
                         sql = "INSERT INTO stats (userID) VALUES(" + "'" + id + "'" + ")";
                         database.query(sql, function (error, results) {
-                            if(error) {
+                            if (error) {
                                 console.log("Error #28", error);
                             }
                         });
