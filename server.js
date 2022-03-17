@@ -223,12 +223,22 @@ io.on('connection', (socket) => {
                 let data = [result[i].currency, result[i].currencyValue, result[i].pair, result[i].pairValue]
                 userPortfolio.push(data)
             }
+            getStatInfo(session.userid).then(function (stat) {
+                let userSpent = stat[0].spent;
+                let userTrades = stat[0].trades;
 
-            socket.emit("portfolio", {
-                portfolio: userPortfolio,
-                userinfo: userinfo[0],
-                initialValue: initialValue
+                socket.emit("portfolio", {
+                    portfolio: userPortfolio,
+                    userinfo: userinfo[0],
+                    initialValue: initialValue,
+                    spent: userSpent,
+                    trades: userTrades
+                });
+            }).catch(function (error) {
+                console.log("Error #34", error);
             });
+
+
         }).catch(function (error) {
             console.log(error, "Error #4")
         });
@@ -439,13 +449,36 @@ function buy(data) {
                             }
                         });
                     }
+                    // Ide jon majd a stats adatbazis tablaban a spent mezo hozzaadasa
+                    getStatInfo(session.userid).then(function (result) {
+                        let userTrades = result[0].trades;
+                        let userSpent = result[0].spent;
+                        userSpent += currentValue;
+                        userTrades += 1;
+                        // Stats tablaban a TRADES ertek frissitese
+                        let sql = "UPDATE stats SET trades = " + userTrades + " WHERE userID = " + id;
+                        console.log(sql)
+                        database.query(sql, function (error) {
+                            if (error) {
+                                console.log("Error #32", error)
+                            } else {
+                                // Stats tablaban a SPENT ertek frissitese
+                                sql = "UPDATE stats SET spent = " + userSpent + " WHERE userID = " + id;
+                                database.query(sql, function (error) {
+                                    if (error) {
+                                        console.log("Error #33", error)
+                                    }
+                                });
+                            }
+                        });
+                    }).catch(function (error) {
+                        console.log("Error #31", error)
+                    });
+
                 }).catch(function (error) {
                     //ha hiba van a portfolio adatok lekeresevel
                     console.log("Error #27", error)
                 });
-                console.log("vettel", coin, "-t", currentValue, "ertekben", data.amount, "szamban")
-                // Ide jon majd a stats adatbazis tablaban a spent mezo hozzaadasa
-
             } else {
                 // ha a felhasznalonak nincsen eleg tokenje
                 console.log("nincs ra eleg tokened!")
@@ -518,6 +551,18 @@ function sell(data) {
 
                             }
                         });
+                        getStatInfo(session.userid).then(function (result) {
+                            let userTrades = result[0].trades;
+                            userTrades += 1;
+                            sql = "UPDATE stats SET trades = " + userTrades + " WHERE userID = " + id;
+                            database.query(sql, function (error) {
+                                if (error) {
+                                    console.log("Error #35", error)
+                                }
+                            });
+                        }).catch(function (error) {
+                            console.log("Error #36", error)
+                        })
                     } else {
                         console.log("Nincs ennyid a", coin, "valutából")
                     }
@@ -552,6 +597,29 @@ function getInfo(user) {
             }
         });
     });
+}
+
+function getStatInfo(user) {
+
+    return new Promise((resolve, reject) => {
+        getInfo(user).then(function (result) {
+            let id = result[0].ID;
+            let sql = "SELECT * FROM stats WHERE userID = " + id;
+            console.log(sql)
+            database.query(sql, function (error, results) {
+                if (error) {
+                    console.log("Error #30", error)
+                    return reject();
+                } else {
+                    return resolve(results);
+                }
+            });
+        }).catch(function (error) {
+            console.log("Error #29", error)
+        })
+
+    });
+
 }
 
 // uj felhasznalo regisztralasa
