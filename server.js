@@ -237,8 +237,6 @@ io.on('connection', (socket) => {
             }).catch(function (error) {
                 console.log("Error #34", error);
             });
-
-
         }).catch(function (error) {
             console.log(error, "Error #4")
         });
@@ -605,7 +603,6 @@ function getStatInfo(user) {
         getInfo(user).then(function (result) {
             let id = result[0].ID;
             let sql = "SELECT * FROM stats WHERE userID = " + id;
-            console.log(sql)
             database.query(sql, function (error, results) {
                 if (error) {
                     console.log("Error #30", error)
