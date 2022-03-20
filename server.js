@@ -206,11 +206,13 @@ io.on('connection', (socket) => {
     console.log(">   [Socket.io] sikeres csatlakozás")
 
     getInfo(session.userid).then(function (result) {
+        let passwstars = '*'.repeat(result[0].password.length);
         socket.emit("userdata", {
             username: result[0].username,
             tokens: result[0].token,
             email: result[0].email,
-            pfp: result[0].pfp
+            pfp: result[0].pfp,
+            password: passwstars
         });
     }).catch(function (error) {
         console.log("Error #3", error);
