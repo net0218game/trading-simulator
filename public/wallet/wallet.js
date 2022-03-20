@@ -11,21 +11,15 @@ var intervalId = window.setInterval(function () {
 
 let tokens2 = document.getElementById("tokens2");
 let username = document.getElementById("name");
-let username2 = document.getElementById("name2");
-let email = document.getElementById("email");
 
 let stat = document.getElementById("statistics");
 let profit = document.getElementById("profit");
 let spent = document.getElementById("spent");
+let pfp = document.getElementById("pfp");
 
 socket.on("userdata", function (data) {
-    if (data.email.length > 0) {
-        email.innerHTML = "<i class=\"fa fa-envelope fa-fw w3-margin-right w3-large w3-text-cyan\"></i>" + data.email;
-    } else {
-        email.innerHTML = "<i class=\"fa fa-envelope fa-fw w3-margin-right w3-large w3-text-cyan\"></i> You don't have any email linked to this account";
-    }
+    pfp.src = "profilePictures/" + data.pfp + ".png"
     tokens2.innerHTML = "<i class=\"fa fa-money fa-fw w3-margin-right w3-large w3-text-cyan\"></i>" + data.tokens;
-    username2.innerHTML = "<i class=\"fa fa-user fa-fw w3-margin-right w3-large w3-text-cyan\"></i>" + data.username;
     username.innerHTML = "<i class=\"fa fa-user\"></i> " + data.username + " <i class=\"fa fa-caret-down\"></i>";
 });
 

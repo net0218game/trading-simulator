@@ -209,7 +209,8 @@ io.on('connection', (socket) => {
         socket.emit("userdata", {
             username: result[0].username,
             tokens: result[0].token,
-            email: result[0].email
+            email: result[0].email,
+            pfp: result[0].pfp
         });
     }).catch(function (error) {
         console.log("Error #3", error);
@@ -631,8 +632,10 @@ function registerUser(username, password, email) {
             } else {
                 // ha meg nem letezik ilyen felhasznalo es az adatok megfelelnel a kovetelmenyeknek
                 if (results.length === 0 && username.length > 3 && password.length > 7) {
+                    let pfpNumber = Math.floor((Math.random() * 5) + 0);
+                    let pfp = "default-" + pfpNumber;
                     // felhasznalo letrehozasa a users tablaban 10 000 alap tokennel
-                    let sql = "INSERT INTO users(username, email, password, token) VALUES (" + "'" + username + "'" + "," + "'" + email + "'" + ", '" + password + "'" + "," + "'" + initialValue + "'" + ")";
+                    let sql = "INSERT INTO users(username, email, password, token, pfp) VALUES (" + "'" + username + "'" + "," + "'" + email + "'" + ", '" + password + "'" + "," + "'" + initialValue + "'" + "," + "'" + pfp + "'" + ")";
 
                     database.query(sql, function (error, results) {
                         if (error) {
