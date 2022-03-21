@@ -10,14 +10,10 @@ const express = require("express");
 const path = require("path");
 var app = express();
 
-app.use(require('cors')())
-
 var server = app.listen(5000);
-var io = require('socket.io')(server, {
+const io = require('socket.io')(server, {
     cors: {
         origin: 'http://localhost:5000',
-        optionsSuccessStatus: 200,
-        methods: ["GET", "POST"]
     }
 });
 //app.use(express.static('public'));
@@ -85,8 +81,7 @@ app.post('/main', (req, res) => {
     getInfo(req.body.username).then(function (result) {
         if (result.length > 0) {
             if (req.body.username === result[0].email || req.body.username === result[0].username
-                && req.body.password === result[0].password
-                && req.body.password.length > 7) {
+                && req.body.password === result[0].password) {
 
                 session = req.session;
                 session.userid = result[0].username;
@@ -746,6 +741,7 @@ function changePassword(username, oldPassw, newPassw, email) {
     });
 }
 
+// Leaderboard sortolasa megadott key alapjan.
 function sortByKey(array, key) {
     return array.sort(function (a, b) {
         let x = a[key];
@@ -782,7 +778,4 @@ function getLeaderboard() {
             }
         });
     });
-
-
 }
-

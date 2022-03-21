@@ -1,4 +1,4 @@
-let socket = io.connect('http://localhost:5000');
+let socket = io.connect();
 
 let divs = document.getElementsByClassName("coin");
 

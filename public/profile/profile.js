@@ -1,4 +1,4 @@
-let socket = io.connect('http://localhost:5000');
+let socket = io.connect();
 
 let divs = document.getElementsByClassName("pfpImage");
 
@@ -84,16 +84,16 @@ socket.on("leaderboard", function (data) {
         leaderboardTable.innerHTML += '<tr>\n' +
             '                            <td>#' + data.leaderboard[i][0] + '</td>\n' +
             '                            <td>' + data.leaderboard[i][1] + '</td>\n' +
-            '                            <td>$ ' + data.leaderboard[i][2] + '</td>\n' +
-            '                            <td>$ ' + data.leaderboard[i][3] + '</td>\n' +
+            '                            <td>$ ' + parseFloat(data.leaderboard[i][2]).toLocaleString('en-US') + '</td>\n' +
+            '                            <td>$ ' + parseFloat(data.leaderboard[i][3]).toLocaleString('en-US') + '</td>\n' +
             '                        </tr>'
     }
 
     userPlace.innerHTML = '<tr>\n' +
         '                            <td>#' + data.userPlace[0][0] + '</td>\n' +
         '                            <td>' + data.userPlace[0][1] + '</td>\n' +
-        '                            <td>$ ' + data.userPlace[0][2] + '</td>\n' +
-        '                            <td>$ ' + data.userPlace[0][3] + '</td>\n' +
+        '                            <td>$ ' + parseFloat(data.userPlace[0][2]).toLocaleString('en-US') + '</td>\n' +
+        '                            <td>$ ' + parseFloat(data.userPlace[0][3]).toLocaleString('en-US') + '</td>\n' +
         '                        </tr>';
 
 });

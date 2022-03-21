@@ -1,4 +1,4 @@
-let socket = io.connect('http://localhost:5000');
+let socket = io.connect();
 
 let chartArray = []
 
@@ -38,7 +38,7 @@ socket.on("portfolio", function (data) {
             let other = 0;
             let otherCoins = "";
             if (percent > 1) {
-                stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() + ' - $ ' + data.portfolio[i][3] + '</p>\n' +
+                stat.innerHTML = stat.innerHTML + '<p>' + data.portfolio[i][0].toUpperCase() + ' - $ ' + parseFloat(data.portfolio[i][3]).toLocaleString('en-US') + '</p>\n' +
                     '                    <div class="w3-light-grey w3-round-xlarge w3-small">\n' +
                     '                        <div class="w3-container w3-center w3-round-xlarge w3-cyan" style="width:' + percent + '%">\n' +
                     '                            <div class="w3-center w3-text-black">' + percent.toFixed(1) + '%</div>\n' +

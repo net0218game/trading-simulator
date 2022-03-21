@@ -1,7 +1,3 @@
-fetch('http://localhost:5000')
-    .then(response => response.json())
-    .then(data => console.log(data));
-
 function myFunction() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {
@@ -12,7 +8,7 @@ function myFunction() {
 }
 
 //Csatlakozas letrehozasa
-var socket = io.connect('http://localhost:5000');
+var socket = io.connect();
 
 let values = []
 let coin = "";
