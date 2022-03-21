@@ -1,15 +1,35 @@
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Raleway", sans-serif
+}
 
-body {
+body, html {
+    height: 100%;
+    line-height: 1.8;
     background-color: #adafaa;
 }
 
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
 
-/* The Modal (background) */
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     padding-top: 100px; /* Location of the box */
+    padding-bottom: 100px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -55,14 +75,14 @@ body {
 
 .close:hover,
 .close:focus {
-    color: #000;
+    color: grey;
     text-decoration: none;
     cursor: pointer;
 }
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
+    background-color: #51C4D3;
     color: white;
 }
 
@@ -70,6 +90,11 @@ body {
 
 .modal-footer {
     padding: 2px 16px;
-    background-color: #5cb85c;
+    background-color: #51C4D3;
     color: white;
+}
+
+.pfpImage {
+    width: 20%;
+    margin: 5px;
 }

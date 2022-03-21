@@ -196,7 +196,6 @@ app.get('/logout', (req, res) => {
 
 //Ha uj kapcsolat jon letre
 io.on('connection', (socket) => {
-
     let ws = new WebSocket('wss://stream.binance.com:9443/ws/' + coin + pair + '@ticker');
     let wsbtc = new WebSocket('wss://stream.binance.com:9443/ws/btcbusd@ticker');
     let wseth = new WebSocket('wss://stream.binance.com:9443/ws/ethbusd@ticker');
@@ -205,6 +204,7 @@ io.on('connection', (socket) => {
     let wsshib = new WebSocket('wss://stream.binance.com:9443/ws/shibbusd@ticker');
     console.log(">   [Socket.io] sikeres csatlakozás")
 
+    // Felhasznaloi adatok elkuldese
     getInfo(session.userid).then(function (result) {
         let passwstars = '*'.repeat(result[0].password.length);
         socket.emit("userdata", {
@@ -218,6 +218,7 @@ io.on('connection', (socket) => {
         console.log("Error #3", error);
     });
 
+    // Portfolio elkuldese
     getPortfolio(session.userid).then(function (result) {
         getInfo(session.userid).then(function (userinfo) {
             let userPortfolio = []
@@ -245,7 +246,19 @@ io.on('connection', (socket) => {
         });
 
     }).catch(function (error) {
-        console.log(error, "Error Code #5")
+        console.log(error, "Error #5")
+    });
+
+    // Ranglista elkuldese
+    getLeaderboard().then(function (data) {
+        let leaderboard = data[0]
+        let userPlace = data[1]
+        socket.emit("leaderboard", {
+            leaderboard: leaderboard,
+            userPlace: userPlace
+        })
+    }).catch(function (error) {
+        console.log("Error #40", error)
     });
 
     function getPrice() {
@@ -255,7 +268,6 @@ io.on('connection', (socket) => {
             if (coin.length > 0) {
 
                 let cryptodata = JSON.parse(event.data);
-
 
                 if (coin === "shib") {
                     price = parseFloat(cryptodata.c).toFixed(8);
@@ -362,10 +374,28 @@ io.on('connection', (socket) => {
     socket.on("buy", function (data) {
         buy(data);
     });
+
     // eladas funkcio
     socket.on("sell", function (data) {
         sell(data);
     });
+
+    // Profilkep megvaltoztatasa
+    socket.on("changePfp", function (data) {
+        getInfo(session.userid).then(function (result) {
+            let id = result[0].ID;
+            let sql = "UPDATE users SET pfp = " + "'" + data.pfp + "'" + " WHERE ID = " + id;
+
+            database.query(sql, function (error) {
+                if (error) {
+                    console.log("Error #37", error)
+                }
+            });
+        }).catch(function (error) {
+            console.log("Error #38", error)
+        });
+    });
+
     getPrice();
 });
 
@@ -619,10 +649,9 @@ function getStatInfo(user) {
         })
 
     });
-
 }
 
-// uj felhasznalo regisztralasa
+// Uj felhasznalo regisztralasa
 function registerUser(username, password, email) {
     return new Promise((resolve, reject) => {
         var sql = "SELECT username FROM users WHERE username =" + "'" + username + "'";
@@ -682,8 +711,8 @@ function getPortfolio(user) {
                 }
             });
         }).catch(function (error) {
-            return reject();
             console.log("Error #24", error)
+            return reject();
         });
     });
 }
@@ -716,3 +745,44 @@ function changePassword(username, oldPassw, newPassw, email) {
         });
     });
 }
+
+function sortByKey(array, key) {
+    return array.sort(function (a, b) {
+        let x = a[key];
+        let y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+
+function getLeaderboard() {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM users";
+
+        database.query(sql, function (error, results) {
+            if (error) {
+                console.log("Error #39", error)
+            } else {
+                let data = []
+                let userPlace = []
+                let leaderboard = [];
+                let shorted = sortByKey(results, "token").reverse();
+                for (let i = 0; i < shorted.length; i++) {
+                    let profit = shorted[i].token - initialValue
+                    let place = i + 1
+                    if(leaderboard.length < 11) {
+                        leaderboard.push([place, shorted[i].username, shorted[i].token, profit])
+                    }
+
+                    if(shorted[i].username === session.userid) {
+                        userPlace.push([place, shorted[i].username, shorted[i].token, profit])
+                    }
+                }
+                data = [leaderboard, userPlace]
+                return resolve(data)
+            }
+        });
+    });
+
+
+}
+

@@ -8,35 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/topnav/topnav.css">
+    <link rel="stylesheet" href="/profile/profile.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
     <script src="https://kit.fontawesome.com/02ff1d2c53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        body, h1, h2, h3, h4, h5, h6 {
-            font-family: "Raleway", sans-serif
-        }
 
-        body, html {
-            height: 100%;
-            line-height: 1.8;
-            background-color: #adafaa;
-        }
-
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-            width: 100%;
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2
-        }
     </style>
 </head>
 <body>
@@ -69,10 +46,8 @@
 
     <!-- The Grid -->
     <div class="w3-row-padding">
-
         <!-- Left Column -->
         <div class="w3-twothird">
-
             <div class="w3-container w3-card w3-white">
                 <h2 class="w3-text-grey w3-padding-16">
                     <i class="fa fa-circle-user fa-fw w3-margin-right w3-xxlarge w3-text-cyan"></i>Profile</h2>
@@ -101,7 +76,7 @@
                 <h3 class="w3-text-grey w3-padding-16">Top 10:</h3>
 
                 <div style="overflow-x:auto;">
-                    <table>
+                    <table id="leaderboard">
                         <tr>
                             <th>Place</th>
                             <th>Username</th>
@@ -125,7 +100,7 @@
                 </div>
                 <h3 class="w3-text-grey w3-padding-16">Your ranking:</h3>
                 <div style="overflow-x:auto;">
-                    <table>
+                    <table id="userPlace">
                         <tr>
                             <td>#1</td>
                             <td>David</td>
@@ -147,7 +122,7 @@
                 <div class="w3-display-container">
                     <img src="/profilePictures/default-0.png" id="pfp" style="width:100%" alt="Profile Picture">
                     <div class="w3-display-bottomleft w3-container w3-text-black">
-                        <h3><a href="/profile" style="color: white">Change Profile Picture</a></h></h3>
+                        <h3 id="myBtn" style="color: white; cursor: pointer">Change Profile Picture</h3>
                     </div>
                 </div>
                 <div class="w3-container" id="statistics">
@@ -169,12 +144,47 @@
 <footer class="w3-center w3-black w3-padding-64">
     <div class="w3-xlarge w3-section">
         <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook-official w3-hover-opacity"></i></a>
-        <a href="https://www.instagram.com/tradingsimulator/" target="_blank"><i class="fa fa-instagram w3-hover-opacity"></i></a>
-        <a href="https://www.reddit.com/user/nokedl0218" target="_blank"><i class="fa fa-reddit-alien w3-hover-opacity"></i></a>
+        <a href="https://www.instagram.com/tradingsimulator/" target="_blank"><i
+                class="fa fa-instagram w3-hover-opacity"></i></a>
+        <a href="https://www.reddit.com/user/nokedl0218" target="_blank"><i
+                class="fa fa-reddit-alien w3-hover-opacity"></i></a>
         <a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i></a>
     </div>
-    <p class="w3-medium">Trade Without Any Risk<br><b>Anywhere · Anytime</b><br><a href="http://www.tradingsimulator.org/" title="TradingSimulator.org" target="_blank" class="w3-hover-text-green">TradingSimulator.org</a></p>
+    <p class="w3-medium">Trade Without Any Risk<br><b>Anywhere · Anytime</b><br><a
+            href="http://www.tradingsimulator.org/" title="TradingSimulator.org" target="_blank"
+            class="w3-hover-text-green">TradingSimulator.org</a></p>
 </footer>
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Select Profile Picture</h2>
+        </div>
+        <div class="modal-body">
+            <p class="w3-text-grey w3-padding-1 w3-large">Cilck the image to set it as your profile picture!
+                Double click to open the image.</p>
+            <br>
+            <div class="images">
+                <img src="/profilePictures/default-0.png" class="pfpImage"
+                     id="default-0" ondblclick="window.open(this.src)">
+                <img src="/profilePictures/default-1.png" class="pfpImage"
+                     id="default-1" ondblclick="window.open(this.src)">
+                <img src="/profilePictures/default-2.png" class="pfpImage"
+                     id="default-2" ondblclick="window.open(this.src)">
+                <img src="/profilePictures/default-3.png" class="pfpImage"
+                     id="default-3" ondblclick="window.open(this.src)">
+                <img src="/profilePictures/default-4.png" class="pfpImage"
+                     id="default-4" ondblclick="window.open(this.src)">
+                <img src="/profilePictures/default-5.png" class="pfpImage"
+                     id="default-5" ondblclick="window.open(this.src)">
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
 
 <script src="/profile/profile.js"></script>
 <script src="/topnav/topnav.js"></script>
