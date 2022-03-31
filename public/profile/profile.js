@@ -55,11 +55,11 @@ socket.on("userdata", function (data) {
     username2.innerHTML = "<i class=\"fa fa-user fa-fw w3-margin-right w3-large w3-text-cyan\"></i>" + data.username;
     username3.innerHTML = '<p id="name3" class="w3-text-grey w3-padding-1 w3-large"><i\n' +
         '                        class="fa fa-user fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>' + data.username +
-        '                    <a href="/changepswd"><i class="fa fa-edit fa-fw w3-margin-right w3-xlarge w3-text-grey"\n' +
+        '                    <a href="/chng"><i class="fa fa-edit fa-fw w3-margin-right w3-xlarge w3-text-grey"\n' +
         '                                             style="float: right"></i></a></p>'
     email2.innerHTML = '<p id="email2" class="w3-text-grey w3-padding-1 w3-large"><i\n' +
         '                        class="fa fa-envelope fa-fw w3-margin-right w3-xlarge w3-text-cyan"></i>' + data.email +
-        '                    <a href="/changepswd"><i class="fa fa-edit fa-fw w3-margin-right w3-xlarge w3-text-grey"\n' +
+        '                    <a href="/chng"><i class="fa fa-edit fa-fw w3-margin-right w3-xlarge w3-text-grey"\n' +
         '                                             style="float: right"></i></a></p>'
     email.innerHTML = "<i class=\"fa fa-envelope fa-fw w3-margin-right w3-large w3-text-cyan\"></i>" + data.email;
     passw.innerHTML = '<p id="password" class="w3-text-grey w3-padding-1 w3-large"><i\n' +

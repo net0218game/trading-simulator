@@ -57,6 +57,11 @@ app.use(cookieParser());
 // ebbe a valtozoban van mentve a session
 var session;
 
+app.get('/tutorial', (req, res, next) => {
+    session = req.session;
+    res.sendFile('public/tutorial-sample/tutorial.html', {root: __dirname});
+});
+
 app.get('/', (req, res, next) => {
     session = req.session;
     res.sendFile('public/welcome/welcome.html', {root: __dirname});
@@ -223,9 +228,9 @@ io.on('connection', (socket) => {
                 userPortfolio.push(data)
             }
             getStatInfo(session.userid).then(function (stat) {
+                console.log("stat:", stat)
                 let userSpent = stat[0].spent;
                 let userTrades = stat[0].trades;
-
                 socket.emit("portfolio", {
                     portfolio: userPortfolio,
                     userinfo: userinfo[0],
@@ -681,6 +686,8 @@ function registerUser(username, password, email) {
                                 console.log("Error #28", error);
                             }
                         });
+                    }).catch(function (error) {
+                        console.log("Error #41", error)
                     });
 
                 } else {

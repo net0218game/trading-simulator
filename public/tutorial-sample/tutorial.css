@@ -1,0 +1,42 @@
+h1, h2, h3, h4, h5, h6 {
+
+}
+.body {
+    margin: 20px;
+    width: 70%;
+    text-align: justify;
+    padding-left: 20px;
+}
+
+/* unvisited link */
+a:link {
+    color: #51C4D3;
+}
+
+/* visited link */
+a:visited {
+    color: #51C4D3;
+}
+
+/* mouse over link */
+a:hover {
+    color: hotpink;
+}
+
+/* selected link */
+a:active {
+    color: #51C4D3;
+}
+
+#title {
+    background-color: #126E82;
+    color: white;
+    height: auto;
+    padding-top: 0;
+}
+
+br {
+    display: block; /* makes it have a width */
+    content: ""; /* clears default height */
+    margin-top: 15px; /* change this to whatever height you want it */
+}
